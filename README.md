@@ -1,2 +1,9 @@
-# aws-server-migration-service-user-guide
+## AWS Server Migration Service User Guide
+
 User guide for AWS Service Migration Service
+
+## License Summary
+
+The documentation is made available under the Creative Commons Attribution-ShareAlike 4.0 International License. See the LICENSE file.
+
+The sample code within this documentation is made available under a modified MIT license. See the LICENSE-SAMPLECODE file.
