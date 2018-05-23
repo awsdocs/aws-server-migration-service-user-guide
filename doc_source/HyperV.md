@@ -5,18 +5,14 @@ This topic describes the steps for setting up AWS SMS to migrate VMs from Hyper\
 AWS SMS supports migration in either of two modes: from a standalone Hyper\-V server, or from multiple Hyper\-V servers managed by System Center Virtual Machine Manager \(SCVMM\)\. The following sections describe the configuration common to both scenarios, followed by instructions to install and configure the AWS Server Migration Connector in your particular on\-premises environment\.
 
 **Considerations for migration scenarios**
-
 + The installation procedures for standalone Hyper\-V and for SCVMM environments are not interchangeable\.
-
 + When configured in SCVMM mode, one Server Migration Connector appliance supports migration from one SCVMM \(which may manage multiple Hyper\-V servers\)\.
-
 + When configured in standalone Hyper\-V mode, one Server Migration Connector appliance supports migration from one Hyper\-V server\.
-
 + AWS SMS supports deploying any number of connector appliances to support migration from multiple SCVMMs and multiple standalone Hyper\-V servers in parallel\.
 
 All of the following procedures in this topic assume that you have created a properly configured IAM user as described in [Configure Your AWS Account Permissions](IAM_setup.md)\.
 
-
+**Topics**
 + [About the Server Migration Connector Installation Script](#script-actions)
 + [Step 1: Create a Service Account for Server Migration Connector in Active Directory](#ad-user)
 + [Step 2: Download and Deploy the Server Migration Connector](#download-hyperv-connector)
@@ -37,7 +33,7 @@ The AWS SMS configuration script automates creation of appropriate permissions a
 
 1. **\[All systems\]** Creates a firewall rule to accept incoming connections to the WinRM listener\.
 
-1. **\[All systems\]** Adds the IP address or domain name of the connector to the list of trusted hosts in the WinRM configuration\. You need to have this IP address or domain name configured prior to running the script so that you can provide it interactively\.
+1. **\[All systems\]** Adds the IP address or domain name of the connector to the list of trusted hosts in the WinRM configuration\. You must have this IP address or domain name configured before running the script so that you can provide it interactively\.
 
 1. **\[All systems\]** Enables Credential Security Support Provider \(CredSSP\) authentication with WinRM\.
 
@@ -47,7 +43,7 @@ The AWS SMS configuration script automates creation of appropriate permissions a
 
 1. **\[Standalone Hyper\-V only\]** Gives read\-only permissions to all VM data folders manged by this Hyper\-V\.
 
-1. **\[SCVMM only\]** Grants "Execute Methods", "Enable Account," and "Remote Enable" permissions to the Active Directory user on two WMI objects, CIMV2 and SCVMM\.
+1. **\[SCVMM only\]** Grants "Execute Methods," "Enable Account," and "Remote Enable" permissions to the Active Directory user on two WMI objects, CIMV2 and SCVMM\.
 
 1. **\[SCVMM only\]** Creates a Delegated Administrator role in SCVMM with permissions to access all Hyper\-V hosts\. It assigns the role to the Active Directory user\. You can selectively remove access to hosts by editing this role in SCVMM\.
 
@@ -57,14 +53,14 @@ The AWS SMS configuration script automates creation of appropriate permissions a
 
 ## Step 1: Create a Service Account for Server Migration Connector in Active Directory<a name="ad-user"></a>
 
-The Server Migration Connector requires a service account in Active Directory\. As the connector configuration script is run on each SCVMM and Hyper\-V host, it grants permission on those hosts to this account\. 
+The Server Migration Connector requires a service account in Active Directory\. As the connector configuration script is run on each SCVMM and Hyper\-V host, it grants permissions on those hosts to this account\. 
 
 **Note**  
-When configured in SCVMM mode, the SCVMM host and all the Hyper\-V hosts that it manages must be located in a single Active Directory domain\. If you have multiple Active Directory domains, you need to configure a connector for each\. 
+When configured in SCVMM mode, the SCVMM host and all the Hyper\-V hosts that it manages must be located in a single Active Directory domain\. If you have multiple Active Directory domains, configure a connector for each\. 
 
 **To create the Active Directory user**
 
-1. Using the Active Directory Administrative Center on the Windows computer where your Active Directory forest is installed, an Active Directory administrator must create a new user and assign a password to it\.
+1. Using the Active Directory Administrative Center on the Windows computer where your Active Directory forest is installed, create a new user and assign a password to it\.
 
 1. Add the new user to the **Remote Management Users** group\.
 
@@ -79,7 +75,7 @@ This connector is meant only for installation in a Hyper\-V environment\. For in
 
 1. Open the **AWS Server Migration Service** console and choose **Connectors**,**SMS Connector setup guide**\. 
 
-1. On the **AWS Server Migration Connector setup** page, choose the **Download VHD ZIP** button to download the connector for Hyper\-V\.
+1. On the **AWS Server Migration Connector setup** page, choose **Download VHD ZIP** to download the connector for Hyper\-V\.
 
 1. Transfer the downloaded connector file to your Hyper\-V host, unzip it, and import the connector as a VM\.
 
@@ -103,7 +99,7 @@ This connector is meant only for installation in a Hyper\-V environment\. For in
       Please enter your option [1-9]:
       ```
 
-   1. Enter option 2\. This displays current network information and a submenu to make changes to the network settings\. The output should resemble the following:
+   1. Enter option 2\. This displays current network information and a submenu for making changes to the network settings\. The output should resemble the following:
 
       ```
       Current network configuration: DHCP
@@ -124,13 +120,13 @@ This connector is meant only for installation in a Hyper\-V environment\. For in
       Please enter your option [1-5]:
       ```
 
-   You will need to enter this IP address in procedures below\.
+   You need to enter this IP address in later procedures\.
 
 1. \[Optional\] Configure a static IP address for the connector\. This prevents you from having to reconfigure the trusted hosts lists on your LAN each time DHCP assigns a new address to the connector\.
 
    In the **Reconfigure your network** menu, enter option **2**\. This displays a form to supply network settings:
 
-   For each field, provide an appropriate value and press Enter\. You should output similar to the following:
+   For each field, provide an appropriate value and press Enter\. You should see output similar to the following:
 
    ```
    Setting up static IP:
@@ -145,12 +141,10 @@ This connector is meant only for installation in a Hyper\-V environment\. For in
 
 1. In the connector's network configuration menu, configure domain suffix values for the DNS suffix search list\.
 
-1. If your environment uses a web proxy to reach the Internet, configure that now\.
+1. If your environment uses a web proxy to reach the internet, configure that now\.
 
 1. Before leaving the connector console, use ping to verify network access to the following targets inside and outside your LAN:
-
    + Inside your LAN, to your Hyper\-V hosts and SCVMM by hostname, FQDN, and IP address
-
    + Outside your LAN, to AWS
 
 ## Step 3: Download and Install the Hyper\-V/SCVMM Configuration Script<a name="script"></a>
@@ -217,7 +211,6 @@ Next, use either the Windows user interface or PowerShell to check that the scri
 1. Verify that the displayed information contains "This digital signature is OK" and that the signer is "Amazon Web Services, Inc\."
 
 **To check the script file for a valid cryptographic signature \(PowerShell\)**
-
 + In a PowerShell window, run the following command:
 
   ```
@@ -256,7 +249,7 @@ If you are using SCVMM, you must first run this script on each Hyper\-V host you
    PS C:\Users\Administrator\Desktop> .\aws-sms-hyperv-setup.ps1
    ```
 **Note**  
-If your PowerShell execution policy is set to verify signed scripts, you will be prompted for an authorization when you run the connector configuration script\. Verify that the script is published by "Amazon Web Services, Inc\." and click "R" to run once\. You can view this setting using Get\-ExecutionPolicy and modify it using Set\-ExecutionPolicy\.
+If your PowerShell execution policy is set to verify signed scripts, you are prompted for an authorization when you run the connector configuration script\. Verify that the script is published by "Amazon Web Services, Inc\." and choose "R" to run one time\. You can view this setting using Get\-ExecutionPolicy and modify it using Set\-ExecutionPolicy\.
 
 1. As the script runs, it prompts you for several pieces of information\. Be prepared to respond to the following prompts:  
 ****    
@@ -264,13 +257,13 @@ If your PowerShell execution policy is set to verify signed scripts, you will be
 
 ## Step 6: Configure the Connector<a name="configure-hyperv-connector"></a>
 
-When the connector configuration has ben successfully run, browse to the connector's web interface:
+When the connector configuration has been successfully run, browse to the connector's web interface:
 
 ```
 https://ip-address-of-connector/
 ```
 
-Complete the following steps to set up the new connector:
+Complete the following steps to set up the new connector\.
 
 **To configure the connector**
 
@@ -278,32 +271,28 @@ Complete the following steps to set up the new connector:
 
 1. Review the license agreement, select the check box, and choose **Next**\.
 
-1. Create a password for the connector\. Note that the password must meet the displayed criteria\. Choose **Next** when done\.
+1. Create a password for the connector\. The password must meet the displayed criteria\. Choose **Next**\.
 
-1. On the **Network Info** page, you can \(among other tasks\) assign a static IP address to the connector if you have not already done so\. Choose **Next** when done\.
+1. On the **Network Info** page, you can \(among other tasks\) assign a static IP address to the connector if you have not already done so\. Choose **Next**\.
 
-1. On the **Log Uploads and Upgrades** page, select **Upload logs automatically** and **Server Migration Connector auto\-upgrade**, then choose **Next**\.
+1. On the **Log Uploads and Upgrades** page, select **Upload logs automatically** and **Server Migration Connector auto\-upgrade**, and choose **Next**\.
 
 1. On the **Server Migration Service** page, provide the following information:
+   +  For **AWS Region**, choose your Region from the list\. 
+   +  For **AWS Credentials**, enter the IAM credentials that you created in [Configure Your AWS Account Permissions](IAM_setup.md)\. Choose **Next**\. 
 
-   +  **AWS Region**: Choose your region from the list\. 
+1. On the **Choose your VM manager type** page, choose either **Microsoft® System Center Virtual Manager \(SCVMM\)** or **Microsoft® Hyper\-V** depending on your environment\. Selecting **VMware® vCenter** results in an error if you have installed the Hyper\-V connector\. Choose **Next**\.
 
-   +  **AWS Credentials**: Enter the IAM credentials you created in [Configure Your AWS Account Permissions](IAM_setup.md)\. Choose **Next** when done\. 
+1. On the **Hyper\-V: Host and Service Account Setup** or **SCVMM: Host and Service Account Setup** page, provide the account information for the Active Directory user that you created in [Step 1: Create a Service Account for Server Migration Connector in Active Directory](#ad-user), including **Username** and **Password**\.
 
-1. On the **Choose your VM manager type** page, select either **Microsoft® System Center Virtual Manager \(SCVMM\)** or **Microsoft® Hyper\-V** depending on your environment\. Selecting **VMware® vCenter** results in an error if you have installed the Hyper\-V connector\. Choose **Next** when done\.
+1. 
+   + \[SCVMM only\] Provide the SCVMM hostname to be served by this connector and choose **Next\.** Inspect the certificate for the host, then choose **Trust** if the certificate is valid\. 
+   + \[Stand\-alone Hyper\-V only\] Provide the Hyper\-V hostname for each host to be served by this connector\. To add additional hosts, use the plus symbol\. To inspect the certificate for each host, choose **Verify Certificate**, then choose **Trust** if the certificate is valid\. Choose **Next\.**
 
-1. On the **Hyper\-V: Host and Service Account Setup** or **SCVMM: Host and Service Account Setup** page, provide the account information for the Active Directory user you created in [Step 1: Create a Service Account for Server Migration Connector in Active Directory](#ad-user), including the following:
-
-   +  **SCVMM Host Name** or **Hyper\-V Host Name** 
-
-   +  **Username** 
-
-   +  **Password** 
-
-   Choose **Next**\.
-
-1. In the **Validate Untrusted Server Certificate** window, choose **Trust**\. 
+   Alternatively, you can select the host\-specific option to **Ignore hostname mismatch and expiration errors\.\.\.** for either SCVMM or Hyper\-V host certificates\. We do not recommend overriding security in production, but it may be useful during testing\.
+**Note**  
+If you have Hyper\-V hosts located in multiple Active Directory domains, we recommend configuring a separate connector for each domain\.
 
 1. If you successfully authenticated with the connector, you should see the **Congratulations** page\. Choose **Go to connector dashboard** to view the connector's health status\.
 
-1. Navigate to the **Connectors** page on the AWS Server Migration Service console to verify that the connector you registered is now listed there\.
+1. To verify that the connector you registered is now listed, navigate to the **Connectors** page on the AWS Server Migration Service console\.

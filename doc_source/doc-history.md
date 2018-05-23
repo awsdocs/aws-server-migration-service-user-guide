@@ -1,9 +1,7 @@
 # Document History for AWS SMS<a name="doc-history"></a>
 
 The following table describes the documentation for this release of AWS SMS\.
-
 + **API version:** 2016\-10\-24
-
 + **Latest documentation update:** April 11, 2017
 
 

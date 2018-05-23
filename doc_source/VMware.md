@@ -15,13 +15,9 @@ From a client computer system on your LAN, complete the following steps to set u
 As a best practice, we recommend that you limit vCenter permissions for the connector service account to only those vCenter data centers that contain the VMs that you intend to migrate\. We also recommend that you lock down your vCenter service account permissions by assigning this user the NoAccess role in vCenter on the hosts, folders, and datastores that do not have any VMs for migration\.
 
 1. Create a role in vCenter with the following privileges:
-
    + **Datastore** > **Browse datastore and Low level file operations** \(Datastore\.Browse and Datastore\.FileManagement\)
-
    + **Host** > **Configuration** > **System Management** \(Host\.Config\.SystemManagement\) 
-
    + **vApp** > **Export** \(VApp\.Export\)
-
    + **Virtual Machine** > **Snapshot management** > **Create snapshot and Remove Snapshot** \(VirtualMachine\.State\.CreateSnapshot and VirtualMachine\.State\.RemoveSnapshot\)
 
 1. Assign the role as follows:
@@ -56,7 +52,7 @@ As a best practice, we recommend that you limit vCenter permissions for the conn
       Please enter your option [1-9]:
       ```
 
-   1. Enter option 2\. This displays current network information and a submenu to make changes to the network settings\. The output should resemble the following:
+   1. Enter option 2\. This displays current network information and a submenu for making changes to the network settings\. The output should resemble the following:
 
       ```
       Current network configuration: DHCP
@@ -77,13 +73,13 @@ As a best practice, we recommend that you limit vCenter permissions for the conn
       Please enter your option [1-5]:
       ```
 
-   You will need to enter this IP address in procedures below\.
+   You need to enter this IP address in later procedures\.
 
 1. \[Optional\] Configure a static IP address for the connector\. This prevents you from having to reconfigure the trusted hosts lists on your LAN each time DHCP assigns a new address to the connector\.
 
    In the **Reconfigure your network** menu, enter option **2**\. This displays a form to supply network settings:
 
-   For each field, provide an appropriate value and press Enter\. You should output similar to the following:
+   For each field, provide an appropriate value and press Enter\. You should see output similar to the following:
 
    ```
    Setting up static IP:
@@ -98,12 +94,10 @@ As a best practice, we recommend that you limit vCenter permissions for the conn
 
 1. In the connector's network configuration menu, configure domain suffix values for the DNS suffix search list\.
 
-1. If your environment uses a web proxy to reach the Internet, configure that now\.
+1. If your environment uses a web proxy to reach the internet, configure that now\.
 
 1. Before leaving the connector console, use ping to verify network access to the following targets inside and outside your LAN:
-
    + Inside your LAN, to your ESXi hosts and vCenter by hostname, FQDN, and IP address
-
    + Outside your LAN, to AWS
 
 1. In a web browser, access the connector VM at its IP address \(https://*ip\-address\-of\-connector*/\) to open the setup wizard, and choose **Get started now**\.
@@ -114,7 +108,7 @@ As a best practice, we recommend that you limit vCenter permissions for the conn
 
 1. Choose **Upload logs automatically** and **Server Migration Connector auto\-upgrade**\.
 
-1. For **AWS Region**, choose your region from the list\. For **AWS Credentials**, enter the IAM credentials from step 2\. Choose **Next**\.
+1. For **AWS Region**, choose your Region from the list\. For **AWS Credentials**, enter the IAM credentials that you created in [Configure Your AWS Account Permissions](IAM_setup.md)\. Choose **Next**\.
 
 1. For **vCenter Service Account**, enter the vCenter hostname, user name, and password from step 3\. Choose **Next**\.
 

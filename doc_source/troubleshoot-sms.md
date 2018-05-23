@@ -8,7 +8,7 @@ The connector may fail to replicate your VM because the VM is on an ESXi host wi
 
 You can override this ESXi host certificate problem by completing the following procedures:
 
-
+**Topics**
 + [Upgrade Your Connector](#upgrade)
 + [Re\-Register Your Connector](#reregister)
 
@@ -24,7 +24,7 @@ This section is for customers who are manually upgrading the connector\. If you 
 
 1. Choose **Upgrade**\.
 
-1. Wait for the connector to finish upgrading to version 1\.0\.8\.44\.
+1. Wait for the connector to finish upgrading to version 1\.0\.11\.13 or later\.
 
 ### Re\-Register Your Connector<a name="reregister"></a>
 
@@ -36,7 +36,7 @@ This section applies to all customers encountering the certificate mismatch prob
 
 1. Log in to the connector\.
 
-1. In the **General Health** section, check that the connector version is 1\.0\.8\.44\.
+1. In the **General Health** section, check that the connector version is 1\.0\.11\.13 or later\.
 
 1. Choose **Edit AWS Server Migration Service Settings**\.
 

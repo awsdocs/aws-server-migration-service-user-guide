@@ -1,6 +1,26 @@
 # Configure Your AWS Account Permissions<a name="IAM_setup"></a>
 
-The following prerequisite applies to either platform supported by AWS SMS\.
+The following prerequisites apply to either platform supported by AWS SMS\.
+
+If your IAM user account, group, or role is assigned administator permissions, then you have access to AWS SMS\. To call the SMS API with the credentials of an IAM user that does not have administrative access to your AWS account, create a custom inline policy defined by the following JSON code and apply it to the IAM user:
+
+```
+{
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "sms:*"
+                ],
+                "Resource": "*"
+            }
+        ]
+    }
+```
+
+**Note**  
+If you are using multiple connectors, we recommend that you create a unique IAM role for each connector to avoid having a single point of failure\.
 
 **To create an IAM user in your AWS account**
 
@@ -24,7 +44,7 @@ The following prerequisite applies to either platform supported by AWS SMS\.
 
 1. Choose **Create role**\. You should now be able to see the **sms** role in the list of available roles\.
 
-Use the following option in AWS regions that do not make an IAM role template available\. This option also works as a manual alternative to **option 1** in all regions\.
+Use the following option in AWS Regions that do not make an IAM role template available\. This option also works as a manual alternative to **option 1** in all Regions\.
 
 **To create an IAM role manually \(option 2\)**
 
@@ -85,22 +105,3 @@ Use the following option in AWS regions that do not make an IAM role template av
 
 **Note**  
 Your AWS CLI user must have permissions on IAM\. You can grant these by attaching the `IAMFullAccess` managed policy to your AWS CLI user\. For information about managing IAM users and permissions, see [Creating an IAM User in Your AWS Account](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)\. 
-
-To call the AWS SMS API with the credentials of an IAM user that does not have administrative access to your AWS account, create a custom inline policy defined by the following JSON code and apply it to the IAM user:
-
-```
-{
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "sms:*"
-                ],
-                "Resource": "*"
-            }
-        ]
-    }
-```
-
-For information about managing IAM users and permissions, see [Creating an IAM User in Your AWS Account](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)\.

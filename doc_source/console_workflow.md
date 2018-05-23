@@ -1,11 +1,8 @@
 # Replicating VMs Using the AWS SMS Console<a name="console_workflow"></a>
 
 Use the AWS SMS console to import your server catalog and migrate your on\-premises servers to Amazon EC2\. You can perform the following tasks:
-
 + [Replicate a server using the console](#configure_replication)
-
 + [Monitor and modify server replication jobs](#monitor_replication)
-
 + [Shut down replication](#delete_replication) <a name="configure_replication"></a>
 
 **To replicate a server using the console**
@@ -23,17 +20,11 @@ Use the AWS SMS console to import your server catalog and migrate your on\-premi
 1. On the **Configure server\-specific settings** page, in the **License type** column, select the license type for AMIs to be created from the replication job\. Linux servers can only use Bring Your Own License \(BYOL\)\. Windows servers can use either an AWS\-provided license or BYOL\. You can also choose **Auto** to allow AWS SMS to select the appropriate license\. Choose **Next**\.
 
 1. On the **Configure replication job settings** page, the following settings are available:
-
    + For **Replication job type**, choose a value\. The **replicate server every *interval*** option creates a repeating replication process that creates new AMIs at the interval you provide from the menu\. The **One\-time migration** option triggers a single replication of your server without scheduling repeating replications\.
-
    + For **Start replication run**, configure your replication run to start either immediately or at a later date and time up to 30 days in the future\. The date and time settings refer to your browser’s local time\. 
-
    + For **IAM service role**, provide \(if necessary\) the IAM service role that you previously created\.
-
    + \(Optional\) For **Description**, provide a description of the replication run\.
-
    + For **Enable automatic AMI deletion**, configure AWS SMS to delete older replication AMIs in excess of a number that you provide in the field\.
-
    + For **Enable notifications**, choose a value\. If you choose **Yes**, you can configure Amazon Simple Notification Service \(Amazon SNS\) to notify a list of recipients when the replication job has completed, failed, or been deleted\. For more information, see [What is Amazon Simple Notification Service?](http://docs.aws.amazon.com/sns/latest/dg/)\.
 
    Choose **Next**\.
