@@ -39,7 +39,7 @@ When importing a VM, AWS modifies the file system to make the imported VM access
 + \[Linux\] Modifying network scripts to replace static IPs with dynamic IPs\.
 + \[Linux\] Modifying `/etc/fstab`, commenting out invalid entries and replacing device names with UUIDs\. If no matching UUID can be found for a device, the `nofail` option is added to the device description\. You will need to correct the device naming and remove `nofail` after import\. As a best practice when preparing your VMs for import, we recommend that you specify your VM disk devices by UUID rather than device name\.
 
-  Entries in `/etc/fstab` that contain non\-standard file system types \(cifs, smbfs, vboxsf, sshfs, etc\.\) will be disabled\.
+  Entries in `/etc/fstab` that contain distributed file system types \(nfs, cifs, smbfs, vboxsf, sshfs, etc\.\) will be disabled\.
 + \[Linux\] Modifying grub bootloader settings such as the default entry and timeout\.
 + \[Windows\] Modifying registry settings to make the VM bootable\.
 
@@ -60,8 +60,7 @@ The Server Migration Connector is a FreeBSD VM that you install in your on\-prem
 **Note**  
 If your vCenter Server is configured to use a non\-default port, enter both the vCenter's hostname and port, separated by a colon \(for example, `HOSTNAME:PORT` or `IP:PORT`\) in the vCenter Service Account page in **Connector setup**\.
   +  HTTPS on ESXi—Allow the connector to initiate secure web connections to port 443 of the ESXi hosts containing the VMs you intend to migrate\.
-  + ICMP—Allow the connector to initiate connections using ICMP\.
-  + NTP—The connector must be able to reach a time server on port 123\.
+  + NTP—Optionally, give the connector access to ntp\.org on port 123\. If the connector synchronises its clock with the ESXi host, this is unnecessary\. 
 + Allow outbound connections from the connector to the following URL ranges: 
   + \*\.amazonaws\.com
   + \*\.aws\.amazon\.com
@@ -77,8 +76,7 @@ If your vCenter Server is configured to use a non\-default port, enter both the 
   + DNS—Allow the connector to initiate connections to port 53 for name resolution\.
   + HTTPS on WinRM port 5986 on your SCVMM or standalone Hyper\-V host
   + Inbound HTTPS on port 443 of the connector—Allow the connector to receive secure web connections on port 443 from Hyper\-V hosts containing the VMs you intend to migrate\.
-  + ICMP—Allow the connector to initiate connections using ICMP\.
-  + NTP—The connector must be able to reach a time server on port 123\.
+  + NTP—Optionally, give the connector access to ntp\.org on port 123\. If the connector synchronises its clock with the ESXi host, this is unnecessary\.
 + Allow outbound connections from the connector to the following URL ranges: 
   + \*\.amazonaws\.com
   + \*\.aws\.amazon\.com
@@ -122,11 +120,9 @@ See [Limitations](#limitations) for additional information about RHEL 5\.x suppo
 
 AWS Server Migration Service supports migrating Windows and Linux instances with the following file systems:
 
-**Windows \(32– and 64\-bit\)**  
-MBR\-partitioned volumes that are formatted using the NTFS file system\. GUID Partition Table \(GPT\) partitioned volumes are not supported\.
 
-**Linux/Unix \(64\-bit\)**  
-MBR\-partitioned volumes that are formatted using the ext2, ext3, ext4, Btrfs, JFS, or XFS file system\. GUID Partition Table \(GPT\) partitioned volumes are not supported\.
+****  
+[\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/prereqs.html)
 
 AMIs with volumes using EBS encryption are not supported\.
 

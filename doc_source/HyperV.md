@@ -2,12 +2,12 @@
 
 This topic describes the steps for setting up AWS SMS to migrate VMs from Hyper\-V to Amazon EC2\. This information applies only to VMs in an on\-premises Hyper\-V environment\. For information about migrating VMs from VMware, see [Installing the Server Migration Connector on VMware](VMware.md)\.
 
-AWS SMS supports migration in either of two modes: from a standalone Hyper\-V server, or from multiple Hyper\-V servers managed by System Center Virtual Machine Manager \(SCVMM\)\. The following sections describe the configuration common to both scenarios, followed by instructions to install and configure the AWS Server Migration Connector in your particular on\-premises environment\.
+AWS SMS supports migration in either of two modes: from standalone Hyper\-V servers, or from Hyper\-V servers managed by System Center Virtual Machine Manager \(SCVMM\)\. The following sections describe the configuration common to both scenarios, followed by instructions to install and configure the AWS Server Migration Connector in your particular on\-premises environment\.
 
 **Considerations for migration scenarios**
 + The installation procedures for standalone Hyper\-V and for SCVMM environments are not interchangeable\.
 + When configured in SCVMM mode, one Server Migration Connector appliance supports migration from one SCVMM \(which may manage multiple Hyper\-V servers\)\.
-+ When configured in standalone Hyper\-V mode, one Server Migration Connector appliance supports migration from one Hyper\-V server\.
++ When configured in standalone Hyper\-V mode, one Server Migration Connector appliance supports migration from multiple Hyper\-V servers\.
 + AWS SMS supports deploying any number of connector appliances to support migration from multiple SCVMMs and multiple standalone Hyper\-V servers in parallel\.
 
 All of the following procedures in this topic assume that you have created a properly configured IAM user as described in [Configure Your AWS Account Permissions](IAM_setup.md)\.

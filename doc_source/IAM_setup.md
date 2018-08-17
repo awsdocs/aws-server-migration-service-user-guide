@@ -2,7 +2,7 @@
 
 The following prerequisites apply to either platform supported by AWS SMS\.
 
-If your IAM user account, group, or role is assigned administator permissions, then you have access to AWS SMS\. To call the SMS API with the credentials of an IAM user that does not have administrative access to your AWS account, create a custom inline policy defined by the following JSON code and apply it to the IAM user:
+If your IAM user account, group, or role is assigned administrator permissions, then you have access to AWS SMS\. To call the SMS API with the credentials of an IAM user that does not have administrative access to your AWS account, create a custom inline policy defined by the following JSON code and apply it to the IAM user:
 
 ```
 {
@@ -34,15 +34,15 @@ If you are using multiple connectors, we recommend that you create a unique IAM 
 
 1. Open the IAM console at [https://console\.aws\.amazon\.com/iam/](https://console.aws.amazon.com/iam/)\.
 
-1. In the navigation pane, choose **Roles**, **Create new role**\.
+1. In the navigation pane, choose **Roles**, **Create role**\.
 
-1. On the **Search role type** page, find **AWS Server Migration Service** and choose **Select**\. 
+1. Under **Choose the service that will use this role**, choose **SMS**, **Next: Permissions**\. 
 
-1. On the **Attach Policy** page, select **ServerMigrationServiceRole** and choose **Next Step**\.
+1. Under **Attached permissions policies**, confirm that the policy **ServerMigrationServiceRole** is visible and choose **Next: Review**\.
 
-1. On the **Set role name and review** page, for **Role name**, type **sms** \(recommended\)\. \(Optional\) You can apply a different name, but you must then specify the role name explicitly each time that you create a replication job\.
+1. Under **Review**, for **Role name**, type **sms** \(recommended\)\. \(Optional\) You can apply a different name, but you must then specify the role name explicitly each time that you create a replication job\.
 
-1. Choose **Create role**\. You should now be able to see the **sms** role in the list of available roles\.
+1. Choose **Create role**\. You should now see the **sms** role in the list of available roles\.
 
 Use the following option in AWS Regions that do not make an IAM role template available\. This option also works as a manual alternative to **option 1** in all Regions\.
 
@@ -83,8 +83,7 @@ Use the following option in AWS Regions that do not make an IAM role template av
                        "ec2:ModifySnapshotAttribute",
                        "ec2:CopySnapshot",
                        "ec2:CopyImage",
-                       "ec2:DescribeImages",
-                       "ec2:DescribeSnapshots",
+                       "ec2:Describe*",
                        "ec2:DeleteSnapshot",
                        "ec2:DeregisterImage",
                        "ec2:CreateTags",

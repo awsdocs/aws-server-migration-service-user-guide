@@ -10,6 +10,8 @@ Use the AWS SMS console to import your server catalog and migrate your on\-premi
 1. Install the Server Migration Connector as described in [Getting Started with AWS Server Migration Service](SMS_setup.md), including the configuration of an IAM service role and permissions\.
 
 1. In a web browser, open the [SMS homepage](https://console.aws.amazon.com/servermigration/home)\.
+**Tip**  
+If this link takes you to the AWS SMS setup page, trim the "gettingStarted" off of the end of the URL and press return\.
 
 1. In the navigation menu, choose **Connectors**\. Verify that the connector you deployed in your VMware environment is shown with a status of healthy\.
 
@@ -31,7 +33,7 @@ Use the AWS SMS console to import your server catalog and migrate your on\-premi
 
 1. On the **Review** page, review your settings\. If the settings are correct, choose **Create**\. To change the settings, choose **Previous**\. After a replication job is set up, replication starts automatically at the specified time and interval\.
 
-In addition to your scheduled replication run s, you may also start up to two on\-demand replication runs per 24\-hour period\. On the **Replication jobs** page, select a job and choose **Actions**, **Start replication run**\. This starts a replication run that does not affect your scheduled replication runs, except in the case that the on\-demand run is still ongoing at the time of your scheduled run\. In this case, the scheduled run is skipped and rescheduled at the next interval\.<a name="monitor_replication"></a>
+In addition to your scheduled replication runs, you may also start up to two on\-demand replication runs per 24\-hour period\. On the **Replication jobs** page, select a job and choose **Actions**, **Start replication run**\. This starts a replication run that does not affect your scheduled replication runs, except in the case that the on\-demand run is still ongoing at the time of your scheduled run\. In this case, the scheduled run is skipped and rescheduled at the next interval\. The same thing happens if a scheduled run is due while a previous scheduled run is still in progress\.<a name="monitor_replication"></a>
 
 **To monitor and modify server replication jobs**
 

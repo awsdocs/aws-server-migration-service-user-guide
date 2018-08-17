@@ -23,4 +23,6 @@ Amazon's trademarks and trade dress may not be used in
 + [Replicating VMs Using the AWS SMS Console](console_workflow.md)
 + [Replicating VMs Using the CLI](cli_workflow.md)
 + [Troubleshooting AWS SMS](troubleshoot-sms.md)
++ [Release Notes for AWS SMS](release-notes.md)
 + [Document History for AWS SMS](doc-history.md)
++ [AWS Glossary](glossary.md)
