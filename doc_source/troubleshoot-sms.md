@@ -1,6 +1,23 @@
 # Troubleshooting AWS SMS<a name="troubleshoot-sms"></a>
 
-This section contains troubleshooting help for specific errors you may encounter when using AWS SMS\.
+This section contains troubleshooting help for specific errors you may encounter when using AWS SMS\. Kindly visit the [AWS SMS Requirements](prereqs.md) page and ensure that the Server under migration is set up to meet the requirements before diving deep into the errors\. Note that in some cases, AWS SMS will allow a replication job to continue scheduling incremental replication runs even when the latest replication run has failed\. In such cases, the EBS snapshots from the latest replication run are shared with the customer account, the EBS snapshot IDs are identified in the replication job's Status Message and the reason for the failure is visible in the Status Message of the failed replication run\.
+
+## FirstBootFailure: This import request failed because the instance failed to boot and establish network connectivity<a name="boot-failure"></a>
+
+The replication run may fail and display above in the status message when the boot test for the migrated server in EC2 fails\. Here are some recommended follow up steps to identify the problem\.
+
+### Windows VM Imports<a name="windows-troubleshoot"></a>
+Kindly note the Limitations from the [AWS SMS Requirements](prereqs.md) page\. Please check the VM for the following:
++ Ensure the Windows Operating System version is supported based on above\.
++ Ensure enough free space on the C:\\ drive\.
++ Ensure page file settings are as recommended above\.
+
+### Linux VM Imports<a name="linux-troubleshoot"></a>
+Kindly note the Limitations from the [AWS SMS Requirements](prereqs.md) page\. Please check the VM for the following:
++ Ensure the flavor of Linux OS and kernel version are supported based on above\.
+
+### Getting help from AWS Support<a name="support-troubleshoot"></a>
+In case you need further help in identifying the problem, kindly reach out to AWS Support with the details of the replication job\. Please note that the EBS snapshots generated from the failed migration will be shared with your account and the EBS snapshot IDs are available in the Status Message of the replication job\. Please share these EBS snapshot IDs when reaching out to AWS Support\.
 
 ## Certificate Error When Uploading a VM to Amazon S3<a name="sms-cert-mismatch"></a>
 
