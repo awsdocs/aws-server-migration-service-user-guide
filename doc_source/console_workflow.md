@@ -28,12 +28,21 @@ If this link takes you to the AWS SMS setup page, trim the "gettingStarted" off 
    + \(Optional\) For **Description**, provide a description of the replication run\.
    + For **Enable automatic AMI deletion**, configure AWS SMS to delete older replication AMIs in excess of a number that you provide in the field\.
    + For **Enable notifications**, choose a value\. If you choose **Yes**, you can configure Amazon Simple Notification Service \(Amazon SNS\) to notify a list of recipients when the replication job has completed, failed, or been deleted\. For more information, see [What is Amazon Simple Notification Service?](http://docs.aws.amazon.com/sns/latest/dg/)\.
+   + For **Pause replication job on consecutive failures**, choose a value\. The default is set to **Yes**\. This will ensure that when the replication runs for the job encounter consecutive failures, the job will be moved to the **PausedOnFailure** state and not marked **Failed** immediately\.
 
    Choose **Next**\.
 
 1. On the **Review** page, review your settings\. If the settings are correct, choose **Create**\. To change the settings, choose **Previous**\. After a replication job is set up, replication starts automatically at the specified time and interval\.
 
 In addition to your scheduled replication runs, you may also start up to two on\-demand replication runs per 24\-hour period\. On the **Replication jobs** page, select a job and choose **Actions**, **Start replication run**\. This starts a replication run that does not affect your scheduled replication runs, except in the case that the on\-demand run is still ongoing at the time of your scheduled run\. In this case, the scheduled run is skipped and rescheduled at the next interval\. The same thing happens if a scheduled run is due while a previous scheduled run is still in progress\.<a name="monitor_replication"></a>
+
+**To resume replication jobs that are paused**
+
+1. Before attempting to resume a job that is in **PausedOnFailure** state, kindly refer to the [SMS Troubleshooting guide](troubleshoot-sms.md) on how to diagnose the replication run failures when a job is in the **PausedOnFailure** state\. It is advisable to address the root cause of the failure before resuming the replication job\.
+
+1. In the AWS SMS console, choose **Replication jobs**\. You can view all replication jobs by scrolling through the table\. In the search bar, you can filter the table contents on specific values\. Filter the jobs by the **PausedOnFailure** state to identify all the paused jobs\.
+
+1. To resume a paused job, select the job on the **Replication jobs** page and choose **Actions**, **Resume replication job**\.
 
 **To monitor and modify server replication jobs**
 
