@@ -4,7 +4,7 @@ This section contains troubleshooting help for specific errors you may encounter
 
 ## Replication run failures in the Preparing stage
 
-Note that in some cases, AWS SMS will allow a replication job to continue scheduling incremental replication runs even when the latest replication run has failed\. In such cases, the EBS snapshots from the latest replication run are shared with the customer account, the EBS snapshot IDs are identified in the replication job's status message and the reason for the failure is visible in the status message of the failed replication run\. A sample status message for one such replication job would look like the below:
+Note that in some cases, AWS SMS will allow a replication job to continue scheduling incremental replication runs even when the latest replication run has failed\. When the maximum allowed consecutive failures is reached, the default behavior for a replication job is to be paused\. The job can be resumed within 4 days after which it will be deleted\. In such cases, the EBS snapshots from the latest replication run are shared with the customer account, the EBS snapshot IDs are identified in the replication job's status message and the reason for the failure is visible in the status message of the failed replication run\. A sample status message for one such replication job would look like the below:
 ```
 EBS snapshot(s) created with snapshot ID(s): snap-12345678abcdefgh. Another run has been scheduled after the last run failed due to an import failure. 2 re-try run(s) remaining before the job will be failed.
 ```
