@@ -193,7 +193,6 @@ The following rules apply when you use your BYOL Microsoft license, either throu
 + Internet Protocol version 6 \(IPv6\) IP addresses are not supported\.
 + VMs that are created as the result of a P2V conversion are not supported\. A P2V conversion occurs when a disk image is created by performing a Linux or Windows installation process on a physical machine and then importing a copy of that Linux or Windows installation to a VM\.
 + AWS SMS does not install the single root I/O virtualization \(SR\-IOV\) drivers except with imports of Microsoft Windows Server 2012 R2 VMs\. These drivers are not required unless you plan to use enhanced networking, which provides higher performance \(packets per second\), lower latency, and lower jitter\. For Microsoft Windows Server 2012 R2 VMs, SR\-IOV drivers are automatically installed as a part of the migration process\.
-+ AWS SMS does not currently support VMware SEsparse delta\-file format\. 
 + Because independent disks are unaffected by snapshots, AWS SMS does not support interval replication for VMDKs in independent mode\.
 + Windows language packs that use UTF\-16 \(or non\-ASCII\) characters are not supported for import\. We recommend using the English language pack when importing Windows Server 2003, Windows Server 2008, and Windows Server 2012 R1 VMs\.
 + AWS SMS does not support VMs that have a mix of VHD and VHDX disk files\.
