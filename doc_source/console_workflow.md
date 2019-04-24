@@ -3,7 +3,10 @@
 Use the AWS SMS console to import your server catalog and migrate your on\-premises servers to Amazon EC2\. You can perform the following tasks:
 + [Replicate a server using the console](#configure_replication)
 + [Monitor and modify server replication jobs](#monitor_replication)
-+ [Shut down replication](#delete_replication) <a name="configure_replication"></a>
++ [Shut down replication](#delete_replication) 
+
+**Note**  
+If you have enabled integration between AWS SMS and AWS Migration Hub, your SMS server catalog will be also visible on Migration Hub\. For more information, see [Importing Applications from Migration Hub](application-migration.md#migration-hub)\.<a name="configure_replication"></a>
 
 **To replicate a server using the console**
 
@@ -13,9 +16,9 @@ Use the AWS SMS console to import your server catalog and migrate your on\-premi
 **Tip**  
 If this link takes you to the AWS SMS setup page, trim the "gettingStarted" off of the end of the URL and press return\.
 
-1. In the navigation menu, choose **Connectors**\. Verify that the connector you deployed in your VMware environment is shown with a status of healthy\.
+1. In the navigation menu, choose **Connectors**\. Verify that the connector that you deployed in your VMware environment is shown with a status of healthy\.
 
-1. If you have not yet imported a catalog, choose **Servers**, **Import server catalog**\. To reflect new servers added in your VMware environment after your previous import operation, choose **Re\-import server catalog**\. This process can take up to a minute\.
+1. If you have not yet imported a catalog, choose **Servers**, **Import server catalog**\. To reflect new servers added in your VMware environment after your previous import operation, choose **Re\-import server catalog**\. This process can take up to a minute\. 
 
 1. Select a server to replicate and choose **Create replication job**\.
 
@@ -27,13 +30,25 @@ If this link takes you to the AWS SMS setup page, trim the "gettingStarted" off 
    + For **IAM service role**, provide \(if necessary\) the IAM service role that you previously created\.
    + \(Optional\) For **Description**, provide a description of the replication run\.
    + For **Enable automatic AMI deletion**, configure AWS SMS to delete older replication AMIs in excess of a number that you provide in the field\.
-   + For **Enable notifications**, choose a value\. If you choose **Yes**, you can configure Amazon Simple Notification Service \(Amazon SNS\) to notify a list of recipients when the replication job has completed, failed, or been deleted\. For more information, see [What is Amazon Simple Notification Service?](http://docs.aws.amazon.com/sns/latest/dg/)\.
+   + For **Enable AMI Encryption**, choose a value\. If you choose **Yes**, AWS SMS encrypts the generated AMIs\. Your default CMK is used unless you specify a non\-default CMK\. For more information, see [Amazon EBS Encryption](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html)\.
+   + For **Enable notifications**, choose a value\. If you choose **Yes**, you can configure Amazon Simple Notification Service \(Amazon SNS\) to notify a list of recipients when the replication job has completed, failed, or been deleted\. For more information, see [What is Amazon Simple Notification Service?](https://docs.aws.amazon.com/sns/latest/dg/)\.
+   + For **Pause replication job on consecutive failures**, choose a value\. The default is set to **Yes**\. If the job encounters consecutive failures, it will be moved to the `PausedOnFailure` state and not marked `Failed` immediately\.
+**Note**  
+This option is not available for one\-time replication jobs\.
 
    Choose **Next**\.
 
 1. On the **Review** page, review your settings\. If the settings are correct, choose **Create**\. To change the settings, choose **Previous**\. After a replication job is set up, replication starts automatically at the specified time and interval\.
 
-In addition to your scheduled replication runs, you may also start up to two on\-demand replication runs per 24\-hour period\. On the **Replication jobs** page, select a job and choose **Actions**, **Start replication run**\. This starts a replication run that does not affect your scheduled replication runs, except in the case that the on\-demand run is still ongoing at the time of your scheduled run\. In this case, the scheduled run is skipped and rescheduled at the next interval\. The same thing happens if a scheduled run is due while a previous scheduled run is still in progress\.<a name="monitor_replication"></a>
+In addition to your scheduled replication runs, you may also start up to two on\-demand replication runs per 24\-hour period\. On the **Replication jobs** page, select a job and choose **Actions**, **Start replication run**\. This starts a replication run that does not affect your scheduled replication runs, except in the case that the on\-demand run is still ongoing at the time of your scheduled run\. In this case, the scheduled run is skipped and rescheduled at the next interval\. The same thing happens if a scheduled run is due while a previous scheduled run is still in progress\.<a name="resume_replication"></a>
+
+**To resume a replication job that is paused**
+
+1. Before attempting to resume a job that is in `PausedOnFailure` state, refer to [Troubleshooting AWS SMS](https://docs.aws.amazon.com/server-migration-service/latest/userguide/troubleshoot-sms.html) to identify and fix the root cause of the replication run failure\.
+
+1. In the AWS SMS console, choose **Replication jobs**\. You can view all replication jobs by scrolling through the table\. In the search bar, you can filter the table contents on specific values\. Filter the jobs by `PausedOnFailure` to identify all the paused jobs\.
+
+1. To resume a paused job, select the job on the **Replication jobs** page and choose **Actions**, **Resume replication job**\.<a name="monitor_replication"></a>
 
 **To monitor and modify server replication jobs**
 

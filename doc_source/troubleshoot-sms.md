@@ -1,10 +1,10 @@
 # Troubleshooting AWS SMS<a name="troubleshoot-sms"></a>
 
-This section contains troubleshooting help for specific errors you may encounter when using AWS SMS\.
+This section contains troubleshooting help for specific errors that you may encounter when using AWS SMS\. Before using these procedures, confirm that your SMS setup and the server you are trying to migrate meet the requirements stated in [Server Migration Service \(SMS\) Requirements](https://docs.aws.amazon.com/server-migration-service/latest/userguide/prereqs.html)\.
 
 ## Certificate Error When Uploading a VM to Amazon S3<a name="sms-cert-mismatch"></a>
 
-The connector may fail to replicate your VM because the VM is on an ESXi host with an SSL certificate problem\. If this occurs, you see the following error message displayed in the **Latest run's status message** section: "ServerError: Failed to upload base disk\(s\) to S3\. Please try again\. If this problem persists, please contact AWS support: vSphere certificate hostname mismatch: Certificate for <*somehost\.somedomain\.com*> doesn't match any of the subject alternative names: \[*localhost\.localdomain*\]\."
+The connector may fail to replicate your VM because the VM is on an ESXi host with an SSL certificate problem\. If this occurs, you see the following error message displayed in the **Latest run's status message** section: "ServerError: Failed to upload base disk\(s\) to S3\. Please try again\. If this problem persists, please contact AWS Support: vSphere certificate hostname mismatch: Certificate for <*somehost\.somedomain\.com*> doesn't match any of the subject alternative names: \[*localhost\.localdomain*\]\."
 
 You can override this ESXi host certificate problem by completing the following procedures:
 
@@ -42,7 +42,7 @@ This section applies to all customers encountering the certificate mismatch prob
 
 1. On the **Setup** page, for **AWS Region**, select the desired region from the list\. For **AWS Credentials**, enter the IAM access key and secret key that you created in Step 2 of the [setup guide](SMS_setup.md)\. Choose **Next**\.
 
-1. On the **vCenter Service Account** page, enter the vCenter hostname, username, and password that you created in Step 3 of the [setup guide](SMS_setup.md)\.
+1. On the **vCenter Service Account** page, enter the vCenter hostname, user name, and password that you created in Step 3 of the [setup guide](SMS_setup.md)\.
 
 1. Select the **Ignore hostname mismatch and expiration errors for vCenter and ESXi certificates** check box\. Choose **Next**\.
 
@@ -90,3 +90,17 @@ For the connector to work in such an environment, the re\-signing certificate \(
    ```
    sudo service pf start
    ```
+
+## Replication Run Fails During the Preparing Stage<a name="preparing-failure"></a>
+
+In some cases, AWS SMS allows a replication job to continue scheduling incremental replication runs even when the latest replication run has failed\. When the maximum allowed number of consecutive failures is reached, the default behavior for a replication job is to be paused\. The job can be resumed within four days, after which it is deleted\. In such cases, the Amazon EBS snapshots from the latest replication run are shared with the customer account, and a status message for the failed replication run is sent\. The message contains the snapshot IDs and states the reason for the failure\. A typical status message resembles the following:
+
+```
+EBS snapshot(s) created with snapshot ID(s): snap-12345678abcdefgh. Another run has been scheduled after 
+the last run failed due to an import failure. 2 re-try run(s) remaining before the job will be failed.
+```
+
+The reason for replication\-run failures \(including first\-boot failures\) often correlates closely with failures observed when Amazon EC2 VM Import/Export is used for VM migrations\. For more information, see [Troubleshooting VM Import/Export](https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-troubleshooting.html)\.
+
+**Note**  
+If you need further help with resolving a problem, contact AWS Support\. EBS snapshots generated during a failed migration are shared with your account, and the snapshot IDs are included in the status message for the replication job\. Be sure to have these details available when you contact Support\.

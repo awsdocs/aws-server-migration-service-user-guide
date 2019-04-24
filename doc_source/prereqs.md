@@ -1,6 +1,6 @@
 # Server Migration Service \(SMS\) Requirements<a name="prereqs"></a>
 
-Your VMware vSphere or Microsoft Hyper\-V/SCVMM environment must meet the following requirements for you to use the Server Migration Service to migrate your on\-premises virtualized servers to Amazon EC2\.
+Your VMware vSphere, Microsoft Hyper\-V/SCVMM, or Microsoft Azure environment must meet the following requirements for you to use the Server Migration Service to migrate your on\-premises virtualized servers to Amazon EC2\.
 
 ## General Requirements<a name="general-requirements"></a>
 
@@ -50,8 +50,8 @@ When writing a modified file, AWS retains the original file at the same location
 The Server Migration Connector is a FreeBSD VM that you install in your on\-premises virtualization environment\. Its hardware and software requirements are as follows: 
 
 **Requirements for VMware connector**
-+ vCenter version 5\.1 or higher \(validated up to 6\.5\)
-+ ESXi 5\.1 or higher \(validated up to 6\.5\)
++ vCenter version 5\.1 or higher \(validated up to 6\.7\)
++ ESXi 5\.1 or higher \(validated up to 6\.7\)
 + Minimum 8 GiB RAM
 + Minimum available disk storage of 20 GiB \(thin\-provisioned\) or 250 GiB \(thick\-provisioned\)
 + Support for the following network services\. Note that you might need to reconfigure your firewall to permit stateful outbound connections from the connector to these services\.
@@ -80,7 +80,14 @@ If your vCenter Server is configured to use a non\-default port, enter both the 
 + Allow outbound connections from the connector to the following URL ranges: 
   + \*\.amazonaws\.com
   + \*\.aws\.amazon\.com
-  + \*\.ntp\.org \(Optional; used only to validate that connector time is in sync with NTP\.\)
+  + \*\.ntp\.org \(Optional; used only to validate that connector time is in sync with NTP\.\)<a name="azure-connector-requirements"></a>
+
+**Requirements for Azure connector**
++ The recommended VM size of Azure connector is F4s – 4 vCPUs and 8 GB RAM\. Ensure that you have a sufficient Azure CPU quota in the region where you are deploying the connector\.
++ A Standard Storage Account \(cannot be Premium\) under which the connector can be deployed\.
++ A virtual network where the connector can be deployed\.
++ Inbound access on port 443 \(HTTPS\), either from within the connector’s virtual network \(recommended\) or open to the public \(not recommended\), for connector registration and viewing the connector dashboard\.
++ Outbound Internet access to access AWS services, Azure services, to perform connector OS updates, and so on\.
 
 ## Operating Systems Supported by AWS SMS<a name="os_prereqs"></a>
 
@@ -90,30 +97,33 @@ The following operating systems can be migrated to EC2 using SMS:
 + Microsoft Windows Server 2003 \(Standard, Datacenter, Enterprise\) with Service Pack 1 \(SP1\) or later \(32\- and 64\-bit\)
 + Microsoft Windows Server 2003 R2 \(Standard, Datacenter, Enterprise\) \(32\- and 64\-bit\)
 + Microsoft Windows Server 2008 \(Standard, Datacenter, Enterprise\) \(32\- and 64\-bit\)
-+ Microsoft Windows Server 2008 R2 \(Standard, Datacenter, Enterprise\) \(64\-bit only\)
++ Microsoft Windows Server 2008 R2 \(Standard, Web Server, Datacenter, Enterprise\) \(64\-bit only\)
 + Microsoft Windows Server 2012 \(Standard, Datacenter\) \(64\-bit only\)
 + Microsoft Windows Server 2012 R2 \(Standard, Datacenter\) \(64\-bit only\) \(Nano Server installation not supported\)
 + Microsoft Windows Server 2016 \(Standard, Datacenter\) \(64\-bit only\)
-+ Microsoft Windows Server, versions 1709, 1803 \(Standard, Datacenter\) \(64\-bit only\)
-+ Microsoft Windows 7 \(Professional, Enterprise, Ultimate\) \(US English\) \(32\- and 64\-bit\)
-+ Microsoft Windows 8 \(Professional, Enterprise\) \(US English\) \(32\- and 64\-bit\)
++ Microsoft Windows Server 1709 \(Standard, Datacenter\) \(64\-bit only\)
++ Microsoft Windows Server 1803 \(Standard, Datacenter\) \(64\-bit only\)
++ Microsoft Windows 7 \(Home, Professional, Enterprise, Ultimate\) \(US English\) \(32\- and 64\-bit\)
++ Microsoft Windows 8 \(Home, Professional, Enterprise\) \(US English\) \(32\- and 64\-bit\)
 + Microsoft Windows 8\.1 \(Professional, Enterprise\) \(US English\) \(64\-bit only\)
-+ Microsoft Windows 10 \(Professional, Enterprise, Education\) \(US English\) \(64\-bit only\)
++ Microsoft Windows 10 \(Home, Professional, Enterprise, Education\) \(US English\) \(64\-bit only\)
 
 **Linux/Unix \(64\-bit\)**
-+ Ubuntu 12\.04, 12\.10, 13\.04, 13\.10, 14\.04, 14\.10, 15\.04, 16\.04, 16\.10
-+ Red Hat Enterprise Linux \(RHEL\) 5\.1\-5\.11, 6\.1\-6\.9, 7\.0\-7\.3 \(6\.0 lacks required drivers\)
-**Note**  
-See [Limitations](#limitations) for additional information about RHEL 5\.x support\.
++ Ubuntu 12\.04, 12\.10, 13\.04, 13\.10, 14\.04, 14\.10, 15\.04, 16\.04, 16\.10, 17\.04, 18\.04
++ Red Hat Enterprise Linux \(RHEL\) 5\.1\-5\.11, 6\.1\-6\.9, 7\.0\-7\.6 \(6\.0 lacks required drivers\)
 + SUSE Linux Enterprise Server 11 with Service Pack 1 and kernel 2\.6\.32\.12\-0\.7
 + SUSE Linux Enterprise Server 11 with Service Pack 2 and kernel 3\.0\.13\-0\.27
 + SUSE Linux Enterprise Server 11 with Service Pack 3 and kernel 3\.0\.76\-0\.11, 3\.0\.101\-0\.8, or 3\.0\.101\-0\.15
 + SUSE Linux Enterprise Server 11 with Service Pack 4 and kernel 3\.0\.101\-63
 + SUSE Linux Enterprise Server 12 with kernel 3\.12\.28\-4
 + SUSE Linux Enterprise Server 12 with Service Pack 1 and kernel 3\.12\.49\-11
-+ CentOS 5\.1\-5\.11, 6\.1\-6\.6, 7\.0\-7\.3 \(6\.0 lacks required drivers\)
++ SUSE Linux Enterprise Server 12 with Service Pack 2 and kernel 4\.4
++ SUSE Linux Enterprise Server 12 with Service Pack 3 and kernel 4\.4
++ CentOS 5\.1\-5\.11, 6\.1\-6\.6, 7\.0\-7\.6 \(6\.0 lacks required drivers\)
 + Debian 6\.0\.0\-6\.0\.8, 7\.0\.0\-7\.8\.0, 8\.0\.0
-+ Oracle Linux 6\.1\-6\.6, 7\.0\-7\.1
++ Oracle Linux 5\.10\-5\.11 with el5uek kernel suffix
++ Oracle Linux 6\.1\-6\.10 using RHEL\-compatible kernel 2\.6\.32 or UEK kernels 3\.8\.13, 4\.1\.12
++ Oracle Linux 7\.0\-7\.6 using RHEL compatible kernel 3\.10\.0 or UEK kernels 3\.8\.13, 4\.1\.12, 4\.14\.35
 + Fedora Server 19\-21
 
 ## Volume Types and File Systems Supported by AWS SMS<a name="volume-types-file-systems"></a>
@@ -166,7 +176,7 @@ If you choose **Auto** \(the default\), AWS SMS uses the AWS license if the VM h
 
 The following rules apply when you use your BYOL Microsoft license, either through MSDN or [Windows Software Assurance Per User](http://download.microsoft.com/download/5/c/7/5c727885-ec15-4920-818b-4d140ec6c38a/Windows_SA_per_User_at_a_Glance.pdf):
 + Your BYOL instances are priced at the prevailing Amazon EC2 Linux instance pricing, provided that you meet the following conditions: 
-  + Run on a Dedicated Host \([Dedicated Hosts](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-hosts-overview.html)\)
+  + Run on a Dedicated Host \([Dedicated Hosts](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-hosts-overview.html)\)
   + Launch from VMs sourced from software binaries provided by you using AWS SMS, which are subject to the current terms and abilities of AWS SMS
   + Designate the instances as BYOL instances
   + Run the instances within your designated AWS regions, and where AWS offers the BYOL model
@@ -176,27 +186,45 @@ The following rules apply when you use your BYOL Microsoft license, either throu
 + AWS recommends that you consult with your own legal and other advisers to understand and comply with the applicable Microsoft licensing requirements\. Usage of the Services \(including usage of the **licenseType** parameter and **BYOL** flag\) in violation of your agreements with Microsoft is not authorized or permitted\.
 
 ## Limitations<a name="limitations"></a>
-+ When migrating VMs managed by Hyper\-V/SCVMM, SMS supports only Generation 1 VMs \(using either VHD or VHDX disk format\)\.
+
+### Image Format<a name="image-format"></a>
++ When migrating VMs managed by Hyper\-V/SCVMM, SMS supports both Generation 1 VMs \(using either VHD or VHDX disk format\) and Generation 2 VMs \(VHDX only\)\.
 + AWS SMS does not support VMs on Hyper\-V running any version of RHEL 5 if backed by a VHDX disk\. We recommend converting disks in this format to VHD for migration\.
-+ A VM's boot volume must use Master Boot Record \(MBR\) partitions and cannot exceed 2 TiB \(uncompressed\) due to MBR limitations\. Additional non\-bootable volumes may use GUID Partition Table \(GPT\) partitioning but cannot be bigger than 4 TiB\.
-+ An imported VM may fail to boot if the root partition is not on the same virtual hard drive as the MBR\.
-+ An SMS replication job will fail for VMs with more than 22 volumes attached\.
-+ AMIs with volumes using EBS encryption are not supported\.
++ AWS SMS does not support VMs that have a mix of VHD and VHDX disk files\.
 + On VMware, AWS SMS does not support VMs that use Raw Device Mapping \(RDM\)\. Only VMDK disk images are supported\.
-+ A migrated VM may fail to boot if the root partition is not on the same virtual hard disk as the MBR\.
-+ AWS SMS creates AMIs that use Hardware Virtual Machine \(HVM\) virtualization\. It can't create AMIs that use Paravirtual \(PV\) virtualization\. Linux PVHVM drivers are supported within migrated VMs\.
+
+### File System<a name="file-system"></a>
 + Migrated Linux VMs must use 64\-bit images\. Migrating 32\-bit Linux images is not supported\.
 + Migrated Linux VMs should use default kernels for best results\. VMs that use custom Linux kernels might not migrate successfully\.
 + When preparing Amazon EC2 Linux VMs for migration, make sure that at least 250 MiB of disk space is available on the root volume for installing drivers and other software\. For Microsoft Windows VMs, configure a fixed pagefile size and ensure that at least 6 GiB of free space is available on the root volume\.
+
+### Booting<a name="boot"></a>
++ UEFI/EFI boot partitions are supported only for Windows boot volumes with VHDX as the image format\. Otherwise, a VM's boot volume must use Master Boot Record \(MBR\) partitions\. In either case, boot volume cannot exceed 2 TiB \(uncompressed\) due to MBR limitations\. 
+**Note**  
+When AWS detects a Windows GPT boot volume with an UEFI boot partition, it converts it on\-the\-fly to an MBR boot volume with a BIOS boot partition\. This is because EC2 does not directly support GPT boot volumes\.
++ An imported VM may fail to boot if the root partition is not on the same virtual hard drive as the MBR\.
++ A migrated VM may fail to boot if the root partition is not on the same virtual hard disk as the MBR\.
++ Migrating VMs with dual\-boot configurations is not supported\.
+
+### Networking<a name="networking"></a>
 + Multiple network interfaces are not currently supported\. After migration, your VM will have a single virtual network interface that uses DHCP to assign addresses\. Your instance receives a private IP address\.
 + A VM migrated into a VPC does not receive a public IP address, regardless of the auto\-assign public IP setting for the subnet\. Instead, you can allocate an Elastic IP address to your account and associate it with your instance\.
 + Internet Protocol version 6 \(IPv6\) IP addresses are not supported\.
+
+### Application Import from Migration Hub<a name="migration-hub-requirements"></a>
++ SMS imports application\-related servers from AWS Migration Hub only if they exist in the SMS Server Catalog\. As a result, some applications may only be partially migrated\.
++  If none of the servers in a Migration Hub application exist in the SMS Server Catalog, the import will fail silently and the application will not be visible in SMS\.
++ Imported applications can be migrated but cannot be edited in SMS\. They can, however, be edited in Migration Hub\. 
+
+### Miscellaneous<a name="miscellaneous"></a>
++ An SMS replication job will fail for VMs with more than 22 volumes attached\.
++ AMIs with volumes using EBS encryption are not supported\.
++ AWS SMS creates AMIs that use Hardware Virtual Machine \(HVM\) virtualization\. It can't create AMIs that use Paravirtual \(PV\) virtualization\. Linux PVHVM drivers are supported within migrated VMs\.
 + VMs that are created as the result of a P2V conversion are not supported\. A P2V conversion occurs when a disk image is created by performing a Linux or Windows installation process on a physical machine and then importing a copy of that Linux or Windows installation to a VM\.
 + AWS SMS does not install the single root I/O virtualization \(SR\-IOV\) drivers except with imports of Microsoft Windows Server 2012 R2 VMs\. These drivers are not required unless you plan to use enhanced networking, which provides higher performance \(packets per second\), lower latency, and lower jitter\. For Microsoft Windows Server 2012 R2 VMs, SR\-IOV drivers are automatically installed as a part of the migration process\.
-+ AWS SMS does not currently support VMware SEsparse delta\-file format\. 
 + Because independent disks are unaffected by snapshots, AWS SMS does not support interval replication for VMDKs in independent mode\.
 + Windows language packs that use UTF\-16 \(or non\-ASCII\) characters are not supported for import\. We recommend using the English language pack when importing Windows Server 2003, Windows Server 2008, and Windows Server 2012 R1 VMs\.
-+ AWS SMS does not support VMs that have a mix of VHD and VHDX disk files\.
++ For Windows Server 2003, disable Windows driver\-signing checks before migrating\.
 
 ## Other Requirements<a name="other_prereqs"></a>
 

@@ -2,7 +2,7 @@
 
 This topic describes the steps for setting up AWS SMS to migrate VMs from VMware to Amazon EC2\. This information applies only to VMs in an on\-premises VMware environment\. For information about migrating VMs from Hyper\-V, see [Installing the Server Migration Connector on Hyper\-V](HyperV.md)\.
 
-From a client computer system on your LAN, complete the following steps to set up the AWS Server Migration Connector in your VMware environment\. The following procedure assumes that you have already completed [Configure Your AWS Account Permissions](IAM_setup.md)\.
+From a client computer system on your LAN, complete the following steps to set up the AWS Server Migration Connector in your VMware environment\. The following procedure assumes that you have already completed [Configure AWS SMS Permissions and Roles](permissions-roles.md)\.
 
 **To set up the connector for a VMware environment**
 
@@ -108,7 +108,7 @@ As a best practice, we recommend that you limit vCenter permissions for the conn
 
 1. Choose **Upload logs automatically** and **Server Migration Connector auto\-upgrade**\.
 
-1. For **AWS Region**, choose your Region from the list\. For **AWS Credentials**, enter the IAM credentials that you created in [Configure Your AWS Account Permissions](IAM_setup.md)\. Choose **Next**\.
+1. For **AWS Region**, choose your Region from the list\. For **AWS Credentials**, enter the IAM credentials that you created in [Configure AWS SMS Permissions and Roles](permissions-roles.md)\. Choose **Next**\.
 
 1. For **vCenter Service Account**, enter the vCenter hostname, user name, and password from step 3\. Choose **Next**\.
 

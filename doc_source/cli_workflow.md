@@ -83,7 +83,7 @@ There are currently no CLI commands for installing or registering a connector\.
    aws sms create-replication-job --region us-east-1 --server-id s-12345678 --frequency 12 --seed-replication-time 2016-10-24T15:30:00-07:00
    ```
 
-   After the replication job is set up, it starts replicating automatically at the time specified with the `--seed-replication-time` parameter, expressed in seconds of the Unix epoch or according to ISO 8601\. For more information, see [Specifying Parameter Values for the AWS Command Line Interface](http://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html)\. Thereafter, the replication repeats with an interval specified by the `--frequency` parameter, expressed in hours\. 
+   After the replication job is set up, it starts replicating automatically at the time specified with the `--seed-replication-time` parameter, expressed in seconds of the Unix epoch or according to ISO 8601\. For more information, see [Specifying Parameter Values for the AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html)\. Thereafter, the replication repeats with an interval specified by the `--frequency` parameter, expressed in hours\. 
 
 1. You can view details of all running replication jobs using the get\-replication\-jobs command\. If this command is used without parameters, it returns a list of all your replication jobs\.
 
