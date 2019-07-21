@@ -60,11 +60,10 @@ The Server Migration Connector is a FreeBSD VM that you install in your on\-prem
 **Note**  
 If your vCenter Server is configured to use a non\-default port, enter both the vCenter's hostname and port, separated by a colon \(for example, `HOSTNAME:PORT` or `IP:PORT`\) in the vCenter Service Account page in **Connector setup**\.
   +  HTTPS on ESXi—Allow the connector to initiate secure web connections to port 443 of the ESXi hosts containing the VMs you intend to migrate\.
-  + NTP—Optionally, give the connector access to ntp\.org on port 123\. If the connector synchronises its clock with the ESXi host, this is unnecessary\. 
+  + NTP—Optionally, give the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the ESXi host, this is unnecessary\.
 + Allow outbound connections from the connector to the following URL ranges: 
   + \*\.amazonaws\.com
   + \*\.aws\.amazon\.com
-  + \*\.ntp\.org \(Optional; used only to validate that connector time is in sync with NTP\.\)
 
 **Requirements for Hyper\-V connector**
 + Hyper\-V role on Windows Server 2012 R2 or Windows Server 2016
@@ -76,12 +75,12 @@ If your vCenter Server is configured to use a non\-default port, enter both the 
   + DNS—Allow the connector to initiate connections to port 53 for name resolution\.
   + HTTPS on WinRM port 5986 on your SCVMM or standalone Hyper\-V host
   + Inbound HTTPS on port 443 of the connector—Allow the connector to receive secure web connections on port 443 from Hyper\-V hosts containing the VMs you intend to migrate\.
-  + NTP—Optionally, give the connector access to ntp\.org on port 123\. If the connector synchronises its clock with the ESXi host, this is unnecessary\.
+  + NTP—Optionally, give the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the Hyper-V host, this is unnecessary\.
 + Allow outbound connections from the connector to the following URL ranges: 
   + \*\.amazonaws\.com
   + \*\.aws\.amazon\.com
-  + \*\.ntp\.org \(Optional; used only to validate that connector time is in sync with NTP\.\)<a name="azure-connector-requirements"></a>
 
+<a name="azure-connector-requirements"></a>
 **Requirements for Azure connector**
 + The recommended VM size of Azure connector is F4s – 4 vCPUs and 8 GB RAM\. Ensure that you have a sufficient Azure CPU quota in the region where you are deploying the connector\.
 + A Standard Storage Account \(cannot be Premium\) under which the connector can be deployed\.
