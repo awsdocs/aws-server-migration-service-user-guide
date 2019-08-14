@@ -60,7 +60,7 @@ The Server Migration Connector is a FreeBSD VM that you install in your on\-prem
 **Note**  
 If your vCenter Server is configured to use a non\-default port, enter both the vCenter's hostname and port, separated by a colon \(for example, `HOSTNAME:PORT` or `IP:PORT`\) in the vCenter Service Account page in **Connector setup**\.
   +  HTTPS on ESXi—Allow the connector to initiate secure web connections to port 443 of the ESXi hosts containing the VMs you intend to migrate\.
-  + NTP—Optionally, give the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the ESXi host, this is unnecessary\.
+  + NTP—Optionally allow the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the ESXi host, this is unnecessary\.
 + Allow outbound connections from the connector to the following URL ranges: 
   + \*\.amazonaws\.com
   + \*\.aws\.amazon\.com
@@ -75,7 +75,7 @@ If your vCenter Server is configured to use a non\-default port, enter both the 
   + DNS—Allow the connector to initiate connections to port 53 for name resolution\.
   + HTTPS on WinRM port 5986 on your SCVMM or standalone Hyper\-V host
   + Inbound HTTPS on port 443 of the connector—Allow the connector to receive secure web connections on port 443 from Hyper\-V hosts containing the VMs you intend to migrate\.
-  + NTP—Optionally, give the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the Hyper-V host, this is unnecessary\.
+  + NTP—Optionally allow the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the Hyper-V host, this is unnecessary\.
 + Allow outbound connections from the connector to the following URL ranges: 
   + \*\.amazonaws\.com
   + \*\.aws\.amazon\.com
