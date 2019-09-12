@@ -2,10 +2,10 @@
 
 This topic describes the steps for setting up AWS SMS to migrate VMs from Azure to Amazon EC2\. This information applies only to VMs hosted by Azure\. For information about migrating VMs from other environments, see [Installing the Server Migration Connector on VMware](VMware.md) and [Installing the Server Migration Connector on Hyper\-V](HyperV.md)\.
 
-**Considerations for migration scenarios**
-+ A single Server Migration Connector appliance can only migrate VMs under one subscription and one Azure Region\. 
-+ Once a Server Migration Connector appliance is deployed, you cannot change its subscription or region unless you deploy another connector in the new subscription/region\.
-+ AWS SMS supports deploying any number of Server Migration Connector appliance VMs to support migration from multiple Azure subscriptions and regions in parallel\.
+**Considerations for Migration Scenarios**
++ A single Server Migration Connector appliance can only migrate VMs under one subscription and one Azure Region\.
++ After a Server Migration Connector appliance is deployed, you cannot change its subscription or Region unless you deploy another connector in the new subscription/Region\.
++ AWS SMS supports deploying any number of Server Migration Connector appliance VMs to support migration from multiple Azure subscriptions and Regions in parallel\.
 
 The following procedures assume that you have created a properly configured IAM user as described in [Configure AWS SMS Permissions and Roles](permissions-roles.md)\.
 
@@ -18,14 +18,14 @@ The following procedures assume that you have created a properly configured IAM 
 
 ## Step 1: Download the Connector Installation Script<a name="azure-script-deployment"></a>
 
-AWS SMS provides a downloadable Powershell script to deploy the connector in your Azure environment\. The script is cryptographically signed by AWS\. Complete this procedure to run the Powershell script and install the connector automatically in your Azure environment\. The script requires Powershell 5\.1 or later\.
+AWS SMS provides a downloadable PowerShell script to deploy the connector in your Azure environment\. The script is cryptographically signed by AWS\. Complete this procedure to run the PowerShell script and install the connector automatically in your Azure environment\. The script requires PowerShell 5\.1 or later\.
 
 **Note**  
-AWS recommends using the scripted installation, but you can alternatively install the connector manually\. For more information, see [\(Alternative Procedure\) Deploy the Server Migration Connector Manually](#azure-manual)
+AWS recommends using the scripted installation, but you can alternatively install the connector manually\. For more information, see [\(Alternative Procedure\) Deploy the Server Migration Connector Manually](#azure-manual)\.
 
 **To download the script and hash files**
 
-1. Download the Powershell script and hash files from the following URLs:  
+1. Download the PowerShell script and hash files from the following URLs:  
 ****    
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/Azure.html)
 
@@ -42,7 +42,7 @@ Before running the script, we recommend that you validate its integrity and sign
    1. To validate with the MD5 hash, run the following command in a PowerShell window:
 
       ```
-      PS C:\Users\Administrator\Desktop> Get-FileHash aws-sms-azure-setup.ps1 -Algorithm MD5
+      PS C:\Users\Administrator> Get-FileHash aws-sms-azure-setup.ps1 -Algorithm MD5
       ```
 
       This should return information similar to the following:
@@ -56,7 +56,7 @@ Before running the script, we recommend that you validate its integrity and sign
    1. To validate with the SHA256 hash, run the following command in a PowerShell window:
 
       ```
-      PS C:\Users\Administrator\Desktop> Get-FileHash aws-sms-azure-setup.ps1 -Algorithm SHA256
+      PS C:\Users\Administrator> Get-FileHash aws-sms-azure-setup.ps1 -Algorithm SHA256
       ```
 
       This should return information similar to the following:
@@ -75,7 +75,7 @@ Next, use either PowerShell or the Windows user interface to check that the scri
 + In a PowerShell window, run the following command:
 
   ```
-  PS C:\Users\Administrator\Desktop> Get-AuthenticodeSignature aws-sms-azure-setup.ps1 | Select *
+  PS C:\Users\Administrator> Get-AuthenticodeSignature aws-sms-azure-setup.ps1 | Select *
   ```
 
   A correctly signed script file should return information similar to the following:
@@ -103,27 +103,60 @@ Next, use either PowerShell or the Windows user interface to check that the scri
 
 ## Step 3: Run the Script<a name="run-azure-script"></a>
 
-Complete the following steps to install the connector in your Azure environment\.
+Run this script from any computer with PowerShell 5\.1 or later installed\.
 
-1. Run the script\.
+**Note**  
+If your PowerShell execution policy is set to verify signed scripts, you are prompted for an authorization when you run the connector configuration script\. Verify that the script is published by "Amazon Web Services, Inc\." and choose "R" to run one time\. You can view this setting using Get\-ExecutionPolicy and modify it using Set\-ExecutionPolicy\.
 
-   The script takes a Storage Account and Virtual Network as mandatory arguments\. For more information, see [Requirements for Azure connector](prereqs.md#azure-connector-requirements)\.
+```
+PS C:\Users\Administrator> .\aws-sms-azure-setup.ps1 -StorageAccountName name -ExistingVNetName name -SubscriptionId id -SubnetName name
+```
 
-1. When the script prompts for an Azure login, use a login that has administrator permissions for the subscription under which you are deploying this connector\. 
+`StorageAccountName`  
+The name of the storage account where you want to deploy the connector\.
 
-1. Once the script completes, the connector is deployed in your account\. The script prints out the connector's private IP address and the Object ID of the connector VM's System Assigned Identity, which you need for registration\. 
+`ExistingVNetName`  
+The name of the virtual network where you want to deploy the connector\.
+
+`SubscriptionId`  
+\(Optional\) The ID of the subscription to use\. If you do not specify this parameter, the default subscription for the account is used\.
+
+`SubnetName`  
+\(Optional\) The name of the subnet in the virtual network\. If you do not specify this parameter, the subnet named "default" is used\.
+
+When the script prompts for an Azure login, use a login that has administrator permissions for the subscription under which you are deploying the connector\.
+
+When the script completes, the connector is deployed in your account\. The script prints out the connector's private IP address and the Object ID of the System Assigned Identity of the connector VM\. You need both of these to complete the next step\.
 
 ## Step 4: Configure the Connector<a name="azure-connector-configuration"></a>
 
-After you have deployed the connector using either the scripted or manual method, you must configure it by completing the following steps\.
+From another VM on the same virtual network where you deployed the connector, browse to the connector's web interface using the following URL, which includes the private IP address of the connector that you obtained in the previous step:
+
+```
+https://ip-address-of-connector
+```
 
 **To configure the connector**
 
-1. From another VM on the same virtual network where Server Migration Connector is deployed, open a browser and navigate to the connector's private IP address that you saved earlier\.
-**Note**  
-If you do not have another VM on the same virtual network as the connector, you can temporarily open port 443 on the connector VM to the public and register using its public IP\. We do not recommend this\.
+1. On the connector landing page, choose **Get started now**\.
 
-1. Follow the steps to register the connector\. You will need the object ID of the connector VM's System Assigned Identity, which you saved earlier\. You can also find the object ID of this identity from the Azure Portal **Identity** pane of the connector VM\.
+1. Review the license agreement, select the check box, and choose **Next**\.
+
+1. Create a password for the connector\. The password must meet the displayed criteria\. Choose **Next**\.
+
+1. On the **Network Info** page, you can find instructions to perform network\-related tasks, such as setting up AWS proxy for the connector\. Choose **Next**\.
+
+1. On the **Log Uploads** page, select **Upload logs automatically** and choose **Next**\.
+
+1. On the **Server Migration Service** page, provide the following information:
+   +  For **AWS Region**, choose your Region from the list\. 
+   +  For **AWS Credentials**, enter the IAM credentials that you created in [Configure AWS SMS Permissions and Roles](permissions-roles.md)\. Choose **Next**\. 
+
+1. On the **Azure Account Verification** page, verify that your Azure subscription ID and location are correct\. This connector can migrate VMs under this subscription and location\. Provide the object ID of the System Assigned Identity of the connector VM, which was provided as output from the deployment script\.
+
+1. If you successfully set up the connector, the **Congratulations** page is displayed\. To view the health status of the connector, choose **Go to connector dashboard**\.
+
+1. To verify that the connector that you registered is listed, open the **Connectors** page on the Systems Manager console\.
 
 ## \(Alternative Procedure\) Deploy the Server Migration Connector Manually<a name="azure-manual"></a>
 
@@ -133,7 +166,7 @@ Complete this procedure to install the connector manually in your Azure environm
 
 1. Log into the Azure Portal as a user with administrator permissions for the subscription under which you are deploying this connector\.
 
-1. Make sure you are ready to supply a Storage Account, its Resource Group, a Virtual Network, and the Azure Region as described in [Requirements for Azure connector](prereqs.md#azure-connector-requirements)\.
+1. Make sure that you are ready to supply a Storage Account, its Resource Group, a Virtual Network, and the Azure Region as described in [Requirements for Azure connector](prereqs.md#azure-connector-requirements)\.
 
 1. Download the connector VHD and associated files from the URLs in the following table\.   
 ****    
@@ -148,14 +181,14 @@ Complete this procedure to install the connector manually in your Azure environm
    + **Name**: Any name \- for example, sms\-connector\-disk\-westus
    + **Region**: Select your Azure Region
    + **Availability Zone**: None
-   + **Source Type**: Storage Blob\. \(Choose the VHD blob you uploaded from step 3\.c\.\)
+   + **Source Type**: Storage Blob \(Choose the VHD blob you uploaded from step 3\.c\.\)
    + **OSType**: Linux
    + **Size**: 60 GB/Standard HDD
 
-1. Choose **Create VM** to create a new virtual machine from the managed disk you created\. Assign the following parameter values\.
+1. Choose **Create VM** to create a new virtual machine from the managed disk that you created\. Assign the following parameter values\.
 
-   Under the **Basics** tab
-   + **Resource Group**: Type in your resource group
+   Under the **Basics** tab:
+   + **Resource Group**: Enter in your resource group
    +  **Virtual Machine Name**: Any name, for example sms\-connector\-vm\-westus
    + **Region**: Select your Azure Region
    + **Size**: F4s
@@ -165,8 +198,8 @@ Complete this procedure to install the connector manually in your Azure environm
    + **OS Disk Type**: Standard HDD
 
    Under the **Networking** tab:
-   + **Virtual Network**: Type in your Virtual Network name\.
-   + **Subnet**: Leave as default or choose a particular subnet\.
+   + **Virtual Network**: Enter in your Virtual Network name
+   + **Subnet**: Leave as default or choose a particular subnet
    + **Public IP**: Leave as new
    + **NIC Network Security Group**: Basic
    + **Public Inbound Ports**: None
@@ -181,19 +214,19 @@ Complete this procedure to install the connector manually in your Azure environm
 
 1. Review and create the VM\. This will be your connector VM\.
 
-1. Download the two role documents from this page:
+1. Download the two role documents:
    + [https://s3\.amazonaws\.com/sms\-connector/SMSConnectorRole\.json](https://s3.amazonaws.com/sms-connector/SMSConnectorRole.json)
    + [https://s3\.amazonaws\.com/sms\-connector/SMSConnectorRoleSA\.json](https://s3.amazonaws.com/sms-connector/SMSConnectorRoleSA.json)
 
 1. **\(Important\)** Customize the role documents\.
 
-   Edit `SMSConnectorRole.json` and change the `AssignableScopes` field to match your subscription ID\.
+   Edit `SMSConnectorRole.json`\. Change the `name` field to `sms-connector-role-`*subscription\_id*\. Then change the `AssignableScopes` field to match your subscription ID\.
 
-   Edit `SMSConnectorRoleSA.json`\. Change the `name` field to `sms-connector-role-Your Storage Account`\. For example, if your account is *testStorage*, then the name field needs to be `sms-connector-role-testStorage`\. Then change the `AssignableScopes` field to match your Subscription, Resource Group and Storage Account values\.
+   Edit `SMSConnectorRoleSA.json`\. Change the `name` field to `sms-connector-role-`*storage\_account*\. For example, if your account is *testStorage*, then the name field must be `sms-connector-role-testStorage`\. Then change the `AssignableScopes` field to match your Subscription, Resource Group, and Storage Account values\.
 
-1. Create a role definition\. Currently, there is no way to create role definition from Azure Portal\. You will need to use Az CLI or Az Powershell for this step\. Use the [New\-AzRoleDefinition](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azroledefinition) or [az role definition create](https://docs.microsoft.com/en-us/cli/azure/role/definition#az-role-definition-create) command to create these two custom roles in your subscription using the JSON files you created above\.
+1. Create a role definition\. Currently, there is no way to create a role definition from the Azure Portal\. You must use Az CLI or Az PowerShell for this step\. Use the [New\-AzRoleDefinition](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azroledefinition) \(Az PowerShell\) or [az role definition create](https://docs.microsoft.com/en-us/cli/azure/role/definition#az-role-definition-create) \(Az CLI\) command to create these custom roles in your subscription, using the JSON files that you created in the previous step\.
 
-1. Assign roles to the connector VM\. In Azure Portal, choose **Storage Account**, **Access Control**, **Roles**, **Add**, **Add Role Assignment**\. Choose the role `sms-connector-role`, assign access to *Virtual Machine*, and select the connector VM’s System Assigned Identity from the list\. Repeat this for the role `sms-connector-role-Your Storage Account`\.
+1. Assign roles to the connector VM\. In Azure Portal, choose **Storage Account**, **Access Control**, **Roles**, **Add**, **Add Role Assignment**\. Choose the role `sms-connector-role`, assign access to *Virtual Machine*, and select the connector VM’s System Assigned Identity from the list\. Repeat this for the role `sms-connector-role-storage_account`\.
 
 1. Restart the connector VM to activate the role assignments\.
 

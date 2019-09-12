@@ -1,12 +1,21 @@
 # Troubleshooting AWS SMS<a name="troubleshoot-sms"></a>
 
-This section contains troubleshooting help for specific errors that you may encounter when using AWS SMS\. Before using these procedures, confirm that your SMS setup and the server you are trying to migrate meet the requirements stated in [Server Migration Service \(SMS\) Requirements](https://docs.aws.amazon.com/server-migration-service/latest/userguide/prereqs.html)\.
+The following information can help you troubleshoot issues with errors that you might encounter when using AWS SMS\. Before using these procedures, confirm that your SMS setup and the server you are trying to migrate meet the requirements in [Server Migration Service \(SMS\) Requirements](prereqs.md)\.
+
+**Topics**
++ [Certificate Error When Uploading a VM to Amazon S3](#sms-cert-mismatch)
++ [Server Migration Connector Fails To Connect To AWS with Error "PKIX path building failed"](#cert-re-signing)
++ [This CA Root certificate is not trusted](#ca-root-certificate-not-trusted)
++ [Replication Run Fails During the Preparing Stage](#preparing-failure)
++ [Replicated AMI Doesn't Support Some Instance Types for Launch](#unavailable-instance-types)
++ [Failure to upload to Amazon S3](#failure-uploading-base-disks)
++ [Incremental Replication Delta Exceeds 1 TB](#delta-migrations)
 
 ## Certificate Error When Uploading a VM to Amazon S3<a name="sms-cert-mismatch"></a>
 
 The connector may fail to replicate your VM because the VM is on an ESXi host with an SSL certificate problem\. If this occurs, you see the following error message displayed in the **Latest run's status message** section: "ServerError: Failed to upload base disk\(s\) to S3\. Please try again\. If this problem persists, please contact AWS Support: vSphere certificate hostname mismatch: Certificate for <*somehost\.somedomain\.com*> doesn't match any of the subject alternative names: \[*localhost\.localdomain*\]\."
 
-You can override this ESXi host certificate problem by completing the following procedures:
+You can override this ESXi host certificate problem by completing the following tasks:
 
 **Topics**
 + [Upgrade Your Connector](#upgrade)
@@ -91,16 +100,59 @@ For the connector to work in such an environment, the re\-signing certificate \(
    sudo service pf start
    ```
 
+## This CA Root certificate is not trusted<a name="ca-root-certificate-not-trusted"></a>
+
+When you access the IP address of a virtual machine that you installed on\-premises, you may receive the following message:
+
+```
+This CA Root certificate is not trusted. To enable trust,
+install this certificate in the Trusted Root Certifications
+Authorities store.
+```
+
+You can safely ignore this message\.
+
 ## Replication Run Fails During the Preparing Stage<a name="preparing-failure"></a>
 
 In some cases, AWS SMS allows a replication job to continue scheduling incremental replication runs even when the latest replication run has failed\. When the maximum allowed number of consecutive failures is reached, the default behavior for a replication job is to be paused\. The job can be resumed within four days, after which it is deleted\. In such cases, the Amazon EBS snapshots from the latest replication run are shared with the customer account, and a status message for the failed replication run is sent\. The message contains the snapshot IDs and states the reason for the failure\. A typical status message resembles the following:
 
 ```
-EBS snapshot(s) created with snapshot ID(s): snap-12345678abcdefgh. Another run has been scheduled after 
-the last run failed due to an import failure. 2 re-try run(s) remaining before the job will be failed.
+EBS snapshot(s) created with snapshot ID(s): snap-12345678abcdefgh. Another run  
+has been scheduled after the last run failed due to an import failure. 2 re-try run(s) 
+remaining before the job will be failed.
 ```
 
 The reason for replication\-run failures \(including first\-boot failures\) often correlates closely with failures observed when Amazon EC2 VM Import/Export is used for VM migrations\. For more information, see [Troubleshooting VM Import/Export](https://docs.aws.amazon.com/vm-import/latest/userguide/vmimport-troubleshooting.html)\.
 
-**Note**  
-If you need further help with resolving a problem, contact AWS Support\. EBS snapshots generated during a failed migration are shared with your account, and the snapshot IDs are included in the status message for the replication job\. Be sure to have these details available when you contact Support\.
+If you need further help with resolving a problem, contact AWS Support\. EBS snapshots generated during a failed migration are shared with your account, and the snapshot IDs are included in the status message for the replication job\. Be sure to have these details available when you contact AWS Support\.
+
+## Replicated AMI Doesn't Support Some Instance Types for Launch<a name="unavailable-instance-types"></a>
+
+Some instances require ENA support\. If the migration does not enable ENA support, then the replicated AMI does not allow you to launch instances that require ENA support\.
+
+Verify that ENA is enabled\. For more information, see [Enabling Enhanced Networking on Windows](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/enhanced-networking-ena.html#enable-enhanced-networking-ena-WIN) or [Enabling Enhanced Networking on Linux](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking-ena.html) in the Amazon EC2 documentation\.
+
+## Failure to upload to Amazon S3<a name="failure-uploading-base-disks"></a>
+
+The following error message indicates that the vCenter cannot export the VMDK\.
+
+```
+Error message: ServerError: Failed to upload base disk(s) to S3. Please try again. 
+If this problem persists, please contact AWS support: java.io.IOException: Server 
+returned HTTP response code: 500 for URL: https://<url>
+```
+
+Verify that the VMDK is snapshottable and that the VM does not have any mounted ISOs\.
+
+## Incremental Replication Delta Exceeds 1 TB<a name="delta-migrations"></a>
+
+The connector is designed to handle frequent replication with small deltas\. The connector does not support deltas larger than 1 TB\. If you do not replicate on a regular basis, the delta can exceed this limit and the replication run fails\.
+
+To prevent this issue, set up frequent incremental replication runs\. If you cannot replicate frequently, you can increase the delta upload limit\. For example, run the following commands on the connector to increase the part size of S3 uploads from 25 MB to 100 MB\. When prompted, select option 3\.
+
+```
+sudo sms-connector-config -set slotSizeMB 100
+sudo setup.rb
+```
+
+Increasing the upload limit impacts the performance and memory usages of the connector\. Do not increase the upload limit while the connector is uploading multiple deltas\.

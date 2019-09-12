@@ -4,7 +4,9 @@ The following permission and role prerequisites apply to either platform support
 
 ## Configure User Permissions for AWS SMS<a name="user-permissions"></a>
 
-If your IAM user account, group, or role is assigned administrator permissions, then you already have access to AWS SMS\. To call the AWS SMS API with the credentials of an IAM user that does not have administrative access to your AWS account, create a custom inline policy defined by the following JSON code and apply it to the IAM user:
+If your IAM user account, group, or role is assigned administrator permissions, then you already have access to AWS SMS\. To call the AWS SMS API with the credentials of an IAM user that does not have administrative access to your AWS account: 
++ Create a custom inline policy defined by the following JSON code\.
++ Apply it to the IAM user\.
 
 ```
 {
@@ -83,9 +85,9 @@ Use one of the following procedures to create an IAM role that grants permission
 
 1. Under **Attached permissions policies**, confirm that the policy **ServerMigrationServiceRole** is visible and choose **Next: Review**\.
 
-1. Under **Review**, for **Role name**, type **sms**\. 
+1. Under **Review**, for **Role name**, enter **sms**\. 
 **Note**  
-Alternatively, you can apply a different name, but you must then specify the role name explicitly each time that you create a replication job or an application\.
+Alternatively, you can apply a different name\. However, you must then specify the role name explicitly each time that you create a replication job or an application\.
 
 1. Choose **Create role**\. You should now see the **sms** role in the list of available roles\.
 
@@ -250,9 +252,9 @@ Use one of the following procedures to configure this role\. Use Option 2 in AWS
 
 1. Under **Attached permissions policies**, confirm that the policy **ServerMigrationServiceLaunchRole** is visible and choose **Next: Review**\.
 
-1. Under **Review**, for **Role name**, type **sms\-launch**\. 
+1. Under **Review**, for **Role name**, enter **sms\-launch**\. 
 **Note**  
-Alternatively, you can apply a different name, but you must then specify the role name explicitly each time that you create a launch configuration for an application\.
+Alternatively, you can apply a different name\. However, you must then specify the role name explicitly each time that you create a launch configuration for an application\.
 
 1. Choose **Create role**\. You should now see the **sms\-launch** role in the list of available roles\.
 

@@ -1,6 +1,6 @@
 # Getting Started with AWS Server Migration Service<a name="SMS_setup"></a>
 
-This section describes procedures for setting up AWS Server Migration Service for any of the supported platforms, which include VMware vSphere, Microsoft Hyper\-V/SCVMM, and Microsoft Azure\.
+This section describes procedures for setting up AWS Server Migration Service for each of the supported platforms, which include VMware vSphere, Microsoft Hyper\-V/SCVMM, and Microsoft Azure\.
 
 **Topics**
 + [Configure AWS SMS Permissions and Roles](permissions-roles.md)

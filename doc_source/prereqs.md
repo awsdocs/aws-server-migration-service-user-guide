@@ -12,8 +12,7 @@ Before setting up AWS SMS, take action as needed to meet all of the following re
 
 **Windows VMs**
 + Enable Remote Desktop \(RDP\) for remote access\.
-+ Install the appropriate version of \.NET Framework on the VM\. Note that \.NET Framework 4\.5 or later will be installed automatically on your VM if required\.  
-****    
++ Install the appropriate version of \.NET Framework on the VM\. Note that \.NET Framework 4\.5 or later will be installed automatically on your VM if required\.    
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/prereqs.html)
 + When preparing a Microsoft Windows VM for migration, configure a fixed pagefile size and ensure that at least 6 GiB of free space is available on the root volume\. This is necessary for successful installation of the drivers\.
 + Make sure that your host firewall \(such as Windows firewall\) allows access to RDP\. Otherwise, you will not be able to access your instance after the migration is complete\.
@@ -36,7 +35,7 @@ Before setting up AWS SMS, take action as needed to meet all of the following re
 **Programmatic Modifications to VMs**  
 When importing a VM, AWS modifies the file system to make the imported VM accessible to the customer\. The following actions may occur:
 + \[Linux\] Installing Citrix PV drivers either directly in OS or modify initrd/initramfs to contain them\.
-+ \[Linux\] Modifying network scripts to replace static IPs with dynamic IPs\.
++ \[Linux\] Modifying network scripts to replace static IP addresses with dynamic IP addresses\.
 + \[Linux\] Modifying `/etc/fstab`, commenting out invalid entries and replacing device names with UUIDs\. If no matching UUID can be found for a device, the `nofail` option is added to the device description\. You will need to correct the device naming and remove `nofail` after import\. As a best practice when preparing your VMs for import, we recommend that you specify your VM disk devices by UUID rather than device name\.
 
   Entries in `/etc/fstab` that contain distributed file system types \(nfs, cifs, smbfs, vboxsf, sshfs, etc\.\) will be disabled\.
@@ -56,15 +55,12 @@ The Server Migration Connector is a FreeBSD VM that you install in your on\-prem
 + Minimum available disk storage of 20 GiB \(thin\-provisioned\) or 250 GiB \(thick\-provisioned\)
 + Support for the following network services\. Note that you might need to reconfigure your firewall to permit stateful outbound connections from the connector to these services\.
   + DNS—Allow the connector to initiate connections to port 53 for name resolution\.
-  + HTTPS on vCenter—Allow the connector to initiate secure web connections to port 443 of vCenter\. You can also configure a non\-default port at your discretion\.
-**Note**  
-If your vCenter Server is configured to use a non\-default port, enter both the vCenter's hostname and port, separated by a colon \(for example, `HOSTNAME:PORT` or `IP:PORT`\) in the vCenter Service Account page in **Connector setup**\.
-  +  HTTPS on ESXi—Allow the connector to initiate secure web connections to port 443 of the ESXi hosts containing the VMs you intend to migrate\.
-  + NTP—Optionally, give the connector access to ntp\.org on port 123\. If the connector synchronises its clock with the ESXi host, this is unnecessary\. 
+  + HTTPS on vCenter—Allow the connector to initiate secure web connections to port 443 of vCenter\. You can also configure a non\-default port at your discretion\. If your vCenter Server is configured to use a non\-default port, specify both the vCenter's hostname and port, separated by a colon \(for example, `HOSTNAME:PORT` or `IP:PORT`\) in the vCenter Service Account page in **Connector setup**\.
+  + HTTPS on ESXi—Allow the connector to initiate secure web connections to port 443 of the ESXi hosts containing the VMs you intend to migrate\.
+  + NTP—Optionally allow the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the ESXi host, this is unnecessary\.
 + Allow outbound connections from the connector to the following URL ranges: 
   + \*\.amazonaws\.com
   + \*\.aws\.amazon\.com
-  + \*\.ntp\.org \(Optional; used only to validate that connector time is in sync with NTP\.\)
 
 **Requirements for Hyper\-V connector**
 + Hyper\-V role on Windows Server 2012 R2 or Windows Server 2016
@@ -76,11 +72,10 @@ If your vCenter Server is configured to use a non\-default port, enter both the 
   + DNS—Allow the connector to initiate connections to port 53 for name resolution\.
   + HTTPS on WinRM port 5986 on your SCVMM or standalone Hyper\-V host
   + Inbound HTTPS on port 443 of the connector—Allow the connector to receive secure web connections on port 443 from Hyper\-V hosts containing the VMs you intend to migrate\.
-  + NTP—Optionally, give the connector access to ntp\.org on port 123\. If the connector synchronises its clock with the ESXi host, this is unnecessary\.
+  + NTP—Optionally allow the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the Hyper\-V host, this is unnecessary\.
 + Allow outbound connections from the connector to the following URL ranges: 
   + \*\.amazonaws\.com
-  + \*\.aws\.amazon\.com
-  + \*\.ntp\.org \(Optional; used only to validate that connector time is in sync with NTP\.\)<a name="azure-connector-requirements"></a>
+  + \*\.aws\.amazon\.com<a name="azure-connector-requirements"></a>
 
 **Requirements for Azure connector**
 + The recommended VM size of Azure connector is F4s – 4 vCPUs and 8 GB RAM\. Ensure that you have a sufficient Azure CPU quota in the region where you are deploying the connector\.
@@ -103,6 +98,7 @@ The following operating systems can be migrated to EC2 using SMS:
 + Microsoft Windows Server 2016 \(Standard, Datacenter\) \(64\-bit only\)
 + Microsoft Windows Server 1709 \(Standard, Datacenter\) \(64\-bit only\)
 + Microsoft Windows Server 1803 \(Standard, Datacenter\) \(64\-bit only\)
++ Microsoft Windows Server 2019 \(Standard, Datacenter\) \(64\-bit only\)
 + Microsoft Windows 7 \(Home, Professional, Enterprise, Ultimate\) \(US English\) \(32\- and 64\-bit\)
 + Microsoft Windows 8 \(Home, Professional, Enterprise\) \(US English\) \(32\- and 64\-bit\)
 + Microsoft Windows 8\.1 \(Professional, Enterprise\) \(US English\) \(64\-bit only\)
@@ -134,7 +130,7 @@ AWS Server Migration Service supports migrating Windows and Linux instances with
 ****  
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/prereqs.html)
 
-AMIs with volumes using EBS encryption are not supported\.
+AMIs with volumes using EBS encryption are not supported\. When migrating servers using AWS SMS, do not turn on encryption by default\. If encryption by default is already on and you are experiencing delta replication failures, turn off this feature\.
 
 ## Licensing Options<a name="licensing"></a>
 
@@ -199,11 +195,11 @@ The following rules apply when you use your BYOL Microsoft license, either throu
 + When preparing Amazon EC2 Linux VMs for migration, make sure that at least 250 MiB of disk space is available on the root volume for installing drivers and other software\. For Microsoft Windows VMs, configure a fixed pagefile size and ensure that at least 6 GiB of free space is available on the root volume\.
 
 ### Booting<a name="boot"></a>
-+ UEFI/EFI boot partitions are supported only for Windows boot volumes with VHDX as the image format\. Otherwise, a VM's boot volume must use Master Boot Record \(MBR\) partitions\. In either case, boot volume cannot exceed 2 TiB \(uncompressed\) due to MBR limitations\. 
++ UEFI/EFI boot partitions are supported only for Windows boot volumes with VHDX as the image format\. Otherwise, a VM's boot volume must use Master Boot Record \(MBR\) partitions\. In either case, boot volume cannot exceed 2 TiB \(uncompressed\) due to MBR limitations\.
 **Note**  
 When AWS detects a Windows GPT boot volume with an UEFI boot partition, it converts it on\-the\-fly to an MBR boot volume with a BIOS boot partition\. This is because EC2 does not directly support GPT boot volumes\.
-+ An imported VM may fail to boot if the root partition is not on the same virtual hard drive as the MBR\.
-+ A migrated VM may fail to boot if the root partition is not on the same virtual hard disk as the MBR\.
++ An imported VM might fail to boot if the root partition is not on the same virtual hard drive as the MBR\.
++ A migrated VM might fail to boot if the root partition is not on the same virtual hard disk as the MBR\.
 + Migrating VMs with dual\-boot configurations is not supported\.
 
 ### Networking<a name="networking"></a>
@@ -218,7 +214,7 @@ When AWS detects a Windows GPT boot volume with an UEFI boot partition, it conve
 
 ### Miscellaneous<a name="miscellaneous"></a>
 + An SMS replication job will fail for VMs with more than 22 volumes attached\.
-+ AMIs with volumes using EBS encryption are not supported\.
++ AMIs with volumes using EBS encryption are not supported\. When migrating servers using AWS SMS, do not turn on encryption by default\. If encryption by default is already on and you are experiencing delta replication failures, turn off this feature\.
 + AWS SMS creates AMIs that use Hardware Virtual Machine \(HVM\) virtualization\. It can't create AMIs that use Paravirtual \(PV\) virtualization\. Linux PVHVM drivers are supported within migrated VMs\.
 + VMs that are created as the result of a P2V conversion are not supported\. A P2V conversion occurs when a disk image is created by performing a Linux or Windows installation process on a physical machine and then importing a copy of that Linux or Windows installation to a VM\.
 + AWS SMS does not install the single root I/O virtualization \(SR\-IOV\) drivers except with imports of Microsoft Windows Server 2012 R2 VMs\. These drivers are not required unless you plan to use enhanced networking, which provides higher performance \(packets per second\), lower latency, and lower jitter\. For Microsoft Windows Server 2012 R2 VMs, SR\-IOV drivers are automatically installed as a part of the migration process\.

@@ -27,6 +27,5 @@ Amazon's trademarks and trade dress may not be used in
 + [Using Amazon CloudWatch Events and AWS Lambda with AWS SMS](cwe-sms.md)
 + [Logging AWS Server Migration Service API Calls with AWS CloudTrail](logging-using-cloudtrail.md)
 + [Troubleshooting AWS SMS](troubleshoot-sms.md)
-+ [Release Notes for AWS SMS](release-notes.md)
++ [Release Notes for Server Migration Connector](release-notes.md)
 + [Document History for AWS SMS](doc-history.md)
-+ [AWS Glossary](glossary.md)

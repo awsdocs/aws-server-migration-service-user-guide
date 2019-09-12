@@ -4,7 +4,7 @@ This topic describes the steps for setting up AWS SMS to migrate VMs from Hyper\
 
 AWS SMS supports migration in either of two modes: from standalone Hyper\-V servers, or from Hyper\-V servers managed by System Center Virtual Machine Manager \(SCVMM\)\. The following sections describe the configuration common to both scenarios, followed by instructions to install and configure the AWS Server Migration Connector in your particular on\-premises environment\.
 
-**Considerations for migration scenarios**
+**Considerations for Migration Scenarios**
 + The installation procedures for standalone Hyper\-V and for SCVMM environments are not interchangeable\.
 + When configured in SCVMM mode, one Server Migration Connector appliance supports migration from one SCVMM \(which may manage multiple Hyper\-V servers\)\.
 + When configured in standalone Hyper\-V mode, one Server Migration Connector appliance supports migration from multiple Hyper\-V servers\.
@@ -175,7 +175,7 @@ Before running the script, we recommend that you validate its integrity and sign
    1. To validate with the MD5 hash, run the following command in a PowerShell window:
 
       ```
-      PS C:\Users\Administrator\Desktop> Get-FileHash aws-sms-hyperv-setup.ps1 -Algorithm MD5
+      PS C:\Users\Administrator> Get-FileHash aws-sms-hyperv-setup.ps1 -Algorithm MD5
       ```
 
       This should return information similar to the following:
@@ -189,7 +189,7 @@ Before running the script, we recommend that you validate its integrity and sign
    1. To validate with the SHA256 hash, run the following command in a PowerShell window:
 
       ```
-      PS C:\Users\Administrator\Desktop> Get-FileHash aws-sms-hyperv-setup.ps1 -Algorithm SHA256
+      PS C:\Users\Administrator> Get-FileHash aws-sms-hyperv-setup.ps1 -Algorithm SHA256
       ```
 
       This should return information similar to the following:
@@ -214,7 +214,7 @@ Next, use either the Windows user interface or PowerShell to check that the scri
 + In a PowerShell window, run the following command:
 
   ```
-  PS C:\Users\Administrator\Desktop> Get-AuthenticodeSignature aws-sms-hyperv-setup.ps1 | Select *
+  PS C:\Users\Administrator> Get-AuthenticodeSignature aws-sms-hyperv-setup.ps1 | Select *
   ```
 
   A correctly signed script file should return information similar to the following:
@@ -248,7 +248,7 @@ If you are using SCVMM, you must first run this script on each Hyper\-V host you
 1. Run the script using the following PowerShell command:
 
    ```
-   PS C:\Users\Administrator\Desktop> .\aws-sms-hyperv-setup.ps1
+   PS C:\Users\Administrator> .\aws-sms-hyperv-setup.ps1
    ```
 **Note**  
 If your PowerShell execution policy is set to verify signed scripts, you are prompted for an authorization when you run the connector configuration script\. Verify that the script is published by "Amazon Web Services, Inc\." and choose "R" to run one time\. You can view this setting using Get\-ExecutionPolicy and modify it using Set\-ExecutionPolicy\.
@@ -297,4 +297,4 @@ If you have Hyper\-V hosts located in multiple Active Directory domains, we reco
 
 1. If you successfully authenticated with the connector, you should see the **Congratulations** page\. To view the connector's health status, choose **Go to connector dashboard**\.
 
-1. To verify that the connector that you registered is now listed, sopen the **Connectors** page on the AWS Server Migration Service console\.
+1. To verify that the connector that you registered is now listed, open the **Connectors** page on the AWS Server Migration Service console\.
