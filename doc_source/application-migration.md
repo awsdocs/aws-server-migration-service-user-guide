@@ -1,4 +1,4 @@
-# Migrating Applications with AWS SMS<a name="application-migration"></a>
+# Migrate Applications Using AWS SMS<a name="application-migration"></a>
 
 AWS Server Migration Service supports the automated migration of multi\-server application stacks from your on\-premises data center to Amazon EC2\. Where server migration is accomplished by replicating a single server as an Amazon Machine Image \(AMI\), application migration replicates all of the servers in an application as AMIs and generates an AWS CloudFormation template to launch them in a coordinated fashion\.
 
@@ -10,7 +10,7 @@ In this example, the application is divided into four groups, each with three se
 
 After your servers are organized into applications and launch groups, you can specify a replication frequency, provide configuration scripts, and configure a target VPC in which to launch them\. When you launch an application, AWS SMS configures it based on the generated template\.
 
-Application migration relies on the procedures for discovering on\-premises resources described in [Getting Started with AWS Server Migration Service](SMS_setup.md)\. After you have imported a server catalog into AWS SMS using the Server Migration Connector, you can configure settings for applications, replication, and launch, as well as monitor migration status, in the **Applications** section of the AWS SMS console\. You can also perform these tasks using the resources for AWS SMS in the AWS SMS API, AWS CLI, or AWS SDKs\.
+Application migration relies on the procedures for discovering on\-premises resources described in [Install the Server Migration Connector](SMS_setup.md)\. After you have imported a server catalog into AWS SMS using the Server Migration Connector, you can configure settings for applications, replication, and launch, as well as monitor migration status, in the **Applications** section of the AWS SMS console\. You can also perform these tasks using the resources for AWS SMS in the AWS SMS API, AWS CLI, or AWS SDKs\.
 
 You can replicate your on\-premises servers to AWS for up to 90 days per server\. Usage time is calculated from the time a server replication begins until you terminate the replication job\. After 90 days, your replication job is automatically terminated\. You can request an extension from AWS Support\.
 
@@ -30,9 +30,9 @@ This section provides step\-by\-step procedures for creating, configuring, repli
 1. Choose **Create new application**\. 
 
 1. On the **Create new application** page, under **Application settings**, supply the following information and then choose **Next**:
-   + **Application name**
-   + **Application description**
-   + **Role name**
+   + **Application name** — Specify a name for the application\.
+   + **Application description** — Optionally, specify a description for the application\.
+   + **Role name** — Select **Allow automation role creation** to have AWS SMS create a service\-linked role on your behalf\. For more information, see [Service\-Linked Roles for AWS SMS](using-service-linked-roles.md)\. Select **Use my own role** to specify an existing IAM role to use\.
 
 1. Under **Select servers**, select the available servers to include in the application\. In the search bar, you can filter the table contents on specific values\. Choose **Next: Add servers to groups**\.
 **Note**  
@@ -163,7 +163,7 @@ Use the following procedure if you want to examine the AWS CloudFormation templa
 
 Application Migration supports the import and migration of applications discovered by AWS Migration Hub\.
 
-**To Import Applications from Migration Hub**
+**To import applications from Migration Hub**
 
 1. To enable application catalog import, complete the [AWS Server Migration Service \(SMS\)](https://docs.aws.amazon.com/migrationhub/latest/ug/new-customer-setup.html#sms-managed) instructions in the Migration Hub user guide\.
 **Note**  

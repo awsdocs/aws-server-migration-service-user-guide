@@ -2,6 +2,15 @@
 
 Your VMware vSphere, Microsoft Hyper\-V/SCVMM, or Microsoft Azure environment must meet the following requirements for you to use the Server Migration Service to migrate your on\-premises virtualized servers to Amazon EC2\.
 
+**Topics**
++ [General Requirements](#general-requirements)
++ [Operating Systems Supported by AWS SMS](#os_prereqs)
++ [Volume Types and File Systems Supported by AWS SMS](#volume-types-file-systems)
++ [Licensing Options](#licensing)
++ [Limitations](#limitations)
++ [Other Requirements](#other_prereqs)
++ [Permissions for IAM Users](#permissions-roles)
+
 ## General Requirements<a name="general-requirements"></a>
 
 Before setting up AWS SMS, take action as needed to meet all of the following requirements\.
@@ -43,46 +52,6 @@ When importing a VM, AWS modifies the file system to make the imported VM access
 + \[Windows\] Modifying registry settings to make the VM bootable\.
 
 When writing a modified file, AWS retains the original file at the same location under a new name\.
-
-## AWS Server Migration Connector Requirements<a name="connector_prereqs"></a>
-
-The Server Migration Connector is a FreeBSD VM that you install in your on\-premises virtualization environment\. Its hardware and software requirements are as follows: 
-
-**Requirements for VMware connector**
-+ vCenter version 5\.1 or higher \(validated up to 6\.7\)
-+ ESXi 5\.1 or higher \(validated up to 6\.7\)
-+ Minimum 8 GiB RAM
-+ Minimum available disk storage of 20 GiB \(thin\-provisioned\) or 250 GiB \(thick\-provisioned\)
-+ Support for the following network services\. Note that you might need to reconfigure your firewall to permit stateful outbound connections from the connector to these services\.
-  + DNS—Allow the connector to initiate connections to port 53 for name resolution\.
-  + HTTPS on vCenter—Allow the connector to initiate secure web connections to port 443 of vCenter\. You can also configure a non\-default port at your discretion\. If your vCenter Server is configured to use a non\-default port, specify both the vCenter's hostname and port, separated by a colon \(for example, `HOSTNAME:PORT` or `IP:PORT`\) in the vCenter Service Account page in **Connector setup**\.
-  + HTTPS on ESXi—Allow the connector to initiate secure web connections to port 443 of the ESXi hosts containing the VMs you intend to migrate\.
-  + NTP—Optionally allow the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the ESXi host, this is unnecessary\.
-+ Allow outbound connections from the connector to the following URL ranges: 
-  + \*\.amazonaws\.com
-  + \*\.aws\.amazon\.com
-
-**Requirements for Hyper\-V connector**
-+ Hyper\-V role on Windows Server 2012 R2 or Windows Server 2016
-+ Active Directory 2012 or above
-+ \[Optional\] SCVMM 2012 SP1 or SCVMM 2016
-+ Minimum 8 GiB RAM
-+ Minimum available disk storage of 300 GiB
-+ Support for the following network services\. Note that you might need to reconfigure your firewall to permit stateful outbound connections from the connector to these services\.
-  + DNS—Allow the connector to initiate connections to port 53 for name resolution\.
-  + HTTPS on WinRM port 5986 on your SCVMM or standalone Hyper\-V host
-  + Inbound HTTPS on port 443 of the connector—Allow the connector to receive secure web connections on port 443 from Hyper\-V hosts containing the VMs you intend to migrate\.
-  + NTP—Optionally allow the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the Hyper\-V host, this is unnecessary\.
-+ Allow outbound connections from the connector to the following URL ranges: 
-  + \*\.amazonaws\.com
-  + \*\.aws\.amazon\.com<a name="azure-connector-requirements"></a>
-
-**Requirements for Azure connector**
-+ The recommended VM size of Azure connector is F4s – 4 vCPUs and 8 GB RAM\. Ensure that you have a sufficient Azure CPU quota in the region where you are deploying the connector\.
-+ A Standard Storage Account \(cannot be Premium\) under which the connector can be deployed\.
-+ A virtual network where the connector can be deployed\.
-+ Inbound access on port 443 \(HTTPS\), either from within the connector’s virtual network \(recommended\) or open to the public \(not recommended\), for connector registration and viewing the connector dashboard\.
-+ Outbound Internet access to access AWS services, Azure services, to perform connector OS updates, and so on\.
 
 ## Operating Systems Supported by AWS SMS<a name="os_prereqs"></a>
 
@@ -239,3 +208,76 @@ AWS does not provide support for migrating VMware Virtual Volumes\. Some impleme
 
 **VMs with Snapshots**  
 AWS SMS supports only one\-time migration on VMs where snapshot\-based backup software is used\. Also, avoid creating snapshots on VMs replicated through AWS SMS\. 
+
+## Permissions for IAM Users<a name="permissions-roles"></a>
+
+The following permission and role prerequisites are required by AWS SMS\.
+
+### Configure User Permissions for AWS SMS<a name="user-permissions"></a>
+
+If your IAM user account, group, or role is assigned administrator permissions, then you already have access to AWS SMS\. To call the AWS SMS API with the credentials of an IAM user that does not have administrative access to your AWS account: 
++ Create a custom inline policy defined by the following JSON code\.
++ Apply it to the IAM user\.
+
+```
+{
+   "Version":"2012-10-17",
+   "Statement":[
+      {
+         "Action":[
+            "sms:*"
+         ],
+         "Effect":"Allow",
+         "Resource":"*"
+      },
+      {
+         "Action":[
+            "cloudformation:ListStacks",
+            "cloudformation:DescribeStacks",
+            "cloudformation:DescribeStackResources"
+         ],
+         "Effect":"Allow",
+         "Resource":"*"
+      },
+      {
+         "Action":[
+            "s3:ListAllMyBuckets",
+            "s3:GetObject"
+         ],
+         "Effect":"Allow",
+         "Resource":"*"
+      },
+      {
+         "Action":[
+            "ec2:DescribeKeyPairs",
+            "ec2:DescribeVpcs",
+            "ec2:DescribeSubnets",
+            "ec2:DescribeSecurityGroups"
+         ],
+         "Effect":"Allow",
+         "Resource":"*"
+      },
+      {
+         "Action":"iam:PassRole",
+         "Resource":"*",
+         "Effect":"Allow",
+         "Condition":{
+            "StringLike":{
+               "iam:AssociatedResourceArn":"arn:aws:cloudformation:*:*:stack/sms-app-*/*"
+            }
+         }
+      }
+   ]
+}
+```
+
+**Note**  
+If you are using multiple connectors, we recommend that you create a unique IAM role for each connector to avoid having a single point of failure\.
+
+### Configure an IAM User for Server Migration Connector<a name="connector-permissions"></a>
+
+**To create an IAM user for Server Migration Connector in your AWS account**
+
+1. Create a new IAM user for your connector to communicate with AWS\. Save the generated access key and secret key for use during the initial connector setup\. For information about managing IAM users and permissions, see [Creating an IAM User in Your AWS Account](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)\.
+
+1. Attach the managed IAM policy `ServerMigrationConnector` to the IAM user\. For more information, see [Managed Policies and Inline Policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html)\.

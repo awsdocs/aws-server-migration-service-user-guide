@@ -1,24 +1,30 @@
-# Replicating VMs Using the AWS SMS Console<a name="console_workflow"></a>
+# Replicate VMs Using the AWS SMS Console<a name="console_workflow"></a>
 
-Use the AWS SMS console to import your server catalog and migrate your on\-premises servers to Amazon EC2\. You can perform the following tasks:
-+ [Replicate a server using the console](#configure_replication)
-+ [Monitor and modify server replication jobs](#monitor_replication)
-+ [Shut down replication](#delete_replication) 
+Use the AWS SMS console to import your server catalog and migrate your on\-premises servers to Amazon EC2\.
 
-**Note**  
-If you have enabled integration between AWS SMS and AWS Migration Hub, your SMS server catalog will be also visible on Migration Hub\. For more information, see [Importing Applications from Migration Hub](application-migration.md#migration-hub)\.<a name="configure_replication"></a>
+If you have enabled integration between AWS SMS and AWS Migration Hub, your SMS server catalog will be also visible on Migration Hub\. For more information, see [Importing Applications from Migration Hub](application-migration.md#migration-hub)\.
 
-**To replicate a server using the console**
+**Topics**
++ [Replicate a Server](#configure_replication)
++ [Resume a Replication Job](#resume_replication)
++ [Monitor a Server Replication Job](#monitor_replication)
++ [Delete a Replication Job](#delete_replication)
 
-1. Install the Server Migration Connector as described in [Getting Started with AWS Server Migration Service](SMS_setup.md), including the configuration of an IAM service role and permissions\.
+## Replicate a Server<a name="configure_replication"></a>
 
-1. In a web browser, open the [SMS homepage](https://console.aws.amazon.com/servermigration/home)\.
+AWS SMS automatically replicates live server volumes to AWS and creates an Amazon Machine Image \(AMI\) as needed\.
+
+**To replicate a server**
+
+1. Install the Server Migration Connector as described in [Install the Server Migration Connector](SMS_setup.md)\.
+
+1. Open the AWS SMS console at [https://console\.aws\.amazon\.com/servermigration/](https://console.aws.amazon.com/servermigration/)\.
 **Tip**  
-If this link takes you to the AWS SMS setup page, trim the "gettingStarted" off of the end of the URL and press return\.
+If this link takes you to the AWS SMS page, trim the "gettingStarted" from the end of the URL and press return\.
 
 1. In the navigation menu, choose **Connectors**\. Verify that the connector that you deployed in your VMware environment is shown with a status of healthy\.
 
-1. If you have not yet imported a catalog, choose **Servers**, **Import server catalog**\. To reflect new servers added in your VMware environment after your previous import operation, choose **Re\-import server catalog**\. This process can take up to a minute\. 
+1. If you have not yet imported a catalog, choose **Servers**, **Import server catalog**\. To reflect new servers added in your VMware environment after your previous import operation, choose **Re\-import server catalog**\. This process can take up to a minute\.
 
 1. Select a server to replicate and choose **Create replication job**\.
 
@@ -27,7 +33,7 @@ If this link takes you to the AWS SMS setup page, trim the "gettingStarted" off 
 1. On the **Configure replication job settings** page, the following settings are available:
    + For **Replication job type**, choose a value\. The **replicate server every *interval*** option creates a repeating replication process that creates new AMIs at the interval you provide from the menu\. The **One\-time migration** option triggers a single replication of your server without scheduling repeating replications\.
    + For **Start replication run**, configure your replication run to start either immediately or at a later date and time up to 30 days in the future\. The date and time settings refer to your browser’s local time\. 
-   + For **IAM service role**, provide \(if necessary\) the IAM service role that you previously created\.
+   + For **IAM service role**, select **Allow automation role creation** to have AWS SMS create a service\-linked role on your behalf\. For more information, see [Service\-Linked Roles for AWS SMS](using-service-linked-roles.md)\. Select **Use my own role** to specify an existing IAM role to use\.
    + \(Optional\) For **Description**, provide a description of the replication run\.
    + For **Enable automatic AMI deletion**, configure AWS SMS to delete older replication AMIs in excess of a number that you provide in the field\.
    + For **Enable AMI Encryption**, choose a value\. If you choose **Yes**, AWS SMS encrypts the generated AMIs\. Your default CMK is used unless you specify a non\-default CMK\. For more information, see [Amazon EBS Encryption](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html)\.
@@ -40,15 +46,23 @@ This option is not available for one\-time replication jobs\.
 
 1. On the **Review** page, review your settings\. If the settings are correct, choose **Create**\. To change the settings, choose **Previous**\. After a replication job is set up, replication starts automatically at the specified time and interval\.
 
-In addition to your scheduled replication runs, you may also start up to two on\-demand replication runs per 24\-hour period\. On the **Replication jobs** page, select a job and choose **Actions**, **Start replication run**\. This starts a replication run that does not affect your scheduled replication runs, except in the case that the on\-demand run is still ongoing at the time of your scheduled run\. In this case, the scheduled run is skipped and rescheduled at the next interval\. The same thing happens if a scheduled run is due while a previous scheduled run is still in progress\.<a name="resume_replication"></a>
+In addition to your scheduled replication runs, you may also start up to two on\-demand replication runs per 24\-hour period\. On the **Replication jobs** page, select a job and choose **Actions**, **Start replication run**\. This starts a replication run that does not affect your scheduled replication runs, except in the case that the on\-demand run is still ongoing at the time of your scheduled run\. In this case, the scheduled run is skipped and rescheduled at the next interval\. The same thing happens if a scheduled run is due while a previous scheduled run is still in progress\.
+
+## Resume a Replication Job<a name="resume_replication"></a>
+
+AWS SMS can pause a replication job after the maximum number of consecutive scheduled replication jobs have failed\. Before attempting to resume a job that is in the `PausedOnFailure` state, try to identify and fix the root cause of the replication run failure\. For more information, see [Replication Run Fails During the Preparing Stage](troubleshoot-sms.md#preparing-failure)\.
 
 **To resume a replication job that is paused**
 
-1. Before attempting to resume a job that is in `PausedOnFailure` state, refer to [Troubleshooting AWS SMS](https://docs.aws.amazon.com/server-migration-service/latest/userguide/troubleshoot-sms.html) to identify and fix the root cause of the replication run failure\.
+1. In the AWS SMS console, choose **Replication jobs**\.
 
-1. In the AWS SMS console, choose **Replication jobs**\. You can view all replication jobs by scrolling through the table\. In the search bar, you can filter the table contents on specific values\. Filter the jobs by `PausedOnFailure` to identify all the paused jobs\.
+1. In the search bar, filter the jobs by `PausedOnFailure` to identify all paused jobs\.
 
-1. To resume a paused job, select the job on the **Replication jobs** page and choose **Actions**, **Resume replication job**\.<a name="monitor_replication"></a>
+1. To resume a paused job, select the job and choose **Actions**, **Resume replication job**\.
+
+## Monitor a Server Replication Job<a name="monitor_replication"></a>
+
+You can manage and track the progress of each migration\.
 
 **To monitor and modify server replication jobs**
 
@@ -58,14 +72,18 @@ In addition to your scheduled replication runs, you may also start up to two on\
 
 1. To change any job parameters, select a job on the **Replication jobs** page and choose **Actions**, **Edit replication job**\. After entering new information in the **Edit configuration job** form, choose **Save** to commit your changes\. 
 **Note**  
-You may need to refresh the page for the changes to become visible\.<a name="delete_replication"></a>
+You may need to refresh the page for the changes to become visible\.
+
+## Delete a Replication Job<a name="delete_replication"></a>
+
+After you have finished replicating a server, you can delete the replication job\. This stops the replication job and cleans up any artifacts created by the service \(for example, the job's S3 bucket\)\. This does not delete any AMIs created by runs of the stopped job\. When you are done using a connector and no longer need it for any replication jobs, you can disassociate it from AWS SMS\.
 
 **To shut down replication**
 
-1. After you have finished replicating a server, you can delete the replication job\. Choose **Replication jobs**, select the desired job, choose **Actions**, and then choose **Delete replication jobs**\. In the confirmation window, choose **Delete**\. This stops the replication job and cleans up any artifacts created by the service \(for example, the job's S3 bucket\)\. This does not delete any AMIs created by runs of the stopped job\. 
+1. Choose **Replication jobs**, select the desired job, choose **Actions**, and then choose **Delete replication jobs**\. In the confirmation window, choose **Delete**\.
 **Note**  
 You may need to refresh the page for the changes to become visible\.
 
-1. To clear your server catalog after you no longer need it, choose **Servers**, **Clear server catalog**\. The list of servers is removed from AWS SMS and your display\. 
+1. To clear your server catalog after you no longer need it, choose **Servers**, **Clear server catalog**\.
 
-1. When you are done using a connector and no longer need it for any replication jobs, you can disassociate it\. Choose **Connectors** and select the connector to disassociate\. Choose **Disassociate** at the top\-right corner of its information section and choose **Disassociate** again in the confirmation window\. This action deregisters the connector from AWS SMS\. 
+1. To disassociate a connector after you no longer need it, choose **Connectors** and select the connector\. Choose **Disassociate** at the top\-right corner of its information section and choose **Disassociate** again in the confirmation window\.

@@ -1,8 +1,22 @@
-# Installing the Server Migration Connector on VMware<a name="VMware"></a>
+# Install the Server Migration Connector on VMware<a name="VMware"></a>
 
-This topic describes the steps for setting up AWS SMS to migrate VMs from VMware to Amazon EC2\. This information applies only to VMs in an on\-premises VMware environment\. For information about migrating VMs from Hyper\-V, see [Installing the Server Migration Connector on Hyper\-V](HyperV.md)\.
+Use the following information to install the Server Migration Connector, so that you can use AWS SMS to migrate VMs from a VMware environment to Amazon EC2\.
 
-From a client computer system on your LAN, complete the following steps to set up the AWS Server Migration Connector in your VMware environment\. The following procedure assumes that you have already completed [Configure AWS SMS Permissions and Roles](permissions-roles.md)\.
+This information applies only to VMs in an on\-premises VMware environment\. For information about installing the connector on other environments, see [Install the Server Migration Connector](SMS_setup.md)\.
+
+**Requirements for VMware connector**
++ vCenter version 5\.1 or higher \(validated up to 6\.7\)
++ ESXi 5\.1 or higher \(validated up to 6\.7\)
++ Minimum 8 GiB RAM
++ Minimum available disk storage of 20 GiB \(thin\-provisioned\) or 250 GiB \(thick\-provisioned\)
++ Support for the following network services\. Note that you might need to reconfigure your firewall to permit stateful outbound connections from the connector to these services\.
+  + DNS—Allow the connector to initiate connections to port 53 for name resolution\.
+  + HTTPS on vCenter—Allow the connector to initiate secure web connections to port 443 of vCenter\. You can also configure a non\-default port at your discretion\. If your vCenter Server is configured to use a non\-default port, specify both the vCenter's hostname and port, separated by a colon \(for example, `HOSTNAME:PORT` or `IP:PORT`\) in the vCenter Service Account page in **Connector setup**\.
+  + HTTPS on ESXi—Allow the connector to initiate secure web connections to port 443 of the ESXi hosts containing the VMs you intend to migrate\.
+  + NTP—Optionally allow the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the ESXi host, this is unnecessary\.
++ Allow outbound connections from the connector to the following URL ranges: 
+  + \*\.amazonaws\.com
+  + \*\.aws\.amazon\.com
 
 **To set up the connector for a VMware environment**
 
@@ -108,7 +122,7 @@ As a best practice, we recommend that you limit vCenter permissions for the conn
 
 1. Choose **Upload logs automatically** and **Server Migration Connector auto\-upgrade**\.
 
-1. For **AWS Region**, choose your Region from the list\. For **AWS Credentials**, enter the IAM credentials that you created in [Configure AWS SMS Permissions and Roles](permissions-roles.md)\. Choose **Next**\.
+1. For **AWS Region**, choose your Region from the list\. For **AWS Credentials**, enter the IAM credentials that you created in [Permissions for IAM Users](prereqs.md#permissions-roles)\. Choose **Next**\.
 
 1. For **vCenter Service Account**, enter the vCenter hostname, user name, and password from step 3\. Choose **Next**\.
 

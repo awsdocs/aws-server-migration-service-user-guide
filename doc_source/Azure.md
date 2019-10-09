@@ -1,13 +1,20 @@
-# Installing the Server Migration Connector on Azure<a name="Azure"></a>
+# Install the Server Migration Connector on Azure<a name="Azure"></a>
 
-This topic describes the steps for setting up AWS SMS to migrate VMs from Azure to Amazon EC2\. This information applies only to VMs hosted by Azure\. For information about migrating VMs from other environments, see [Installing the Server Migration Connector on VMware](VMware.md) and [Installing the Server Migration Connector on Hyper\-V](HyperV.md)\.
+Use the following information to install the Server Migration Connector on Azure so that you can use AWS SMS to migrate VMs from Azure to Amazon EC2\.
+
+This information applies only to VMs hosted by Azure\. For information about installing the connector on other environments, see [Install the Server Migration Connector](SMS_setup.md)\.
 
 **Considerations for Migration Scenarios**
 + A single Server Migration Connector appliance can only migrate VMs under one subscription and one Azure Region\.
 + After a Server Migration Connector appliance is deployed, you cannot change its subscription or Region unless you deploy another connector in the new subscription/Region\.
-+ AWS SMS supports deploying any number of Server Migration Connector appliance VMs to support migration from multiple Azure subscriptions and Regions in parallel\.
++ AWS SMS supports deploying any number of Server Migration Connector appliance VMs to support migration from multiple Azure subscriptions and Regions in parallel\.<a name="azure-connector-requirements"></a>
 
-The following procedures assume that you have created a properly configured IAM user as described in [Configure AWS SMS Permissions and Roles](permissions-roles.md)\.
+**Requirements for Azure connector**
++ The recommended VM size of Azure connector is F4s – 4 vCPUs and 8 GB RAM\. Ensure that you have a sufficient Azure CPU quota in the region where you are deploying the connector\.
++ A Standard Storage Account \(cannot be Premium\) under which the connector can be deployed\.
++ A virtual network where the connector can be deployed\.
++ Inbound access on port 443 \(HTTPS\), either from within the connector’s virtual network \(recommended\) or open to the public \(not recommended\), for connector registration and viewing the connector dashboard\.
++ Outbound Internet access to access AWS services, Azure services, to perform connector OS updates, and so on\.
 
 **Topics**
 + [Step 1: Download the Connector Installation Script](#azure-script-deployment)
@@ -150,7 +157,7 @@ https://ip-address-of-connector
 
 1. On the **Server Migration Service** page, provide the following information:
    +  For **AWS Region**, choose your Region from the list\. 
-   +  For **AWS Credentials**, enter the IAM credentials that you created in [Configure AWS SMS Permissions and Roles](permissions-roles.md)\. Choose **Next**\. 
+   +  For **AWS Credentials**, enter the IAM credentials that you created in [Permissions for IAM Users](prereqs.md#permissions-roles)\. Choose **Next**\. 
 
 1. On the **Azure Account Verification** page, verify that your Azure subscription ID and location are correct\. This connector can migrate VMs under this subscription and location\. Provide the object ID of the System Assigned Identity of the connector VM, which was provided as output from the deployment script\.
 
@@ -166,7 +173,7 @@ Complete this procedure to install the connector manually in your Azure environm
 
 1. Log into the Azure Portal as a user with administrator permissions for the subscription under which you are deploying this connector\.
 
-1. Make sure that you are ready to supply a Storage Account, its Resource Group, a Virtual Network, and the Azure Region as described in [Requirements for Azure connector](prereqs.md#azure-connector-requirements)\.
+1. Make sure that you are ready to supply a Storage Account, its Resource Group, a Virtual Network, and the Azure Region as described in [Requirements for Azure connector](#azure-connector-requirements)\.
 
 1. Download the connector VHD and associated files from the URLs in the following table\.   
 ****    

@@ -1,8 +1,8 @@
-# Installing the Server Migration Connector on Hyper\-V<a name="HyperV"></a>
+# Install the Server Migration Connector on Hyper\-V<a name="HyperV"></a>
 
-This topic describes the steps for setting up AWS SMS to migrate VMs from Hyper\-V to Amazon EC2\. This information applies only to VMs in an on\-premises Hyper\-V environment\. For information about migrating VMs from VMware, see [Installing the Server Migration Connector on VMware](VMware.md)\.
+AWS SMS supports migration in either of two modes: from standalone Hyper\-V servers, or from Hyper\-V servers managed by System Center Virtual Machine Manager \(SCVMM\)\. Use the following information to install the Server Migration Connector on Hyper\-V so that you can use AWS SMS to migrate VMs from Hyper\-V to Amazon EC2\.
 
-AWS SMS supports migration in either of two modes: from standalone Hyper\-V servers, or from Hyper\-V servers managed by System Center Virtual Machine Manager \(SCVMM\)\. The following sections describe the configuration common to both scenarios, followed by instructions to install and configure the AWS Server Migration Connector in your particular on\-premises environment\.
+This information applies only to VMs in an on\-premises Hyper\-V environment\. For information about installing the connector on other environments, see [Install the Server Migration Connector](SMS_setup.md)\.
 
 **Considerations for Migration Scenarios**
 + The installation procedures for standalone Hyper\-V and for SCVMM environments are not interchangeable\.
@@ -10,7 +10,20 @@ AWS SMS supports migration in either of two modes: from standalone Hyper\-V serv
 + When configured in standalone Hyper\-V mode, one Server Migration Connector appliance supports migration from multiple Hyper\-V servers\.
 + AWS SMS supports deploying any number of connector appliances to support migration from multiple SCVMMs and multiple standalone Hyper\-V servers in parallel\.
 
-The following procedures assume that you have created a properly configured an IAM user as described in [Configure AWS SMS Permissions and Roles](permissions-roles.md)\.
+**Requirements for Hyper\-V connector**
++ Hyper\-V role on Windows Server 2012 R2 or Windows Server 2016
++ Active Directory 2012 or above
++ \[Optional\] SCVMM 2012 SP1 or SCVMM 2016
++ Minimum 8 GiB RAM
++ Minimum available disk storage of 300 GiB
++ Support for the following network services\. Note that you might need to reconfigure your firewall to permit stateful outbound connections from the connector to these services\.
+  + DNS—Allow the connector to initiate connections to port 53 for name resolution\.
+  + HTTPS on WinRM port 5986 on your SCVMM or standalone Hyper\-V host
+  + Inbound HTTPS on port 443 of the connector—Allow the connector to receive secure web connections on port 443 from Hyper\-V hosts containing the VMs you intend to migrate\.
+  + NTP—Optionally allow the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the Hyper\-V host, this is unnecessary\.
++ Allow outbound connections from the connector to the following URL ranges: 
+  + \*\.amazonaws\.com
+  + \*\.aws\.amazon\.com
 
 **Topics**
 + [About the Server Migration Connector Installation Script](#script-actions)
@@ -67,9 +80,6 @@ When configured in SCVMM mode, the SCVMM host and all the Hyper\-V hosts that it
 ## Step 2: Download and Deploy the Server Migration Connector<a name="download-hyperv-connector"></a>
 
 Download the [Server Migration Connector for Hyper\-V and SCVMM](https://s3.amazonaws.com/sms-connector/AWS-SMS-Connector-for-SCVMM-HyperV.zip) to your on\-premises environment and install it on a Hyper\-V host\.
-
-**Note**  
-This connector is meant only for installation in a Hyper\-V environment\. For information about installing in a VMware environment, see [Installing the Server Migration Connector on VMware](VMware.md)\.
 
 **To set up the connector for a Hyper\-V environment**
 
@@ -281,7 +291,7 @@ Complete the following steps to set up the new connector\.
 
 1. On the **Server Migration Service** page, provide the following information:
    +  For **AWS Region**, choose your Region from the list\. 
-   +  For **AWS Credentials**, enter the IAM credentials that you created in [Configure AWS SMS Permissions and Roles](permissions-roles.md)\. Choose **Next**\. 
+   +  For **AWS Credentials**, enter the IAM credentials that you created in [Permissions for IAM Users](prereqs.md#permissions-roles)\. Choose **Next**\. 
 
 1. On the **Choose your VM manager type** page, choose either **Microsoft® System Center Virtual Manager \(SCVMM\)** or **Microsoft® Hyper\-V** depending on your environment\. Selecting **VMware® vCenter** results in an error if you have installed the Hyper\-V connector\. Choose **Next**\.
 
