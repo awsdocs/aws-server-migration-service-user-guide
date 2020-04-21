@@ -266,6 +266,14 @@ If your IAM user account, group, or role is assigned administrator permissions, 
                "iam:AssociatedResourceArn":"arn:aws:cloudformation:*:*:stack/sms-app-*/*"
             }
          }
+      },
+      {
+         "Action":[
+             "iam:ListRoles",
+             "iam:CreateServiceLinkedRole"
+         ],
+         "Effect":"Allow",
+         "Resource":"*"
       }
    ]
 }

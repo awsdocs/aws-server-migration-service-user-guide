@@ -16,7 +16,7 @@ Use one of the following procedures to create an IAM role that grants permission
 
 1. Under **Attached permissions policies**, confirm that the policy **ServerMigrationServiceRole** is visible and choose **Next: Review**\.
 
-1. Under **Review**, for **Role name**, enter **sms**\. 
+1. Under **Review**, for **Role name**, enter **sms**\.
 **Note**  
 Alternatively, you can apply a different name\. However, you must then specify the role name explicitly each time that you create a replication job or an application\.
 
@@ -132,11 +132,20 @@ Use the following option in AWS Regions that do not make an IAM role template av
                "ec2:Describe*",
                "ec2:DeleteSnapshot",
                "ec2:DeregisterImage",
-               "ec2:CreateTags",
-               "ec2:DeleteTags"
+               "ec2:RunInstances",
+               "ec2:ImportImage",
+               "ec2:DescribeImportImageTasks"
             ],
             "Resource":"*",
             "Effect":"Allow"
+         },
+         {
+            "Effect": "Allow",
+            "Action": [
+               "ec2:CreateTags",
+               "ec2:DeleteTags"
+            ],
+            "Resource": "arn:aws:ec2:*:*:instance/*"
          },
          {
             "Action":"iam:GetRole",

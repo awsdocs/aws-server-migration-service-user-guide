@@ -16,4 +16,4 @@ Use of AWS SMS is limited as follows:
 
 ## Pricing<a name="pricing"></a>
 
-There is no additional fee to use Server Migration Service\. You pay the standard fees for the S3 buckets, EBS volumes, and data transfer used during the migration process, and for the EC2 instances that you run\. 
+There is no additional fee to use Server Migration Service\. You pay the standard fees for the S3 buckets, EBS volumes, and data transfer used during the migration process, and for the EC2 instances that you run\. For more information, see [AWS Server Migration Service pricing](http://aws.amazon.com/server-migration-service/pricing/)\.

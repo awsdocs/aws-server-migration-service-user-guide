@@ -4,6 +4,8 @@ Use the AWS SMS console to import your server catalog and migrate your on\-premi
 
 If you have enabled integration between AWS SMS and AWS Migration Hub, your SMS server catalog will be also visible on Migration Hub\. For more information, see [Importing Applications from Migration Hub](application-migration.md#migration-hub)\.
 
+During the replication process, AWS SMS creates an Amazon S3 bucket in the Region on your behalf, with server\-side encryption enabled and a bucket policy to delete any items in the bucket after seven days\. AWS SMS replicates server volumes from your environment to this bucket and then creates EBS snapshots from the volumes\. If you do not delete this bucket, AWS SMS uses it for all replication jobs in this Region\.
+
 **Topics**
 + [Replicate a Server](#configure_replication)
 + [Resume a Replication Job](#resume_replication)

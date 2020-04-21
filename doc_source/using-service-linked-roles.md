@@ -92,7 +92,9 @@ The role permissions policy allows AWS SMS to complete actions on resources as f
                 "ec2:Describe*",
                 "ec2:DeleteSnapshot",
                 "ec2:DeregisterImage",
-                "ec2:RunInstances"
+                "ec2:RunInstances",
+                "ec2:ImportImage",
+                "ec2:DescribeImportImageTasks"
             ],
             "Resource": "*",
             "Effect": "Allow"
@@ -141,11 +143,11 @@ The role permissions policy allows AWS SMS to complete actions on resources as f
 
 ## Create the Service\-Linked Role<a name="create-service-linked-role"></a>
 
-You don't need to manually create the **AWSServiceRoleSMS** role\. AWS SMS creates this role for you when you select the **Allow automatic role creation** option when creating or updating a replication job, application, or launch configuration using the AWS Management Console\.
+You don't need to manually create the **AWSServiceRoleForSMS** role\. AWS SMS creates this role for you when you select the **Allow automatic role creation** option when creating or updating a replication job, application, or launch configuration using the AWS Management Console\.
 
 For AWS SMS to create a service\-linked role on your behalf, you must have the required permissions\. For more information, see [Service\-Linked Role Permissions](https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html#service-linked-role-permissions) in the *IAM User Guide*\.
 
-If you do not use the console, you can create this service\-linked role manually\. For example, use the following AWS CLI [create\-service\-linked\-role](https://docs.aws.amazon.com/cli/latest/reference/iam/create-service-linked-role.html) command to create **AWSServiceRoleSMS**\.
+If you do not use the console, you can create this service\-linked role manually\. For example, use the following AWS CLI [create\-service\-linked\-role](https://docs.aws.amazon.com/cli/latest/reference/iam/create-service-linked-role.html) command to create **AWSServiceRoleForSMS**\.
 
 ```
 aws iam create-service-linked-role --aws-service-name sms.amazonaws.com

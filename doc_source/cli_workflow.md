@@ -2,6 +2,10 @@
 
 You can use the AWS Command Line Interface \(AWS CLI\) to inventory and migrate your on\-premises servers to Amazon EC2\.
 
+If you have enabled integration between AWS SMS and AWS Migration Hub, your SMS server catalog will be also visible on Migration Hub\. For more information, see [Importing Applications from Migration Hub](application-migration.md#migration-hub)\.
+
+During the replication process, AWS SMS creates an Amazon S3 bucket in the Region on your behalf, with server\-side encryption enabled and a bucket policy to delete any items in the bucket after seven days\. AWS SMS replicates server volumes from your environment to this bucket and then creates EBS snapshots from the volumes\. If you do not delete this bucket, AWS SMS uses it for all replication jobs in this Region\.
+
 **Prerequisites**
 + Install the Server Migration Connector as described in [Install the Server Migration Connector](SMS_setup.md)\.
 + If you have not used the AWS SMS console to start a replication job, you must use the following [create\-service\-linked\-role](https://docs.aws.amazon.com/cli/latest/reference/iam/create-service-linked-role.html) command to create the required service\-linked role\.
@@ -86,10 +90,13 @@ You can use the AWS Command Line Interface \(AWS CLI\) to inventory and migrate 
 1. Select a server to replicate, note the server ID, and specify the ID in the [create\-replication\-job](https://docs.aws.amazon.com/cli/latest/reference/sms/create-replication-job.html) command\.
 
    ```
-   aws sms create-replication-job --server-id s-12345678 --frequency 12 --seed-replication-time 2016-10-24T15:30:00-07:00
+   aws sms create-replication-job --server-id s-12345678 \
+       --frequency 12 \
+       --seed-replication-time 2016-10-24T15:30:00-07:00 \
+       --role-name AWSServiceRoleForSMS
    ```
 
-   After the replication job is set up, it starts replicating automatically at the time specified with the `--seed-replication-time` parameter, expressed in seconds of the Unix epoch or according to ISO 8601\. For more information, see [Specifying Parameter Values for the AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html)\. Thereafter, the replication repeats with an interval specified by the `--frequency` parameter, expressed in hours\. 
+   After the replication job is set up, it starts replicating automatically at the time specified with the `--seed-replication-time` parameter, expressed in seconds of the Unix epoch or according to ISO 8601\. For more information, see [Specifying Parameter Values for the AWS Command Line Interface](https://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html)\. Thereafter, the replication repeats with an interval specified by the `--frequency` parameter, expressed in hours\.
 
 1. You can view details of all running replication jobs using the [get\-replication\-jobs](https://docs.aws.amazon.com/cli/latest/reference/sms/get-replication-jobs.html) command\. If you do not specify any parameters, the command lists all your replication jobs\.
 
