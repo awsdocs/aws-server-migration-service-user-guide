@@ -307,4 +307,4 @@ If you have Hyper\-V hosts located in multiple Active Directory domains, we reco
 
 1. If you successfully authenticated with the connector, you should see the **Congratulations** page\. To view the connector's health status, choose **Go to connector dashboard**\.
 
-1. To verify that the connector that you registered is now listed, open the **Connectors** page on the AWS Server Migration Service console\.
+1. To verify that the connector that you registered is now listed, open the **Connectors** page on the AWS Server Migration Service console\. If you encounter an issue registering the connector, contact [sms\-service@amazon\.com](mailto:sms-service@amazon.com)\.

@@ -128,4 +128,4 @@ As a best practice, we recommend that you limit vCenter permissions for the conn
 
 1. After accepting the vCenter certificate, complete registration and then view the connector configuration dashboard\.
 
-1. Verify that the connector you registered shows up on the **Connectors** page\.
+1. Verify that the connector you registered shows up on the **Connectors** page\. If you encounter an issue registering the connector, contact [sms\-service@amazon\.com](mailto:sms-service@amazon.com)\.

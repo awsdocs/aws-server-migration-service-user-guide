@@ -3,6 +3,7 @@
 The following information can help you troubleshoot issues with errors that you might encounter when using AWS SMS\. Before using these procedures, confirm that your SMS setup and the server you are trying to migrate meet the requirements in [Server Migration Service \(SMS\) Requirements](prereqs.md)\.
 
 **Topics**
++ [Failure When Registering the Connector](#failure-registering-connector)
 + [Certificate Error When Uploading a VM to Amazon S3](#sms-cert-mismatch)
 + [Server Migration Connector Fails To Connect To AWS with Error "PKIX path building failed"](#cert-re-signing)
 + [This CA Root certificate is not trusted](#ca-root-certificate-not-trusted)
@@ -10,6 +11,10 @@ The following information can help you troubleshoot issues with errors that you 
 + [Replicated AMI Doesn't Support Some Instance Types for Launch](#unavailable-instance-types)
 + [Failure to upload to Amazon S3](#failure-uploading-base-disks)
 + [Incremental Replication Delta Exceeds 1 TB](#delta-migrations)
+
+## Failure When Registering the Connector<a name="failure-registering-connector"></a>
+
+If you encounter an issue registering the connector, contact [sms\-service@amazon\.com](mailto:sms-service@amazon.com)\.
 
 ## Certificate Error When Uploading a VM to Amazon S3<a name="sms-cert-mismatch"></a>
 

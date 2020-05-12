@@ -6,10 +6,11 @@ Your VMware vSphere, Microsoft Hyper\-V/SCVMM, or Microsoft Azure environment mu
 + [General Requirements](#general-requirements)
 + [Operating Systems Supported by AWS SMS](#os_prereqs)
 + [Volume Types and File Systems Supported by AWS SMS](#volume-types-file-systems)
-+ [Licensing Options](#licensing)
-+ [Limitations](#limitations)
-+ [Other Requirements](#other_prereqs)
++ [Configure an IAM User for Server Migration Connector](#connector-permissions)
 + [Permissions for IAM Users](#permissions-roles)
++ [Limitations](#limitations)
++ [Licensing Options](#licensing)
++ [Other Requirements](#other_prereqs)
 
 ## General Requirements<a name="general-requirements"></a>
 
@@ -95,11 +96,72 @@ The following operating systems can be migrated to EC2 using SMS:
 
 AWS Server Migration Service supports migrating Windows and Linux instances with the following file systems:
 
-
-****  
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/prereqs.html)
 
 AMIs with volumes using EBS encryption are not supported\. When migrating servers using AWS SMS, do not turn on encryption by default\. If encryption by default is already on and you are experiencing delta replication failures, turn off this feature\.
+
+## Configure an IAM User for Server Migration Connector<a name="connector-permissions"></a>
+
+**To create an IAM user for Server Migration Connector in your AWS account**
+
+1. Create a new IAM user for your connector to communicate with AWS\. Save the generated access key and secret key for use during the initial connector setup\. For information about managing IAM users and permissions, see [Creating an IAM User in Your AWS Account](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)\.
+
+1. Attach the managed IAM policy **ServerMigrationConnector** to the IAM user\. For more information, see [Managed Policies and Inline Policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html)\.
+
+## Permissions for IAM Users<a name="permissions-roles"></a>
+
+By default, IAM users do not have permissions required to use AWS SMS\. IAM users with administrator permissions already have full access to AWS SMS\. Otherwise, you can add the AWS managed policy **ServerMigrationServiceConsoleFullAccess** to ensure that IAM users have the permissions required to use AWS SMS\.
+
+## Limitations<a name="limitations"></a>
+
+The following limitations apply\.
+
+**Topics**
++ [Image Format](#image-format)
++ [File System](#file-system)
++ [Booting](#boot)
++ [Networking](#networking)
++ [Application Import from Migration Hub](#migration-hub-requirements)
++ [Miscellaneous](#miscellaneous)
+
+### Image Format<a name="image-format"></a>
++ When migrating VMs managed by Hyper\-V/SCVMM, SMS supports both Generation 1 VMs \(using either VHD or VHDX disk format\) and Generation 2 VMs \(VHDX only\)\.
++ AWS SMS does not support VMs on Hyper\-V running any version of RHEL 5 if backed by a VHDX disk\. We recommend converting disks in this format to VHD for migration\.
++ AWS SMS does not support VMs that have a mix of VHD and VHDX disk files\.
++ On VMware, AWS SMS does not support VMs that use Raw Device Mapping \(RDM\)\. Only VMDK disk images are supported\.
+
+### File System<a name="file-system"></a>
++ Migrated Linux VMs must use 64\-bit images\. Migrating 32\-bit Linux images is not supported\.
++ Migrated Linux VMs should use default kernels for best results\. VMs that use custom Linux kernels might not migrate successfully\.
++ When preparing Amazon EC2 Linux VMs for migration, make sure that at least 250 MiB of disk space is available on the root volume for installing drivers and other software\. For Microsoft Windows VMs, configure a fixed pagefile size and ensure that at least 6 GiB of free space is available on the root volume\.
+
+### Booting<a name="boot"></a>
++ UEFI/EFI boot partitions are supported only for Windows boot volumes with VHDX as the image format\. Otherwise, a VM's boot volume must use Master Boot Record \(MBR\) partitions\. In either case, boot volume cannot exceed 2 TiB \(uncompressed\) due to MBR limitations\.
+**Note**  
+When AWS detects a Windows GPT boot volume with an UEFI boot partition, it converts it on\-the\-fly to an MBR boot volume with a BIOS boot partition\. This is because EC2 does not directly support GPT boot volumes\.
++ An imported VM might fail to boot if the root partition is not on the same virtual hard drive as the MBR\.
++ A migrated VM might fail to boot if the root partition is not on the same virtual hard disk as the MBR\.
++ Migrating VMs with dual\-boot configurations is not supported\.
+
+### Networking<a name="networking"></a>
++ Multiple network interfaces are not currently supported\. After migration, your VM will have a single virtual network interface that uses DHCP to assign addresses\. Your instance receives a private IP address\.
++ A VM migrated into a VPC does not receive a public IP address, regardless of the auto\-assign public IP setting for the subnet\. Instead, you can allocate an Elastic IP address to your account and associate it with your instance\.
++ Internet Protocol version 6 \(IPv6\) IP addresses are not supported\.
+
+### Application Import from Migration Hub<a name="migration-hub-requirements"></a>
++ SMS imports application\-related servers from AWS Migration Hub only if they exist in the SMS Server Catalog\. As a result, some applications may only be partially migrated\.
++  If none of the servers in a Migration Hub application exist in the SMS Server Catalog, the import will fail silently and the application will not be visible in SMS\.
++ Imported applications can be migrated but cannot be edited in SMS\. They can, however, be edited in Migration Hub\. 
+
+### Miscellaneous<a name="miscellaneous"></a>
++ An SMS replication job will fail for VMs with more than 22 volumes attached\.
++ AMIs with volumes using EBS encryption are not supported\. When migrating servers using AWS SMS, do not turn on encryption by default\. If encryption by default is already on and you are experiencing delta replication failures, turn off this feature\.
++ AWS SMS creates AMIs that use Hardware Virtual Machine \(HVM\) virtualization\. It can't create AMIs that use Paravirtual \(PV\) virtualization\. Linux PVHVM drivers are supported within migrated VMs\.
++ VMs that are created as the result of a P2V conversion are not supported\. A P2V conversion occurs when a disk image is created by performing a Linux or Windows installation process on a physical machine and then importing a copy of that Linux or Windows installation to a VM\.
++ AWS SMS does not install the single root I/O virtualization \(SR\-IOV\) drivers except with imports of Microsoft Windows Server 2012 R2 VMs\. These drivers are not required unless you plan to use enhanced networking, which provides higher performance \(packets per second\), lower latency, and lower jitter\. For Microsoft Windows Server 2012 R2 VMs, SR\-IOV drivers are automatically installed as a part of the migration process\.
++ Because independent disks are unaffected by snapshots, AWS SMS does not support interval replication for VMDKs in independent mode\.
++ Windows language packs that use UTF\-16 \(or non\-ASCII\) characters are not supported for import\. We recommend using the English language pack when importing Windows Server 2003, Windows Server 2008, and Windows Server 2012 R1 VMs\.
++ For Windows Server 2003, disable Windows driver\-signing checks before migrating\.
 
 ## Licensing Options<a name="licensing"></a>
 
@@ -150,47 +212,6 @@ The following rules apply when you use your BYOL Microsoft license, either throu
 + You must be eligible to use the BYOL program for the applicable Microsoft software under your agreements with Microsoft, for example, under your MSDN user rights or under your Windows Software Assurance Per User Rights\. You are solely responsible for obtaining all required licenses and for complying with all applicable Microsoft licensing requirements, including the PUR/PT\. Further, you must have accepted Microsoft's End User License Agreement \(Microsoft EULA\), and by using the Microsoft Software under the BYOL program, you agree to the Microsoft EULA\.
 + AWS recommends that you consult with your own legal and other advisers to understand and comply with the applicable Microsoft licensing requirements\. Usage of the Services \(including usage of the **licenseType** parameter and **BYOL** flag\) in violation of your agreements with Microsoft is not authorized or permitted\.
 
-## Limitations<a name="limitations"></a>
-
-### Image Format<a name="image-format"></a>
-+ When migrating VMs managed by Hyper\-V/SCVMM, SMS supports both Generation 1 VMs \(using either VHD or VHDX disk format\) and Generation 2 VMs \(VHDX only\)\.
-+ AWS SMS does not support VMs on Hyper\-V running any version of RHEL 5 if backed by a VHDX disk\. We recommend converting disks in this format to VHD for migration\.
-+ AWS SMS does not support VMs that have a mix of VHD and VHDX disk files\.
-+ On VMware, AWS SMS does not support VMs that use Raw Device Mapping \(RDM\)\. Only VMDK disk images are supported\.
-
-### File System<a name="file-system"></a>
-+ Migrated Linux VMs must use 64\-bit images\. Migrating 32\-bit Linux images is not supported\.
-+ Migrated Linux VMs should use default kernels for best results\. VMs that use custom Linux kernels might not migrate successfully\.
-+ When preparing Amazon EC2 Linux VMs for migration, make sure that at least 250 MiB of disk space is available on the root volume for installing drivers and other software\. For Microsoft Windows VMs, configure a fixed pagefile size and ensure that at least 6 GiB of free space is available on the root volume\.
-
-### Booting<a name="boot"></a>
-+ UEFI/EFI boot partitions are supported only for Windows boot volumes with VHDX as the image format\. Otherwise, a VM's boot volume must use Master Boot Record \(MBR\) partitions\. In either case, boot volume cannot exceed 2 TiB \(uncompressed\) due to MBR limitations\.
-**Note**  
-When AWS detects a Windows GPT boot volume with an UEFI boot partition, it converts it on\-the\-fly to an MBR boot volume with a BIOS boot partition\. This is because EC2 does not directly support GPT boot volumes\.
-+ An imported VM might fail to boot if the root partition is not on the same virtual hard drive as the MBR\.
-+ A migrated VM might fail to boot if the root partition is not on the same virtual hard disk as the MBR\.
-+ Migrating VMs with dual\-boot configurations is not supported\.
-
-### Networking<a name="networking"></a>
-+ Multiple network interfaces are not currently supported\. After migration, your VM will have a single virtual network interface that uses DHCP to assign addresses\. Your instance receives a private IP address\.
-+ A VM migrated into a VPC does not receive a public IP address, regardless of the auto\-assign public IP setting for the subnet\. Instead, you can allocate an Elastic IP address to your account and associate it with your instance\.
-+ Internet Protocol version 6 \(IPv6\) IP addresses are not supported\.
-
-### Application Import from Migration Hub<a name="migration-hub-requirements"></a>
-+ SMS imports application\-related servers from AWS Migration Hub only if they exist in the SMS Server Catalog\. As a result, some applications may only be partially migrated\.
-+  If none of the servers in a Migration Hub application exist in the SMS Server Catalog, the import will fail silently and the application will not be visible in SMS\.
-+ Imported applications can be migrated but cannot be edited in SMS\. They can, however, be edited in Migration Hub\. 
-
-### Miscellaneous<a name="miscellaneous"></a>
-+ An SMS replication job will fail for VMs with more than 22 volumes attached\.
-+ AMIs with volumes using EBS encryption are not supported\. When migrating servers using AWS SMS, do not turn on encryption by default\. If encryption by default is already on and you are experiencing delta replication failures, turn off this feature\.
-+ AWS SMS creates AMIs that use Hardware Virtual Machine \(HVM\) virtualization\. It can't create AMIs that use Paravirtual \(PV\) virtualization\. Linux PVHVM drivers are supported within migrated VMs\.
-+ VMs that are created as the result of a P2V conversion are not supported\. A P2V conversion occurs when a disk image is created by performing a Linux or Windows installation process on a physical machine and then importing a copy of that Linux or Windows installation to a VM\.
-+ AWS SMS does not install the single root I/O virtualization \(SR\-IOV\) drivers except with imports of Microsoft Windows Server 2012 R2 VMs\. These drivers are not required unless you plan to use enhanced networking, which provides higher performance \(packets per second\), lower latency, and lower jitter\. For Microsoft Windows Server 2012 R2 VMs, SR\-IOV drivers are automatically installed as a part of the migration process\.
-+ Because independent disks are unaffected by snapshots, AWS SMS does not support interval replication for VMDKs in independent mode\.
-+ Windows language packs that use UTF\-16 \(or non\-ASCII\) characters are not supported for import\. We recommend using the English language pack when importing Windows Server 2003, Windows Server 2008, and Windows Server 2012 R1 VMs\.
-+ For Windows Server 2003, disable Windows driver\-signing checks before migrating\.
-
 ## Other Requirements<a name="other_prereqs"></a>
 
 **Support for VMware vMotion**
@@ -208,84 +229,3 @@ AWS does not provide support for migrating VMware Virtual Volumes\. Some impleme
 
 **VMs with Snapshots**  
 AWS SMS supports only one\-time migration on VMs where snapshot\-based backup software is used\. Also, avoid creating snapshots on VMs replicated through AWS SMS\. 
-
-## Permissions for IAM Users<a name="permissions-roles"></a>
-
-The following permission and role prerequisites are required by AWS SMS\.
-
-### Configure User Permissions for AWS SMS<a name="user-permissions"></a>
-
-If your IAM user account, group, or role is assigned administrator permissions, then you already have access to AWS SMS\. To call the AWS SMS API with the credentials of an IAM user that does not have administrative access to your AWS account: 
-+ Create a custom inline policy defined by the following JSON code\.
-+ Apply it to the IAM user\.
-
-```
-{
-   "Version":"2012-10-17",
-   "Statement":[
-      {
-         "Action":[
-            "sms:*"
-         ],
-         "Effect":"Allow",
-         "Resource":"*"
-      },
-      {
-         "Action":[
-            "cloudformation:ListStacks",
-            "cloudformation:DescribeStacks",
-            "cloudformation:DescribeStackResources"
-         ],
-         "Effect":"Allow",
-         "Resource":"*"
-      },
-      {
-         "Action":[
-            "s3:ListAllMyBuckets",
-            "s3:GetObject"
-         ],
-         "Effect":"Allow",
-         "Resource":"*"
-      },
-      {
-         "Action":[
-            "ec2:DescribeKeyPairs",
-            "ec2:DescribeVpcs",
-            "ec2:DescribeSubnets",
-            "ec2:DescribeSecurityGroups"
-         ],
-         "Effect":"Allow",
-         "Resource":"*"
-      },
-      {
-         "Action":"iam:PassRole",
-         "Resource":"*",
-         "Effect":"Allow",
-         "Condition":{
-            "StringLike":{
-               "iam:AssociatedResourceArn":"arn:aws:cloudformation:*:*:stack/sms-app-*/*"
-            }
-         }
-      },
-      {
-         "Action":[
-             "iam:ListRoles",
-             "iam:CreateServiceLinkedRole"
-         ],
-         "Effect":"Allow",
-         "Resource":"*"
-      }
-   ]
-}
-```
-
-**Note**  
-If you are using multiple connectors, we recommend that you create a unique IAM role for each connector to avoid having a single point of failure\.
-
-### Configure an IAM User for Server Migration Connector<a name="connector-permissions"></a>
-
-**To create an IAM user for Server Migration Connector in your AWS account**
-
-1. Create a new IAM user for your connector to communicate with AWS\. Save the generated access key and secret key for use during the initial connector setup\. For information about managing IAM users and permissions, see [Creating an IAM User in Your AWS Account](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)\.
-
-1. Attach the managed IAM policy `ServerMigrationConnector` to the IAM user\. For more information, see [Managed Policies and Inline Policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html)\.

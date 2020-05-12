@@ -14,6 +14,8 @@ To download the latest connector for vCenter environments, open [https://s3\.ama
 
 | Release date | Version | Comment | 
 | --- | --- | --- | 
+| April 28, 2020 | 1\.0\.13\.245 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
+| April 22, 2020 | 1\.0\.13\.242 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 | March 23, 2020 | 1\.0\.13\.227 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 | May 29, 2019 | 1\.0\.13\.106 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 | May 3, 2019 | 1\.0\.13\.90 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
@@ -37,6 +39,8 @@ To download the latest connector for Hyper\-V/SCVMM environments, open [https://
 
 | Release date | Version | Comment | 
 | --- | --- | --- | 
+| April 28, 2020 | 1\.1\.0\.522 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
+| April 22, 2020 | 1\.1\.0\.515 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 | April 6, 2020 | 1\.1\.0\.505 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 | December 12, 2018 | 1\.1\.0\.378 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 | December 5, 2018 | 1\.1\.0\.364 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
