@@ -1,34 +1,34 @@
 # Troubleshooting AWS SMS<a name="troubleshoot-sms"></a>
 
-The following information can help you troubleshoot issues with errors that you might encounter when using AWS SMS\. Before using these procedures, confirm that your SMS setup and the server you are trying to migrate meet the requirements in [Server Migration Service \(SMS\) Requirements](prereqs.md)\.
+The following information can help you troubleshoot issues with errors that you might encounter when using AWS SMS\. Before using these procedures, confirm that your SMS setup and the server you are trying to migrate meet the requirements in [Requirements for AWS Server Migration Service](prereqs.md)\.
 
 **Topics**
-+ [Failure When Registering the Connector](#failure-registering-connector)
-+ [Certificate Error When Uploading a VM to Amazon S3](#sms-cert-mismatch)
-+ [Server Migration Connector Fails To Connect To AWS with Error "PKIX path building failed"](#cert-re-signing)
++ [Failure when registering the connector](#failure-registering-connector)
++ [Certificate error when uploading a VM to Amazon S3](#sms-cert-mismatch)
++ [Server Migration Connector fails to connect to AWS with error "PKIX path building failed"](#cert-re-signing)
 + [This CA Root certificate is not trusted](#ca-root-certificate-not-trusted)
-+ [Replication Run Fails During the Preparing Stage](#preparing-failure)
-+ [Replicated AMI Doesn't Support Some Instance Types for Launch](#unavailable-instance-types)
++ [Replication run fails during the preparing stage](#preparing-failure)
++ [Replicated AMI doesn't support some instance types for launch](#unavailable-instance-types)
 + [Failure to upload to Amazon S3](#failure-uploading-base-disks)
-+ [Incremental Replication Delta Exceeds 1 TB](#delta-migrations)
++ [Incremental replication delta exceeds 1 TB](#delta-migrations)
 
-## Failure When Registering the Connector<a name="failure-registering-connector"></a>
+## Failure when registering the connector<a name="failure-registering-connector"></a>
 
 If you encounter an issue registering the connector, contact [sms\-service@amazon\.com](mailto:sms-service@amazon.com)\.
 
-## Certificate Error When Uploading a VM to Amazon S3<a name="sms-cert-mismatch"></a>
+## Certificate error when uploading a VM to Amazon S3<a name="sms-cert-mismatch"></a>
 
 The connector may fail to replicate your VM because the VM is on an ESXi host with an SSL certificate problem\. If this occurs, you see the following error message displayed in the **Latest run's status message** section: "ServerError: Failed to upload base disk\(s\) to S3\. Please try again\. If this problem persists, please contact AWS Support: vSphere certificate hostname mismatch: Certificate for <*somehost\.somedomain\.com*> doesn't match any of the subject alternative names: \[*localhost\.localdomain*\]\."
 
 You can override this ESXi host certificate problem by completing the following tasks:
 
 **Topics**
-+ [Upgrade Your Connector](#upgrade)
-+ [Re\-Register Your Connector](#reregister)
++ [Upgrade your connector](#upgrade)
++ [Re\-register your connector](#reregister)
 
-### Upgrade Your Connector<a name="upgrade"></a>
+### Upgrade your connector<a name="upgrade"></a>
 
-This section is for customers who are manually upgrading the connector\. If you have previously configured automatic upgrades, skip these steps and continue to [Re\-Register Your Connector](#reregister)\.
+This section is for customers who are manually upgrading the connector\. If you have previously configured automatic upgrades, skip these steps and continue to [Re\-register your connector](#reregister)\.
 
 **To upgrade your connector**
 
@@ -40,7 +40,7 @@ This section is for customers who are manually upgrading the connector\. If you 
 
 1. Wait for the connector to finish upgrading to version 1\.0\.11\.13 or later\.
 
-### Re\-Register Your Connector<a name="reregister"></a>
+### Re\-register your connector<a name="reregister"></a>
 
 This section applies to all customers encountering the certificate mismatch problem\.
 
@@ -64,7 +64,7 @@ This section applies to all customers encountering the certificate mismatch prob
 
 1. In the AWS SMS console, delete and restart your stuck replication jobs\.
 
-## Server Migration Connector Fails To Connect To AWS with Error "PKIX path building failed"<a name="cert-re-signing"></a>
+## Server Migration Connector fails to connect to AWS with error "PKIX path building failed"<a name="cert-re-signing"></a>
 
 In some customer environments, secure network traffic is proxied through a certificate re\-signing mechanism for auditing and management purposes\. This can cause your AWS credentials to fail when the connector attempts to contact AWS SMS\. The error message contains "PKIX path building failed," indicating that an invalid certificate was presented\.
 
@@ -117,7 +117,7 @@ Authorities store.
 
 You can safely ignore this message\.
 
-## Replication Run Fails During the Preparing Stage<a name="preparing-failure"></a>
+## Replication run fails during the preparing stage<a name="preparing-failure"></a>
 
 In some cases, AWS SMS allows a replication job to continue scheduling incremental replication runs even when the latest replication run has failed\. When the maximum allowed number of consecutive failures is reached, the default behavior for a replication job is to be paused\. The job can be resumed within four days, after which it is deleted\. In such cases, the Amazon EBS snapshots from the latest replication run are shared with the customer account, and a status message for the failed replication run is sent\. The message contains the snapshot IDs and states the reason for the failure\. A typical status message resembles the following:
 
@@ -131,7 +131,7 @@ The reason for replication\-run failures \(including first\-boot failures\) ofte
 
 If you need further help with resolving a problem, contact AWS Support\. EBS snapshots generated during a failed migration are shared with your account, and the snapshot IDs are included in the status message for the replication job\. Be sure to have these details available when you contact AWS Support\.
 
-## Replicated AMI Doesn't Support Some Instance Types for Launch<a name="unavailable-instance-types"></a>
+## Replicated AMI doesn't support some instance types for launch<a name="unavailable-instance-types"></a>
 
 Some instances require ENA support\. If the migration does not enable ENA support, then the replicated AMI does not allow you to launch instances that require ENA support\.
 
@@ -149,7 +149,7 @@ returned HTTP response code: 500 for URL: https://<url>
 
 Verify that the VMDK is snapshottable and that the VM does not have any mounted ISOs\.
 
-## Incremental Replication Delta Exceeds 1 TB<a name="delta-migrations"></a>
+## Incremental replication delta exceeds 1 TB<a name="delta-migrations"></a>
 
 The connector is designed to handle frequent replication with small deltas\. The connector does not support deltas larger than 1 TB\. If you do not replicate on a regular basis, the delta can exceed this limit and the replication run fails\.
 

@@ -9,9 +9,9 @@ Security is a shared responsibility between AWS and you\. The [shared responsibi
 This documentation helps you understand how to apply the shared responsibility model when using AWS SMS\. It shows you how to configure AWS SMS to meet your security and compliance objectives\. You also learn how to use other AWS services that help you to monitor and secure your AWS SMS resources\.
 
 **Topics**
-+ [Data Protection in AWS Server Migration Service](data-protection.md)
-+ [Identity and Access Management for AWS Server Migration Service](identity-access-management.md)
-+ [Service\-Linked Roles for AWS SMS](using-service-linked-roles.md)
-+ [Resilience in AWS Server Migration Service](disaster-recovery-resiliency.md)
-+ [Infrastructure Security in AWS Server Migration Service](infrastructure-security.md)
-+ [Compliance Validation for AWS Server Migration Service](compliance-validation.md)
++ [Data protection](data-protection.md)
++ [Identity and access management](identity-access-management.md)
++ [Service\-linked roles](using-service-linked-roles.md)
++ [Resilience](disaster-recovery-resiliency.md)
++ [Infrastructure security](infrastructure-security.md)
++ [Compliance validation](compliance-validation.md)

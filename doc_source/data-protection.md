@@ -1,4 +1,4 @@
-# Data Protection in AWS Server Migration Service<a name="data-protection"></a>
+# Data protection in AWS Server Migration Service<a name="data-protection"></a>
 
 AWS Server Migration Service conforms to the AWS [shared responsibility model](http://aws.amazon.com/compliance/shared-responsibility-model/), which includes regulations and guidelines for data protection\. AWS is responsible for protecting the global infrastructure that runs all the AWS services\. AWS maintains control over data hosted on this infrastructure, including the security configuration controls for handling customer content and personal data\. AWS customers and APN partners, acting either as data controllers or data processors, are responsible for any personal data that they put in the AWS Cloud\. 
 
@@ -12,3 +12,11 @@ For data protection purposes, we recommend that you protect AWS account credenti
 We strongly recommend that you never put sensitive identifying information, such as your customers' account numbers, into free\-form fields or metadata, such as function names and tags\. Any data that you enter into metadata might get picked up for inclusion in diagnostic logs\. When you provide a URL to an external server, don't include credentials information in the URL to validate your request to that server\.
 
 For more information about data protection, see the [AWS Shared Responsibility Model and GDPR](http://aws.amazon.com/blogs/security/the-aws-shared-responsibility-model-and-gdpr/) blog post on the *AWS Security Blog*\.
+
+## Encryption at rest<a name="encryption-rest"></a>
+
+When replicating server volumes from your on\-premises environment, AWS SMS stores data temporarily in an intermediate S3 bucket\. After replication is complete, AWS SMS deletes this data stored Amazon S3\. Otherwise, AWS SMS does not store your data at rest\.
+
+## Encryption in transit<a name="encryption-transit"></a>
+
+Data in transit is encrypted using TLS\. This includes traffic from the client to the AWS SMS console, the Server Migration Connector to Amazon S3, and the Server Migration Connector to AWS SMS\.

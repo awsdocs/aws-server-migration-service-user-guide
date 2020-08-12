@@ -1,8 +1,8 @@
-# Replicate VMs Using AWS SMS on the Command Line<a name="cli_workflow"></a>
+# Replicate VMs using AWS CLI commands for AWS SMS<a name="cli_workflow"></a>
 
 You can use the AWS Command Line Interface \(AWS CLI\) to inventory and migrate your on\-premises servers to Amazon EC2\.
 
-If you have enabled integration between AWS SMS and AWS Migration Hub, your SMS server catalog will be also visible on Migration Hub\. For more information, see [Importing Applications from Migration Hub](application-migration.md#migration-hub)\.
+If you have enabled integration between AWS SMS and AWS Migration Hub, your SMS server catalog will be also visible on Migration Hub\. For more information, see [Import applications from Migration Hub](application-migration.md#migration-hub)\.
 
 During the replication process, AWS SMS creates an Amazon S3 bucket in the Region on your behalf, with server\-side encryption enabled and a bucket policy to delete any items in the bucket after seven days\. AWS SMS replicates server volumes from your environment to this bucket and then creates EBS snapshots from the volumes\. If you do not delete this bucket, AWS SMS uses it for all replication jobs in this Region\.
 
@@ -14,7 +14,7 @@ During the replication process, AWS SMS creates an Amazon S3 bucket in the Regio
   aws iam create-service-linked-role --aws-service-name sms.amazonaws.com
   ```
 
-  For more information, see [Service\-Linked Roles for AWS SMS](using-service-linked-roles.md)\.
+  For more information, see [Service\-linked roles for AWS SMS](using-service-linked-roles.md)\.
 
 **To replicate a server using the CLI**
 

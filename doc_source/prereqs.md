@@ -1,18 +1,18 @@
-# Server Migration Service \(SMS\) Requirements<a name="prereqs"></a>
+# Requirements for AWS Server Migration Service<a name="prereqs"></a>
 
 Your VMware vSphere, Microsoft Hyper\-V/SCVMM, or Microsoft Azure environment must meet the following requirements for you to use the Server Migration Service to migrate your on\-premises virtualized servers to Amazon EC2\.
 
 **Topics**
-+ [General Requirements](#general-requirements)
-+ [Operating Systems Supported by AWS SMS](#os_prereqs)
-+ [Volume Types and File Systems Supported by AWS SMS](#volume-types-file-systems)
-+ [Configure an IAM User for Server Migration Connector](#connector-permissions)
-+ [Permissions for IAM Users](#permissions-roles)
++ [General requirements](#general-requirements)
++ [Operating systems](#os_prereqs)
++ [Volume types and file systems](#volume-types-file-systems)
++ [Configure an IAM user for Server Migration Connector](#connector-permissions)
++ [Permissions for IAM users](#permissions-roles)
 + [Limitations](#limitations)
-+ [Licensing Options](#licensing)
-+ [Other Requirements](#other_prereqs)
++ [Licensing options for AWS SMS](#licensing)
++ [Other requirements](#other_prereqs)
 
-## General Requirements<a name="general-requirements"></a>
+## General requirements<a name="general-requirements"></a>
 
 Before setting up AWS SMS, take action as needed to meet all of the following requirements\.
 
@@ -42,7 +42,7 @@ Before setting up AWS SMS, take action as needed to meet all of the following re
   + JFS
   + XFS
 
-**Programmatic Modifications to VMs**  
+**Programmatic modifications to VMs**  
 When importing a VM, AWS modifies the file system to make the imported VM accessible to the customer\. The following actions may occur:
 + \[Linux\] Installing Citrix PV drivers either directly in OS or modify initrd/initramfs to contain them\.
 + \[Linux\] Modifying network scripts to replace static IP addresses with dynamic IP addresses\.
@@ -54,7 +54,7 @@ When importing a VM, AWS modifies the file system to make the imported VM access
 
 When writing a modified file, AWS retains the original file at the same location under a new name\.
 
-## Operating Systems Supported by AWS SMS<a name="os_prereqs"></a>
+## Operating systems<a name="os_prereqs"></a>
 
 The following operating systems can be migrated to EC2 using SMS:
 
@@ -92,7 +92,7 @@ The following operating systems can be migrated to EC2 using SMS:
 + Oracle Linux 7\.0\-7\.6 using RHEL compatible kernel 3\.10\.0 or UEK kernels 3\.8\.13, 4\.1\.12, 4\.14\.35
 + Fedora Server 19\-21
 
-## Volume Types and File Systems Supported by AWS SMS<a name="volume-types-file-systems"></a>
+## Volume types and file systems<a name="volume-types-file-systems"></a>
 
 AWS Server Migration Service supports migrating Windows and Linux instances with the following file systems:
 
@@ -100,7 +100,7 @@ AWS Server Migration Service supports migrating Windows and Linux instances with
 
 AMIs with volumes using EBS encryption are not supported\. When migrating servers using AWS SMS, do not turn on encryption by default\. If encryption by default is already on and you are experiencing delta replication failures, turn off this feature\.
 
-## Configure an IAM User for Server Migration Connector<a name="connector-permissions"></a>
+## Configure an IAM user for Server Migration Connector<a name="connector-permissions"></a>
 
 **To create an IAM user for Server Migration Connector in your AWS account**
 
@@ -108,7 +108,7 @@ AMIs with volumes using EBS encryption are not supported\. When migrating server
 
 1. Attach the managed IAM policy **ServerMigrationConnector** to the IAM user\. For more information, see [Managed Policies and Inline Policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html)\.
 
-## Permissions for IAM Users<a name="permissions-roles"></a>
+## Permissions for IAM users<a name="permissions-roles"></a>
 
 By default, IAM users do not have permissions required to use AWS SMS\. IAM users with administrator permissions already have full access to AWS SMS\. Otherwise, you can add the AWS managed policy **ServerMigrationServiceConsoleFullAccess** to ensure that IAM users have the permissions required to use AWS SMS\.
 
@@ -117,20 +117,20 @@ By default, IAM users do not have permissions required to use AWS SMS\. IAM user
 The following limitations apply\.
 
 **Topics**
-+ [Image Format](#image-format)
-+ [File System](#file-system)
++ [Image format](#image-format)
++ [File system](#file-system)
 + [Booting](#boot)
 + [Networking](#networking)
-+ [Application Import from Migration Hub](#migration-hub-requirements)
++ [Application import from Migration Hub](#migration-hub-requirements)
 + [Miscellaneous](#miscellaneous)
 
-### Image Format<a name="image-format"></a>
+### Image format<a name="image-format"></a>
 + When migrating VMs managed by Hyper\-V/SCVMM, SMS supports both Generation 1 VMs \(using either VHD or VHDX disk format\) and Generation 2 VMs \(VHDX only\)\.
 + AWS SMS does not support VMs on Hyper\-V running any version of RHEL 5 if backed by a VHDX disk\. We recommend converting disks in this format to VHD for migration\.
 + AWS SMS does not support VMs that have a mix of VHD and VHDX disk files\.
 + On VMware, AWS SMS does not support VMs that use Raw Device Mapping \(RDM\)\. Only VMDK disk images are supported\.
 
-### File System<a name="file-system"></a>
+### File system<a name="file-system"></a>
 + Migrated Linux VMs must use 64\-bit images\. Migrating 32\-bit Linux images is not supported\.
 + Migrated Linux VMs should use default kernels for best results\. VMs that use custom Linux kernels might not migrate successfully\.
 + When preparing Amazon EC2 Linux VMs for migration, make sure that at least 250 MiB of disk space is available on the root volume for installing drivers and other software\. For Microsoft Windows VMs, configure a fixed pagefile size and ensure that at least 6 GiB of free space is available on the root volume\.
@@ -148,7 +148,7 @@ When AWS detects a Windows GPT boot volume with an UEFI boot partition, it conve
 + A VM migrated into a VPC does not receive a public IP address, regardless of the auto\-assign public IP setting for the subnet\. Instead, you can allocate an Elastic IP address to your account and associate it with your instance\.
 + Internet Protocol version 6 \(IPv6\) IP addresses are not supported\.
 
-### Application Import from Migration Hub<a name="migration-hub-requirements"></a>
+### Application import from Migration Hub<a name="migration-hub-requirements"></a>
 + SMS imports application\-related servers from AWS Migration Hub only if they exist in the SMS Server Catalog\. As a result, some applications may only be partially migrated\.
 +  If none of the servers in a Migration Hub application exist in the SMS Server Catalog, the import will fail silently and the application will not be visible in SMS\.
 + Imported applications can be migrated but cannot be edited in SMS\. They can, however, be edited in Migration Hub\. 
@@ -163,9 +163,9 @@ When AWS detects a Windows GPT boot volume with an UEFI boot partition, it conve
 + Windows language packs that use UTF\-16 \(or non\-ASCII\) characters are not supported for import\. We recommend using the English language pack when importing Windows Server 2003, Windows Server 2008, and Windows Server 2012 R1 VMs\.
 + For Windows Server 2003, disable Windows driver\-signing checks before migrating\.
 
-## Licensing Options<a name="licensing"></a>
+## Licensing options for AWS SMS<a name="licensing"></a>
 
-When you create a new replication job, the AWS Server Migration Service console provides a **License type** option\. The possible values include:
+When you create a new replication job, the AWS Server Migration Service console provides a **License type** option\. If you choose a license type that is incompatible with your VM, the replication job fails with an error message\. The possible values are:
 + **Auto** \(default\)
 
   Detects the source\-system operating system \(OS\) and applies the appropriate license to the migrated virtual machine \(VM\)\.
@@ -176,20 +176,17 @@ When you create a new replication job, the AWS Server Migration Service console 
 
   Retains the source\-system license, if appropriate, on the migrated VM\.
 
-**Note**  
-If you choose a license type that is incompatible with your VM, the replication job fails with an error message\. For more information, see the OS\-specific information below\.
-
-The same licensing options are available through the AWS SMS API and CLI\. For example:
+The same licensing options are available through AWS SMS API and CLI\. For example:
 
 ```
-aws sms create-replication-job --license-type <value>
+aws sms create-replication-job --license-type value
 ```
 
-The value of the `--license-type` parameter can be AWS or BYOL\. Leaving it unset is the same as choosing **Auto** in the console\. 
+The value of the `--license-type` parameter can be AWS or BYOL\. Leaving it unset is the same as choosing **Auto** in the console\.
 
 ### Licensing for Linux<a name="linux"></a>
 
-Linux operating systems support only BYOL licenses\. Choosing **Auto** \(the default\) means that AWS SMS uses a BYOL license\.
+Linux operating systems support only BYOL licenses\. Choosing **Auto** \(the default\) means that SMS uses a BYOL license\.
 
 Migrated Red Hat Enterprise Linux \(RHEL\) VMs must use Cloud Access \(BYOL\) licenses\. For more information, see [Red Hat Cloud Access](https://www.redhat.com/en/technologies/cloud-computing/cloud-access) on the Red Hat website\.
 
@@ -197,22 +194,22 @@ Migrated SUSE Linux Enterprise Server VMs must use SUSE Public Cloud Program \(B
 
 ### Licensing for Windows<a name="windows"></a>
 
-Windows server operating systems support either BYOL or AWS licenses\. Windows client operating systems \(such as Windows 10\) support only BYOL licenses\. 
+Windows server operating systems support either BYOL or AWS licenses\. Windows client operating systems \(such as Windows 10\) support only BYOL licenses\.
 
-If you choose **Auto** \(the default\), AWS SMS uses the AWS license if the VM has a server OS\. Otherwise, the BYOL license is used\. 
+If you choose **Auto** \(the default\), AWS SMS uses the AWS license if the VM has a server OS\. If the VM has a client OS, the BYOL license is used\.
 
 The following rules apply when you use your BYOL Microsoft license, either through MSDN or [Windows Software Assurance Per User](http://download.microsoft.com/download/5/c/7/5c727885-ec15-4920-818b-4d140ec6c38a/Windows_SA_per_User_at_a_Glance.pdf):
-+ Your BYOL instances are priced at the prevailing Amazon EC2 Linux instance pricing, provided that you meet the following conditions: 
++ Your BYOL instances are priced at the prevailing Amazon EC2 Linux instance pricing, provided that you meet the following conditions:
   + Run on a Dedicated Host \([Dedicated Hosts](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-hosts-overview.html)\)
   + Launch from VMs sourced from software binaries provided by you using AWS SMS, which are subject to the current terms and abilities of AWS SMS
   + Designate the instances as BYOL instances
-  + Run the instances within your designated AWS regions, and where AWS offers the BYOL model
-  + Activate using Microsoft keys that you provide or which are used in your key management system
-+ You must account for the fact that when you start an Amazon EC2 instance, it can run on any one of many servers within an Availability Zone\. This means that each time you start an Amazon EC2 instance \(including a stop/start\), it may run on a different server within an Availability Zone\. You must account for this fact in light of the limitations on license reassignment, as described in the Microsoft Volume Licensing Product Terms available at [Licensing Terms](https://www.microsoft.com/en-us/licensing/product-licensing/products.aspx), or consult your specific use rights to determine if your rights are consistent with this usage\.
+  + Run the instances within your designated AWS Regions, and where AWS offers the BYOL model
+  + Activate using Microsoft keys that you provide or are used in your key management system
++ You must account for the fact that when you start an Amazon EC2 instance, it can run on any one of many servers within an Availability Zone\. This means that each time you start an Amazon EC2 instance \(including a stop/start\), it might run on a different server within an Availability Zone\. You must account for this fact in light of the limitations on license reassignment as described in Microsoft Volume Licensing Product Terms, available at [Licensing Terms](https://www.microsoft.com/en-us/licensing/product-licensing/products.aspx), or consult your specific use rights to determine if your rights are consistent with this usage\.
 + You must be eligible to use the BYOL program for the applicable Microsoft software under your agreements with Microsoft, for example, under your MSDN user rights or under your Windows Software Assurance Per User Rights\. You are solely responsible for obtaining all required licenses and for complying with all applicable Microsoft licensing requirements, including the PUR/PT\. Further, you must have accepted Microsoft's End User License Agreement \(Microsoft EULA\), and by using the Microsoft Software under the BYOL program, you agree to the Microsoft EULA\.
 + AWS recommends that you consult with your own legal and other advisers to understand and comply with the applicable Microsoft licensing requirements\. Usage of the Services \(including usage of the **licenseType** parameter and **BYOL** flag\) in violation of your agreements with Microsoft is not authorized or permitted\.
 
-## Other Requirements<a name="other_prereqs"></a>
+## Other requirements<a name="other_prereqs"></a>
 
 **Support for VMware vMotion**
 
@@ -227,5 +224,11 @@ VMs on vSAN datastores are only supported when **Replication job type** on the *
 **Support for VMware Virtual Volumes \(VVol\)**  
 AWS does not provide support for migrating VMware Virtual Volumes\. Some implementations may work, however\.
 
-**VMs with Snapshots**  
+**VMware VMs with snapshots**  
 AWS SMS supports only one\-time migration on VMs where snapshot\-based backup software is used\. Also, avoid creating snapshots on VMs replicated through AWS SMS\. 
+
+**Hyper\-V checkpoints**  
+AWS SMS does not support VMs with existing checkpoints\.
+
+**Hyper\-V differencing disk**  
+AWS SMS does not support VMs with differencing disks\.

@@ -1,13 +1,13 @@
-# Release Notes for Server Migration Connector<a name="release-notes"></a>
+# Release notes for Server Migration Connector<a name="release-notes"></a>
 
 The following tables describe the release history of the Server Migration Connector\.
 
 **Topics**
-+ [Releases for vCenter Environments](#vmware-releases)
-+ [Releases for Hyper\-V/SCVMM Environments](#hyper-v-releases)
-+ [Releases for Azure Environments](#azure-releases)
++ [Releases for vCenter environments](#vmware-releases)
++ [Releases for Hyper\-V/SCVMM environments](#hyper-v-releases)
++ [Releases for Azure environments](#azure-releases)
 
-## Releases for vCenter Environments<a name="vmware-releases"></a>
+## Releases for vCenter environments<a name="vmware-releases"></a>
 
 To download the latest connector for vCenter environments, open [https://s3\.amazonaws\.com/sms\-connector/AWS\-SMS\-Connector\.ova](https://s3.amazonaws.com/sms-connector/AWS-SMS-Connector.ova)\.
 
@@ -32,7 +32,7 @@ To download the latest connector for vCenter environments, open [https://s3\.ama
 |  May 5, 2017  | 1\.0\.5\.2 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 | Nov 3, 2016 | 1\.0\.0\.84 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 
-## Releases for Hyper\-V/SCVMM Environments<a name="hyper-v-releases"></a>
+## Releases for Hyper\-V/SCVMM environments<a name="hyper-v-releases"></a>
 
 To download the latest connector for Hyper\-V/SCVMM environments, open [https://s3\.amazonaws\.com/sms\-connector/AWS\-SMS\-Connector\-for\-SCVMM\-HyperV\.zip](https://s3.amazonaws.com/sms-connector/AWS-SMS-Connector-for-SCVMM-HyperV.zip)\.
 
@@ -50,7 +50,7 @@ To download the latest connector for Hyper\-V/SCVMM environments, open [https://
 |  February 28, 2018  | 1\.1\.0\.x |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 |  December 14, 2017  | 1\.1\.0\.76 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 
-## Releases for Azure Environments<a name="azure-releases"></a>
+## Releases for Azure environments<a name="azure-releases"></a>
 
 To download the latest connector for Azure environments, open [https://s3\.amazonaws\.com/sms\-connector/aws\-sms\-azure\-setup\.ps1](https://s3.amazonaws.com/sms-connector/aws-sms-azure-setup.ps1)\.
 

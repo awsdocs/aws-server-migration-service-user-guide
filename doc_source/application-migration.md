@@ -1,4 +1,4 @@
-# Migrate Applications Using AWS SMS<a name="application-migration"></a>
+# Migrate applications using AWS SMS<a name="application-migration"></a>
 
 AWS Server Migration Service supports the automated migration of multi\-server application stacks from your on\-premises data center to Amazon EC2\. Where server migration is accomplished by replicating a single server as an Amazon Machine Image \(AMI\), application migration replicates all of the servers in an application as AMIs and generates an AWS CloudFormation template to launch them in a coordinated fashion\.
 
@@ -17,28 +17,36 @@ You can replicate your on\-premises servers to AWS for up to 90 days per server\
 **Note**  
 Application migration from Microsoft Azure environments is supported, but the Server Migration Connector for Azure does not currently guarantee the closeness of the server snapshots in the application\. 
 
-## Using Application Migration<a name="using-application-migration"></a>
+## Use application migration<a name="using-application-migration"></a>
 
-This section provides step\-by\-step procedures for creating, configuring, replicating, and launching applications\.
+You can perform the following tasks\.
+
+**Topics**
++ [Create an application](#create-application)
++ [Configure replication settings](#configure-replication-settings)
++ [Configure launch settings](#configure-launch-settings)
++ [Start replication](#start-replication)
++ [Launch an application](#launch-application)
++ [Generate a CloudFormation template](#generate-cfn-template)
+
+### Create an application<a name="create-application"></a>
 
 **To create an application**
 
 1. Open the AWS SMS console at [https://console\.aws\.amazon\.com/servermigration/](https://console.aws.amazon.com/servermigration/)\.
 
-1. Choose **Applications**\. On the **Applications** page, you can view your existing applications \(if any\)\. 
+1. Choose **Applications**\. 
 
 1. Choose **Create new application**\. 
 
-1. On the **Create new application** page, under **Application settings**, supply the following information and then choose **Next**:
+1. On the **Application settings** page, provide the following information and then choose **Next**:
    + **Application name** — Specify a name for the application\.
    + **Application description** — Optionally, specify a description for the application\.
-   + **Role name** — Select **Allow automation role creation** to have AWS SMS create a service\-linked role on your behalf\. For more information, see [Service\-Linked Roles for AWS SMS](using-service-linked-roles.md)\. Select **Use my own role** to specify an existing IAM role to use\.
+   + **Role name** — Choose **Allow automation role creation** to have AWS SMS create a service\-linked role on your behalf or **Use my own role** to specify an existing IAM role\. For more information, see [Service\-linked roles for AWS SMS](using-service-linked-roles.md)\. This option is not available if AWS SMS has already created the service\-linked role on your behalf\.
 
-1. Under **Select servers**, select the available servers to include in the application\. In the search bar, you can filter the table contents on specific values\. Choose **Next: Add servers to groups**\.
-**Note**  
-Ungrouped servers are added to a default group\.
+1. On the **Select servers** page, select the available servers to include in the application\. You can use the search bar to filter the table contents on specific values\. Choose **Next: Add servers to groups**\.
 
-1. Under **Add servers to groups**, you can create groups, delete groups, add selected servers from your application to groups, and remove servers from groups\. 
+1. On the **Add servers to groups** page, you can create groups, delete groups, add selected servers from your application to groups, and remove servers from groups\. Ungrouped servers are associated with a default group\.
 
    Complete the following steps to add one or more servers to a new group:
 
@@ -46,92 +54,109 @@ Ungrouped servers are added to a default group\.
 
    1. Choose **Add servers to group**\.
 
-   1. Under **Add servers to group**, choose **Add to new group** and provide a name for the group\.
+   1. Choose **Add to new group** and provide a name for the group\.
 
    1. Choose **Add**\. The list of servers now displays the associated group for each server that you selected\.
 
-1. After creating one or more groups, you can delete a group by completing the following steps:
+1. If you delete a group, the servers are associated with the default group\. To delete a group, complete the following steps:
 
    1. Choose **Delete group**\.
 
-   1. For **Group to delete**, choose a group\.
+   1. For **Group to delete**, choose the group\.
 
    1. Choose **Delete**\.
 
-   Deleting a group has no effect on servers that belong to it\.
+1. On the **Add tags** page, optionally tag your applications\. A tag is a key/value pairs that propagates to all servers created when the application is launched\. Choose **Next**\.
 
-1. Under **Add tags**, tag your applications with key/value pairs that propagate to all of the servers created when the application is launched\. Choose **Next**\. 
+1. On the **Review** page, edit your settings as needed\. When you are finished, choose **Create**\. From the status page, you can proceed directly to configure replication settings\.
 
-1. Under **Review**, you can review and edit your application and group settings\. When you are satisfied that the settings are correct, choose **Create**\. From the status page, you can proceed directly to **Configure replication settings**\.
+### Configure replication settings<a name="configure-replication-settings"></a>
 
 **To configure replication settings for an application**
 
 1. Open the AWS SMS console at [https://console\.aws\.amazon\.com/servermigration/](https://console.aws.amazon.com/servermigration/)\.
 
-1. Choose **Applications**\. On the **Applications** page, you can view the available applications\.
+1. Choose **Applications** to view the available applications\.
 
-1. Select the name of the application to configure\.
+1. Select the name of the application\.
 
 1. Choose **Actions**, **Configure replication settings**\.
 
 1. On the **Replication settings** page, provide the following information and then choose **Next**:
-   + **Replication job type** — Specify the replication period \(1\-24 hours\) or choose **One\-time replication**\.
-   + **Start replication run** — Choose to start a replication run immediately, or choose **At a later time and date** and enter the information\. 
-   + **Enable automatic AMI deletion** — Choose **Yes** or **No**\.
+   + **Replication job type** — Specify the replication period \(every 1\-24 hours\) or choose **One\-time migration**\.
+   + **Start replication run** — Choose **Immediately** to schedule a replication run to start immediately or **At a later time and date** to start replication at the specified date and time, up to 30 days in the future\.
+   + **Enable automatic AMI deletion** — To enable automatic AMI deletion, choose **Yes** and specify the maximum number of AMIs to keep \(from 1\-270\)\. To disable automatic AMI deletion, choose **No**\.
+   + **Enable AMI encryption** — To enable AMI encryption, choose **Yes** and specify an encryption key \(using its key ID, Amazon Resource Name, or alias\) or leave blank to use the default key for EBS encryption\. To disable AMI encryption, choose **No**\.
 
-1. The **Server\-specific settings** page displays the application servers and their group memberships\. You can edit the following server settings individually or together:
+1. The **Server\-specific settings** page displays the application servers and their group memberships\. You can edit the following server settings for individual servers or choose **Edit multiple servers** to update these settings across groups\. When you are finished, choose **Next**\.
    + **License type** — Choose **Auto**, **AWS**, or **BYOL**\.
-   + **Quiesce** — Before taking a snapshot of the VM, halt data input/output and store the system memory state \(for VMware\)\.
+   + **Quiesce** — \[VMware only\] Before taking a snapshot of the VM, halt data input/output and store the system memory state\.
 
-1. Choose **Next**\.
+1. On the **Review** page, verify the replication settings and choose **Save**\. From the status page, you can proceed directly to configure launch settings\.
 
-1. Review the replication settings and choose **Save**\. From the status page, you can proceed directly to **Configure launch settings**\.
+### Configure launch settings<a name="configure-launch-settings"></a>
+
+Before you can configure network settings, you must set up a virtual private cloud, subnet, and security group, as described for the [RunInstances](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RunInstances.html) Amazon EC2 API action\.
 
 **To configure launch settings for an application**
 
 1. Open the AWS SMS console at [https://console\.aws\.amazon\.com/servermigration/](https://console.aws.amazon.com/servermigration/)\.
 
-1. Choose **Applications**\. On the **Applications** page, you can view the available applications\.
+1. Choose **Applications** to view the available applications\.
 
-1. Select the name of the application to configure\.
+1. Select the name of the application to configure and choose **Actions**, **Configure launch settings**\.
 
-1. Choose **Actions**, **Configure launch settings**\.
+1. On the **Configure launch settings** page, provide the following information and then choose **Next**:
+   + **IAM CloudFormation role** — Choose **Allow automation role creation** to have AWS SMS create a service\-linked role on your behalf or **Use my own role** to specify an existing IAM role\. For more information, see [Service\-linked roles for AWS SMS](using-service-linked-roles.md)\. This option is not available if AWS SMS has already created the service\-linked role on your behalf\.
+   + **Automatically launch after replication** — Select this option to launch the application automatically after replication is complete\.
+   + **Specify launch order** — Configure a launch order for your groups\.
 
-1. On the **Configure launch settings** page, for **IAM CloudFormation role**, specify a non\-default value\. Under **Specify launch order**, configure a launch order for your groups\. Choose **Next**\.
+1. On the **Configure target instance details** page, you can edit the following server settings for individual server or choose **Edit multiple servers** to update these settings across groups\. When you are finished, choose **Next**\.
+   + **Logical ID** — Specify the AWS CloudFormation resource ID or leave the default value\. This parameter is used as the logical ID of the CloudFormation template that AWS SMS generates for the application\. For more information, see [Resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html) in the *AWS CloudFormation User Guide*\.
+   + **Instance type** — Select the EC2 instance type for the server\. This field is required\.
+   + **Key pair** — Select the SSH key pair required to connect to the server\. This field is required\. If an IAM user does not have permission for `ec2:DescribeKeyPairs`, the list is empty\.
+   + **Configuration script** — A configuration script, located in Amazon S3, to run when starting EC2 instances launched as part of an application\. The bucket must have the following prefix: `sms-app-`\.
+   + **Script type** — Choose **Shell script** or **PowerShell script**\.
 
-1. Under **Configure launch settings** for the application, you can edit the following server settings individually or multiply:
-   + **Logical ID** — AWS CloudFormation resource ID\. This parameter is used as the logical ID of the CloudFormation template that AWS SMS generates for the application\. A value is created automatically when you use the console, but you must supply it manually when using the API, CLI, or SDKs\. For more information, see [Resources](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html) in the *AWS CloudFormation User Guide*\.
-   + **Instance type** — Specifies the EC2 instance type on which to launch the server\. This field is required\.
-   + **Key pair** — Specifies the SSH key pair that gives access to the server\. This field is required\.
-**Note**  
-If the logged\-in user does not have IAM permissions to list key pairs, this list will be empty\.
-   + **Configuration script** — A script to run configuration commands at startup of EC2 instances launched as part of an application\. 
+1. On the **Configure target network and security** page, you can edit the following server settings for individual servers or choose **Edit multiple servers** to update these settings across groups:
+   + **VPC** — The virtual private cloud for the application\. This field is required\. If an IAM user does not have permission for `ec2:DescribeVpcs`, the list is empty\.
+   + **Subnet** — The subnet for the application\. This field is required\. If an IAM user does not have permission for `ec2:DescribeSubnets`, the list is empty\.
+   + **Security group** — The security group for the application\. This field is required\. If an IAM user does not have permission for `ec2:DescribeSecurityGroups`, the list is empty\.
+   + **Publicly accessible** — Indicates whether the application should be accessible from the internet\.
 
-   Choose **Next**\.
+   Choose **Application validation** to configure application validation or **Review** to skip to the final step of this procedure\.
 
-1. Under **Configure target network and security** settings for the application, you can edit the following server settings individually or multiply\. Network settings require prior setup as described in [RunInstances](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RunInstances.html)\.
-**Note**  
-If the logged\-in user does not have IAM permissions to list VPCs, subnets, security groups, these lists will be empty\.
-   + **VPC** — VPC in which to deploy the application\. This field is required\.
-   + **Subnet** — Subnet in which to deploy the application\. This field is required\.
-   + **Security Group** — Security group membership for the application\. This field is required\.
-   + **Publicly Accessible** — Whether the application should be accessible from the internet\.
+1. \(Optional\) You can run validation scripts on your EC2 instances using AWS Systems Manager\. On the **Application validation** page, provide the following information, and then choose **Instance validation** to configure instance validation or **Review** to skip to the final step of this procedure:
+   + **Validation name** — A name for the validation\.
+   + **Validation script** — The location, in Amazon S3, of the validation script\. The bucket must have the following prefix: `sms-app-`\.
+   + **Script type** — Choose **Shell script** or **PowerShell script**\.
+   + **SSM managed instance** — The ID of the EC2 instance\. The instance must be managed by AWS Systems Manager and have the following tag: UserForSMSApplicationValidation=true\.
+   + **Output location** — The location, in Amazon S3, for the output of the validation script\. The bucket must have the following prefix: `sms-app-`\.
+   + **Execution command** — The command to run the script \(for example, \./script\.sh\)\.
+   + **Timeout in minutes** — The maximum time needed to run the script \(from 1\-480\)\. The default is 15\.
 
-   Choose **Next**\.
+1. \(Optional\) You can run a script when your EC2 instance first boots using Amazon EC2 user data\. On the **Instance validation** page, provide the following information, and then choose **Next**:
+   + **Permissions** — To allow AWS SMS to get the validation script from Amazon S3 and run it on the instance using EC2 user data, you must create a role that grants AWS SMS the permissions from the **ServerMigrationServiceRoleForInstanceValidation** policy\. Choose **Create a new role with default role policy** to have AWS SMS create the role on your behalf \(IAM users must have administrator permissions\) or **Use an existing role** \(IAM users must have permissions to pass a role to the `ec2.amazonaws.com` service\)\.
+   + **Validation name** — A name for the validation\.
+   + **Validation scripts** — The location, in Amazon S3, of the validation script\. The bucket must have the following prefix: `sms-app-`\.
 
-1. Review the launch configuration settings and choose **Save**\.
+1. On the **Review** page, verify the launch configuration settings and choose **Save**\.
+
+### Start replication<a name="start-replication"></a>
 
 **To start replicating an application**
 
 1. Open the AWS SMS console at [https://console\.aws\.amazon\.com/servermigration/](https://console.aws.amazon.com/servermigration/)\.
 
-1. Choose **Applications**\. On the **Applications** page, you can view the available applications\.
+1. Choose **Applications** to view the available applications\.
 
 1. Choose the name of the application to replicate\.
 
 1. On the application details page, choose **Actions**, **Start replication**\.
 
 1. In the **Start replication** window, choose **Start**\. Replication can take anywhere from 30 minutes to several days depending on the disk size\. On the application details page, you can observe the status of the replication in the **Replication status** field\. If the replication fails, you may be able to find the reason in the **Replication status message** field\.
+
+### Launch an application<a name="launch-application"></a>
 
 **To launch an application**
 
@@ -145,9 +170,11 @@ If the logged\-in user does not have IAM permissions to list VPCs, subnets, secu
 
 1. In the **Launch application** window, choose **Launch**\. On the application details page, you can observe the status of the launch in the **Launch status** field\. If the launch fails, you may be able to find the reason in the **Launch status message** field\.
 
-**To generate an AWS CloudFormation template for the application**
+### Generate a CloudFormation template<a name="generate-cfn-template"></a>
 
 Use the following procedure if you want to examine the AWS CloudFormation template that is auto\-generated when you launch the application\.
+
+**To generate an AWS CloudFormation template for the application**
 
 1. Open the AWS SMS console at [https://console\.aws\.amazon\.com/servermigration/](https://console.aws.amazon.com/servermigration/)\.
 
@@ -159,7 +186,7 @@ Use the following procedure if you want to examine the AWS CloudFormation templa
 
 1. In the **Generate template** window, choose **Generate**\.
 
-## Importing Applications from Migration Hub<a name="migration-hub"></a>
+## Import applications from Migration Hub<a name="migration-hub"></a>
 
 Application Migration supports the import and migration of applications discovered by AWS Migration Hub\.
 

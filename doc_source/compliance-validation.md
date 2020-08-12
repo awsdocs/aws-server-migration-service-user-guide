@@ -1,4 +1,4 @@
-# Compliance Validation for AWS Server Migration Service<a name="compliance-validation"></a>
+# Compliance validation for AWS Server Migration Service<a name="compliance-validation"></a>
 
 Third\-party auditors assess the security and compliance of AWS Server Migration Service as part of multiple AWS compliance programs\. These include SOC, PCI, FedRAMP, HIPAA, and others\.
 

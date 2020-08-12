@@ -122,7 +122,7 @@ As a best practice, we recommend that you limit vCenter permissions for the conn
 
 1. Choose **Upload logs automatically** and **Server Migration Connector auto\-upgrade**\.
 
-1. For **AWS Region**, choose your Region from the list\. For **AWS Credentials**, enter the IAM credentials that you created in [Permissions for IAM Users](prereqs.md#permissions-roles)\. Choose **Next**\.
+1. For **AWS Region**, choose your Region from the list\. For **AWS Credentials**, enter the IAM credentials that you created in [Permissions for IAM users](prereqs.md#permissions-roles)\. Choose **Next**\.
 
 1. For **vCenter Service Account**, enter the vCenter hostname, user name, and password from step 3\. Choose **Next**\.
 

@@ -1,8 +1,8 @@
-# Legacy IAM Roles for AWS SMS<a name="sms-legacy-iam-roles"></a>
+# Legacy IAM roles for AWS SMS<a name="sms-legacy-iam-roles"></a>
 
 Before the introduction of **AWSServiceRoleForSMS**, you would have been required to create a service role and a launch role to grant AWS SMS the permissions that it needs\. It is no longer necessary for you to create these roles\.
 
-## Configure a Service Role for AWS SMS<a name="service-role"></a>
+## Configure a service role for AWS SMS<a name="service-role"></a>
 
 Use the following procedure to create an IAM role that grants permissions to AWS SMS to place migrated resources into your Amazon EC2 account\.
 
@@ -22,7 +22,7 @@ Alternatively, you can apply a different name\. However, you must then specify t
 
 1. Choose **Create role**\. You should now see the **sms** role in the list of available roles\.
 
-## Configure a Launch Role for AWS SMS<a name="sms-launch-role"></a>
+## Configure a launch role for AWS SMS<a name="sms-launch-role"></a>
 
 If you plan to launch applications, you need an AWS SMS launch role\. You assign this role using the `PutAppLaunchConfiguration` API\. When the `LaunchApp` API is called, the role is used by AWS CloudFormation\. 
 

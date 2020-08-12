@@ -2,7 +2,7 @@
 
 You can use Amazon CloudWatch Events with AWS Server Migration Service to automate actions based on your migration workflow\. This requires you to create an IAM policy for Lambda to assume, a Lambda function to handle the event, and a CloudWatch Events rule that matches incoming events and routes them to the Lambda function\.
 
-## Handling CloudWatch Events Rules for AWS SMS<a name="using-lambda"></a>
+## Handling CloudWatch Events rules for AWS SMS<a name="using-lambda"></a>
 
 The following procedure uses an AWS Lambda function to monitor AWS SMS job state changes and launches an Amazon EC2 instance whenever an AMI ID has been created\.
 
