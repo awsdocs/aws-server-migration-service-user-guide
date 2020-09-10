@@ -12,10 +12,10 @@ After your servers are organized into applications and launch groups, you can sp
 
 Application migration relies on the procedures for discovering on\-premises resources described in [Install the Server Migration Connector](SMS_setup.md)\. After you have imported a server catalog into AWS SMS using the Server Migration Connector, you can configure settings for applications, replication, and launch, as well as monitor migration status, in the **Applications** section of the AWS SMS console\. You can also perform these tasks using the resources for AWS SMS in the AWS SMS API, AWS CLI, or AWS SDKs\.
 
-You can replicate your on\-premises servers to AWS for up to 90 days per server\. Usage time is calculated from the time a server replication begins until you terminate the replication job\. After 90 days, your replication job is automatically terminated\. You can request an extension from AWS Support\.
-
-**Note**  
-Application migration from Microsoft Azure environments is supported, but the Server Migration Connector for Azure does not currently guarantee the closeness of the server snapshots in the application\. 
+**Considerations**
++ You can replicate your on\-premises servers to AWS for up to 90 days per server\. Usage time is calculated from the time a server replication begins until you terminate the replication job\. After 90 days, your replication job is automatically terminated\. You can request an extension from AWS Support\.
++ During the AMI creation process, AWS SMS sets the `DeleteOnTermination` attribute for the root volume to false, overriding the default\. You can delete the root volume manually after you terminate the instance, or you can set the attribute to true so that Amazon EC2 deletes the root volume on instance termination\. For more information, see [Preserving Amazon EBS volumes on instance termination](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/terminating-instances.html#preserving-volumes-on-termination) in the *Amazon EC2 User Guide*\.
++ Application migration from Microsoft Azure environments is supported, but the Server Migration Connector for Azure does not currently guarantee the closeness of the server snapshots in the application\.
 
 ## Use application migration<a name="using-application-migration"></a>
 
@@ -136,7 +136,7 @@ Before you can configure network settings, you must set up a virtual private clo
    + **Timeout in minutes** — The maximum time needed to run the script \(from 1\-480\)\. The default is 15\.
 
 1. \(Optional\) You can run a script when your EC2 instance first boots using Amazon EC2 user data\. On the **Instance validation** page, provide the following information, and then choose **Next**:
-   + **Permissions** — To allow AWS SMS to get the validation script from Amazon S3 and run it on the instance using EC2 user data, you must create a role that grants AWS SMS the permissions from the **ServerMigrationServiceRoleForInstanceValidation** policy\. Choose **Create a new role with default role policy** to have AWS SMS create the role on your behalf \(IAM users must have administrator permissions\) or **Use an existing role** \(IAM users must have permissions to pass a role to the `ec2.amazonaws.com` service\)\.
+   + **Permissions** — To allow AWS SMS to get the validation script from Amazon S3 and run it on the instance using EC2 user data, you must create a role that grants AWS SMS the permissions from the **ServerMigrationServiceRoleForInstanceValidation** policy\. Choose **Create a new role with default role policy** to have AWS SMS create the role on your behalf \(IAM users must have administrator permissions\) or **Use an existing role** \(IAM users must have permission to pass a role to the `ec2.amazonaws.com` service\)\.
    + **Validation name** — A name for the validation\.
    + **Validation scripts** — The location, in Amazon S3, of the validation script\. The bucket must have the following prefix: `sms-app-`\.
 

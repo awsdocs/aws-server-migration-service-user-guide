@@ -1,10 +1,12 @@
 # Replicate VMs using the AWS SMS console<a name="console_workflow"></a>
 
-Use the AWS SMS console to import your server catalog and migrate your on\-premises servers to Amazon EC2\.
+You can use the AWS SMS console to import your server catalog and migrate your on\-premises servers to Amazon EC2\. For directions using the AWS Command Line Interface \(AWS CLI\), see [Replicate VMs using AWS CLI commands for AWS SMS](cli_workflow.md)\.
 
-If you have enabled integration between AWS SMS and AWS Migration Hub, your SMS server catalog will be also visible on Migration Hub\. For more information, see [Import applications from Migration Hub](application-migration.md#migration-hub)\.
-
-During the replication process, AWS SMS creates an Amazon S3 bucket in the Region on your behalf, with server\-side encryption enabled and a bucket policy to delete any items in the bucket after seven days\. AWS SMS replicates server volumes from your environment to this bucket and then creates EBS snapshots from the volumes\. If you do not delete this bucket, AWS SMS uses it for all replication jobs in this Region\.
+**Considerations**
++ You can replicate your on\-premises servers to AWS for up to 90 days per server\. Usage time is calculated from the time a server replication begins until you terminate the replication job\. After 90 days, your replication job is automatically terminated\. You can request an extension from AWS Support\.
++ If you have enabled integration between AWS SMS and AWS Migration Hub, your SMS server catalog is also visible on Migration Hub\. For more information, see [Import applications from Migration Hub](application-migration.md#migration-hub)\.
++ During the replication process, AWS SMS creates an Amazon S3 bucket in the Region on your behalf, with server\-side encryption enabled and a bucket policy to delete any items in the bucket after seven days\. AWS SMS replicates server volumes from your environment to this bucket and then creates EBS snapshots from the volumes\. If you do not delete this bucket, AWS SMS uses it for all replication jobs in this Region\.
++ During the AMI creation process, AWS SMS sets the `DeleteOnTermination` attribute for the root volume to false, overriding the default\. You can delete the root volume manually after you terminate the instance, or you can set the attribute to true so that Amazon EC2 deletes the root volume on instance termination\. For more information, see [Preserving Amazon EBS volumes on instance termination](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/terminating-instances.html#preserving-volumes-on-termination) in the *Amazon EC2 User Guide*\.
 
 **Topics**
 + [Replicate a server](#configure_replication)

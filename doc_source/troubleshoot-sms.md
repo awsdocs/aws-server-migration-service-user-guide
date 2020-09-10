@@ -3,14 +3,44 @@
 The following information can help you troubleshoot issues with errors that you might encounter when using AWS SMS\. Before using these procedures, confirm that your SMS setup and the server you are trying to migrate meet the requirements in [Requirements for AWS Server Migration Service](prereqs.md)\.
 
 **Topics**
++ [Log files for the connector](#connector-log-files)
 + [Failure when registering the connector](#failure-registering-connector)
 + [Certificate error when uploading a VM to Amazon S3](#sms-cert-mismatch)
 + [Server Migration Connector fails to connect to AWS with error "PKIX path building failed"](#cert-re-signing)
 + [This CA Root certificate is not trusted](#ca-root-certificate-not-trusted)
 + [Replication run fails during the preparing stage](#preparing-failure)
 + [Replicated AMI doesn't support some instance types for launch](#unavailable-instance-types)
-+ [Failure to upload to Amazon S3](#failure-uploading-base-disks)
++ [ServerError: Failure to upload base disk\(s\) to Amazon S3](#failure-uploading-base-disks)
++ [ServerError: Failed to validate replication job](#validation-errors)
++ [An internal error occurred\. Confirm that your AWS credentials and VM Manager credentials are correct\.](#credential-errors)
++ [Snapshot\-related errors \(VMware\)](#snapshot-errors)
++ [Checkpoint errors \(Hyper\-V\)](#checkpoint-errors)
 + [Incremental replication delta exceeds 1 TB](#delta-migrations)
+
+## Log files for the connector<a name="connector-log-files"></a>
+
+The Server Migration Connector provides log files that you can use to troubleshoot replication jobs that fail prior to completing the upload to Amazon S3\. Use the following procedure to download the connector log files\.
+
+**To download the connector log files**
+
+1. In a web browser, enter the IP address of the connector VM\.
+
+1. Log in to the connector\.
+
+1. Verify that the connector passes all checks\.
+
+1. Under **Support Links**, choose **Download Log Bundle**\.
+
+1. Extract the files in the log bundle\.
+
+The following connector log files are included in the log bundle:
++ `connector.log` – Check for connector configuration issues\.
++ `connectorsetup.log` – Check for detailed information about the initial configuration\.
++ `frontend.log` – Check for issues with connectivity to AWS endpoints\.
++ `metrics.log` – Check the throughput statistics and upload speeds \(see `UploadStats`\)\.
++ `netstat.log` – Check for network packet errors\.
++ `poller.log` – Confirm database polling activity\.
++ `sms-replication-poller-log` – Review activity from validation of the replication job through the disk is uploaded to Amazon S3\. For example, you can verify upload progress as a percentage and review the start and end of each phase of the replication job\.
 
 ## Failure when registering the connector<a name="failure-registering-connector"></a>
 
@@ -137,17 +167,53 @@ Some instances require ENA support\. If the migration does not enable ENA suppor
 
 Verify that ENA is enabled\. For more information, see [Enabling Enhanced Networking on Windows](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/enhanced-networking-ena.html#enable-enhanced-networking-ena-WIN) or [Enabling Enhanced Networking on Linux](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking-ena.html) in the Amazon EC2 documentation\.
 
-## Failure to upload to Amazon S3<a name="failure-uploading-base-disks"></a>
+## ServerError: Failure to upload base disk\(s\) to Amazon S3<a name="failure-uploading-base-disks"></a>
 
-The following error message indicates that the vCenter cannot export the VMDK\.
+**Possible causes**
++ The VMDK is not snapshottable or the VM has mounted ISOs\.
++ The connection to the hypervisor \(Hyper\-V or ESXi host\) timed out while the connector uploads buffered data to Amazon S3\.
++ Maintenance is being performed while the replication job uploads disks to Amazon S3\.
++ There is a compression issue with the virtual disk\.
++ There is a validation error with the hypervisor certificate\.
++ The status of the connector is `Unhealthy`\.
++ The connector cannot reach AWS endpoints\.
 
-```
-Error message: ServerError: Failed to upload base disk(s) to S3. Please try again. 
-If this problem persists, please contact AWS support: java.io.IOException: Server 
-returned HTTP response code: 500 for URL: https://<url>
-```
+## ServerError: Failed to validate replication job<a name="validation-errors"></a>
 
-Verify that the VMDK is snapshottable and that the VM does not have any mounted ISOs\.
+**Possible causes**
++ There is a change in the virtual machine path\.
++ There is a change in IAM permissions\.
++ There is a change in user or account permissions for the virtual environment\.
++ There is a configuration issue with WinRM \(Hyper\-V\)\.
++ There is a DNS resolution failure\.
++ There is an NTP configuration error on the connector VM\.
+
+## An internal error occurred\. Confirm that your AWS credentials and VM Manager credentials are correct\.<a name="credential-errors"></a>
+
+**Possible causes**
++ The IAM permissions are not sufficient to complete the connector setup\.
++ The user or account permissions for the virtual environment are not sufficient\.
++ There are issues with the IAM roles for AWS SMS\.
++ There are missing prerequisites\.
++ The VM environment is not prepared\.
++ Special characters were used when setting up the connector \(Hyper\-V\)\.
+
+## Snapshot\-related errors \(VMware\)<a name="snapshot-errors"></a>
+
+**Possible causes**
++ The VMDK is configured as an independent disk\.
++ The ESXi host cannot take a snapshot\.
++ The VMDK is locked\.
++ The snapshot chain is broken\. Ensure that no snapshots are taken between replication runs, either manually or by third\-party software\.
++ A previous replication run did not consolidate snapshots\.
+
+## Checkpoint errors \(Hyper\-V\)<a name="checkpoint-errors"></a>
+
+**Possible causes**
++ The VM has existing checkpoints\.
++ There are checkpoints created manually or by third\-party software\.
++ The VHD or VHDX is locked\.
++ The Hyper\-V host is unable to create a checkpoint\.
 
 ## Incremental replication delta exceeds 1 TB<a name="delta-migrations"></a>
 

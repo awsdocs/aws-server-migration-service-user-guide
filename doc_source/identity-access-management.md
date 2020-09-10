@@ -12,13 +12,14 @@ An IAM policy is a JSON document that consists of one or more statements\. Each 
 
 ```
 {
-  "Statement":[{
-    "Effect":"effect",
-    "Action":"action",
-    "Resource":"arn",
-    "Condition":{
-      "condition":{
-        "key":"value"
+  "Statement": [
+    {
+      "Effect": "effect",
+      "Action": "action",
+      "Resource": "arn",
+      "Condition": {
+        "condition": {
+          "key":"value"
         }
       }
     }
@@ -43,19 +44,57 @@ In an IAM policy statement, you can specify any API action from any service that
 To specify multiple actions in a single statement, separate them with commas as follows\.
 
 ```
-"Action": ["sms:action1", "sms:action2"]
+{
+  "Statement":[
+    {
+      "Effect": "Allow",
+      "Action": ["sms:action1", "sms:action2"],
+      "Resource": "*"
+    }
+  ]
+}
 ```
 
 You can also specify multiple actions using wildcards\. For example, you can specify all AWS SMS API actions whose name begins with the word "Get" as follows\.
 
 ```
-"Action": "sms:Get*"
+{
+  "Statement":[
+    {
+      "Effect": "Allow",
+      "Action": "sms:Get*",
+      "Resource": "*"
+    }
+  ]
+}
 ```
 
 To specify all AWS SMS API actions, use the \* wildcard as follows\.
 
 ```
-"Action": "sms:*"
+{
+  "Statement":[
+    {
+      "Effect": "Allow",
+      "Action": "sms:*",
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+The following statement restricts users from launching an application by enabling automatic launch after replication\.
+
+```
+{
+  "Statement":[
+    {
+      "Effect": "Deny",
+      "Action": "sms:LaunchApp",
+      "Resource": "*"
+    }
+  ]
+}
 ```
 
 ## Predefined AWS managed policies<a name="elb-predefined-policies"></a>
