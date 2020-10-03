@@ -29,6 +29,7 @@ Before setting up AWS SMS, take action as needed to meet all of the following re
 + Apply the following hotfixes:
   + [You cannot change system time if `RealTimeIsUniversal` registry entry is enabled in Windows](https://support.microsoft.com/en-us/help/2922223/you-cannot-change-system-time-if-realtimeisuniversal-registry-entry-is-enabled-in-windows)
   + [High CPU usage during DST changeover in Windows Server 2008, Windows 7, or Windows Server 2008 R2](https://support.microsoft.com/en-us/help/2800213/high-cpu-usage-during-dst-changeover-in-windows-server-2008,-windows-7,-or-windows-server-2008-r2.)
++ The following instance types are the only instance types that support 32\-bit AMIs: `t2.nano`, `t2.micro`, `t2.small`, `t2.medium`, `c3.large`, `t1.micro`, `m1.small`, `m1.medium`, and `c1.medium`\. If you are migrating a 32\-bit instance, you are limited to these instance types and the Regions that support them\.
 
 **Linux VMs**
 + Enable Secure Shell \(SSH\) for remote access\.
@@ -41,8 +42,12 @@ Before setting up AWS SMS, take action as needed to meet all of the following re
   + Btrfs
   + JFS
   + XFS
++ Migrated Linux VMs must use 64\-bit images\. Migrating 32\-bit Linux images is not supported\.
++ Migrated Linux VMs should use default kernels for best results\. VMs that use custom Linux kernels might not migrate successfully\.
++ When preparing Amazon EC2 Linux VMs for migration, make sure that at least 250 MiB of disk space is available on the root volume for installing drivers and other software\. For Microsoft Windows VMs, configure a fixed pagefile size and ensure that at least 6 GiB of free space is available on the root volume\.
 
-**Programmatic modifications to VMs**  
+**Programmatic modifications to VMs**
+
 When importing a VM, AWS modifies the file system to make the imported VM accessible to the customer\. The following actions may occur:
 + \[Linux\] Installing Citrix PV drivers either directly in OS or modify initrd/initramfs to contain them\.
 + \[Linux\] Modifying network scripts to replace static IP addresses with dynamic IP addresses\.
@@ -118,7 +123,6 @@ The following limitations apply\.
 
 **Topics**
 + [Image format](#image-format)
-+ [File system](#file-system)
 + [Booting](#boot)
 + [Networking](#networking)
 + [Application import from Migration Hub](#migration-hub-requirements)
@@ -129,11 +133,6 @@ The following limitations apply\.
 + AWS SMS does not support VMs on Hyper\-V running any version of RHEL 5 if backed by a VHDX disk\. We recommend converting disks in this format to VHD for migration\.
 + AWS SMS does not support VMs that have a mix of VHD and VHDX disk files\.
 + On VMware, AWS SMS does not support VMs that use Raw Device Mapping \(RDM\)\. Only VMDK disk images are supported\.
-
-### File system<a name="file-system"></a>
-+ Migrated Linux VMs must use 64\-bit images\. Migrating 32\-bit Linux images is not supported\.
-+ Migrated Linux VMs should use default kernels for best results\. VMs that use custom Linux kernels might not migrate successfully\.
-+ When preparing Amazon EC2 Linux VMs for migration, make sure that at least 250 MiB of disk space is available on the root volume for installing drivers and other software\. For Microsoft Windows VMs, configure a fixed pagefile size and ensure that at least 6 GiB of free space is available on the root volume\.
 
 ### Booting<a name="boot"></a>
 + UEFI/EFI boot partitions are supported only for Windows boot volumes with VHDX as the image format\. Otherwise, a VM's boot volume must use Master Boot Record \(MBR\) partitions\. In either case, boot volume cannot exceed 2 TiB \(uncompressed\) due to MBR limitations\.

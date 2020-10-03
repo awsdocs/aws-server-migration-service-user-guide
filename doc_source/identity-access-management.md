@@ -83,7 +83,7 @@ To specify all AWS SMS API actions, use the \* wildcard as follows\.
 }
 ```
 
-The following statement restricts users from launching an application by enabling automatic launch after replication\.
+To prevent users from enabling automatic launch after replication, use the following statement\. It is not sufficient to omit `sms:LaunchApp` from the list of allowed actions, because with automatic launch, users do not call `LaunchApp` directly\.
 
 ```
 {
