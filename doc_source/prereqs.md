@@ -44,7 +44,7 @@ Before setting up AWS SMS, take action as needed to meet all of the following re
   + XFS
 + Migrated Linux VMs must use 64\-bit images\. Migrating 32\-bit Linux images is not supported\.
 + Migrated Linux VMs should use default kernels for best results\. VMs that use custom Linux kernels might not migrate successfully\.
-+ When preparing Amazon EC2 Linux VMs for migration, make sure that at least 250 MiB of disk space is available on the root volume for installing drivers and other software\. For Microsoft Windows VMs, configure a fixed pagefile size and ensure that at least 6 GiB of free space is available on the root volume\.
++ When preparing Amazon EC2 Linux VMs for migration, make sure that at least 250 MiB of disk space is available on the root volume for installing drivers and other software\.
 
 **Programmatic modifications to VMs**
 
