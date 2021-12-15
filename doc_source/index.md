@@ -1,7 +1,7 @@
 # AWS Server Migration Service User Guide
 
 -----
-*****Copyright &copy; 2020 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
+*****Copyright &copy; Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
 
 -----
 Amazon's trademarks and trade dress may not be used in 
@@ -14,7 +14,7 @@ Amazon's trademarks and trade dress may not be used in
 
 -----
 ## Contents
-+ [What is AWS SMS?](server-migration.md)
++ [What is AWS Server Migration Service?](server-migration.md)
 + [Requirements for AWS Server Migration Service](prereqs.md)
 + [Install the Server Migration Connector](SMS_setup.md)
    + [Install the Server Migration Connector on VMware](VMware.md)

@@ -1,3 +1,13 @@
+--------
+
+**Product update**
+
+As of March 31, 2022, AWS will discontinue AWS Server Migration Service \(AWS SMS\)\. Going forward, we recommend [AWS Application Migration Service](http://aws.amazon.com/application-migration-service) \(AWS MGN\) as the primary migration service for lift\-and\-shift migrations\.
+
+You can initiate new migration jobs in AWS SMS until January 1, 2022\. Complete these active migration projects by March 31, 2022\. For more information, see [When to Choose AWS Application Migration Service](http://aws.amazon.com/application-migration-service/when-to-choose-aws-mgn/)\.
+
+--------
+
 # Identity and access management for AWS Server Migration Service<a name="identity-access-management"></a>
 
 AWS Identity and Access Management \(IAM\) is an AWS service that helps an administrator securely control access to AWS resources\. IAM administrators control who can be authenticated \(signed in\) and authorized \(have permissions\) to use AWS resources\. IAM enables you to create users and groups under your AWS account\. You control the permissions that users have to perform tasks using AWS resources\. You can use IAM for no additional charge\.

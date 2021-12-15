@@ -1,3 +1,13 @@
+--------
+
+**Product update**
+
+As of March 31, 2022, AWS will discontinue AWS Server Migration Service \(AWS SMS\)\. Going forward, we recommend [AWS Application Migration Service](http://aws.amazon.com/application-migration-service) \(AWS MGN\) as the primary migration service for lift\-and\-shift migrations\.
+
+You can initiate new migration jobs in AWS SMS until January 1, 2022\. Complete these active migration projects by March 31, 2022\. For more information, see [When to Choose AWS Application Migration Service](http://aws.amazon.com/application-migration-service/when-to-choose-aws-mgn/)\.
+
+--------
+
 # Install the Server Migration Connector on Azure<a name="Azure"></a>
 
 Use the following information to install the Server Migration Connector on Azure so that you can use AWS SMS to migrate VMs from Azure to Amazon EC2\.
@@ -5,9 +15,10 @@ Use the following information to install the Server Migration Connector on Azure
 This information applies only to VMs hosted by Azure\. For information about installing the connector on other environments, see [Install the Server Migration Connector](SMS_setup.md)\.
 
 **Considerations for migration scenarios**
-+ A single Server Migration Connector appliance can only migrate VMs under one subscription and one Azure Region\.
-+ After a Server Migration Connector appliance is deployed, you cannot change its subscription or Region unless you deploy another connector in the new subscription/Region\.
-+ AWS SMS supports deploying any number of Server Migration Connector appliance VMs to support migration from multiple Azure subscriptions and Regions in parallel\.<a name="azure-connector-requirements"></a>
++ A single Server Migration Connector appliance can only migrate VMs under one subscription and one Azure region\.
++ After a Server Migration Connector appliance is deployed, you cannot change its subscription or region unless you deploy another connector in the new subscription and region\.
++ AWS SMS supports deploying any number of Server Migration Connector appliance VMs to support migration from multiple Azure subscriptions and regions in parallel\.
++ Server Migration Connector does not support the Azure Government regions\.<a name="azure-connector-requirements"></a>
 
 **Requirements for Azure connector**
 + The recommended VM size of Azure connector is F4s – 4 vCPUs and 8 GB RAM\. Ensure that you have a sufficient Azure CPU quota in the region where you are deploying the connector\.
@@ -155,8 +166,8 @@ https://ip-address-of-connector
 1. On the **Log Uploads** page, select **Upload logs automatically** and choose **Next**\.
 
 1. On the **Server Migration Service** page, provide the following information:
-   +  For **AWS Region**, choose your Region from the list\. 
-   +  For **AWS Credentials**, enter the IAM credentials that you created in [Permissions for IAM users](prereqs.md#permissions-roles)\. Choose **Next**\. 
+   + For **AWS Region**, choose your Region from the list\.
+   + For **AWS Credentials**, enter the IAM credentials that you created in [Permissions for IAM users](prereqs.md#permissions-roles)\. Choose **Next**\. 
 
 1. On the **Azure Account Verification** page, verify that your Azure subscription ID and location are correct\. This connector can migrate VMs under this subscription and location\. Provide the object ID of the System Assigned Identity of the connector VM, which was provided as output from the deployment script\.
 
@@ -172,7 +183,7 @@ Complete this procedure to install the connector manually in your Azure environm
 
 1. Log into the Azure Portal as a user with administrator permissions for the subscription under which you are deploying this connector\.
 
-1. Make sure that you are ready to supply a Storage Account, its Resource Group, a Virtual Network, and the Azure Region as described in [Requirements for Azure connector](#azure-connector-requirements)\.
+1. Make sure that you are ready to supply a Storage Account, its Resource Group, a Virtual Network, and the Azure region as described in [Requirements for Azure connector](#azure-connector-requirements)\.
 
 1. Download the connector VHD and associated files from the URLs in the following table\.     
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/Azure.html)
@@ -184,7 +195,7 @@ Complete this procedure to install the connector manually in your Azure environm
 1. Create a new managed disk with the following parameter values:
    + **Resource Group**: Select your resource group
    + **Name**: Any name \- for example, sms\-connector\-disk\-westus
-   + **Region**: Select your Azure Region
+   + **Region**: Select your Azure region
    + **Availability Zone**: None
    + **Source Type**: Storage Blob \(Choose the VHD blob you uploaded from step 3\.c\.\)
    + **OSType**: Linux
@@ -195,7 +206,7 @@ Complete this procedure to install the connector manually in your Azure environm
    Under the **Basics** tab:
    + **Resource Group**: Enter in your resource group
    +  **Virtual Machine Name**: Any name, for example sms\-connector\-vm\-westus
-   + **Region**: Select your Azure Region
+   + **Region**: Select your Azure region
    + **Size**: F4s
    + **Public Inbound Ports**: None
 

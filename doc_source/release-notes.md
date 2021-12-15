@@ -1,3 +1,13 @@
+--------
+
+**Product update**
+
+As of March 31, 2022, AWS will discontinue AWS Server Migration Service \(AWS SMS\)\. Going forward, we recommend [AWS Application Migration Service](http://aws.amazon.com/application-migration-service) \(AWS MGN\) as the primary migration service for lift\-and\-shift migrations\.
+
+You can initiate new migration jobs in AWS SMS until January 1, 2022\. Complete these active migration projects by March 31, 2022\. For more information, see [When to Choose AWS Application Migration Service](http://aws.amazon.com/application-migration-service/when-to-choose-aws-mgn/)\.
+
+--------
+
 # Release notes for Server Migration Connector<a name="release-notes"></a>
 
 The following tables describe the release history of the Server Migration Connector\.
@@ -39,6 +49,7 @@ To download the latest connector for Hyper\-V/SCVMM environments, open [https://
 
 | Release date | Version | Comment | 
 | --- | --- | --- | 
+| November 9, 2020 | 1\.1\.0\.801 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 | April 28, 2020 | 1\.1\.0\.522 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 | April 22, 2020 | 1\.1\.0\.515 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 
 | April 6, 2020 | 1\.1\.0\.505 |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/server-migration-service/latest/userguide/release-notes.html)  | 

@@ -1,3 +1,13 @@
+--------
+
+**Product update**
+
+As of March 31, 2022, AWS will discontinue AWS Server Migration Service \(AWS SMS\)\. Going forward, we recommend [AWS Application Migration Service](http://aws.amazon.com/application-migration-service) \(AWS MGN\) as the primary migration service for lift\-and\-shift migrations\.
+
+You can initiate new migration jobs in AWS SMS until January 1, 2022\. Complete these active migration projects by March 31, 2022\. For more information, see [When to Choose AWS Application Migration Service](http://aws.amazon.com/application-migration-service/when-to-choose-aws-mgn/)\.
+
+--------
+
 # Replicate VMs using the AWS SMS console<a name="console_workflow"></a>
 
 You can use the AWS SMS console to import your server catalog and migrate your on\-premises servers to Amazon EC2\. For directions using the AWS Command Line Interface \(AWS CLI\), see [Replicate VMs using AWS CLI commands for AWS SMS](cli_workflow.md)\.
@@ -30,7 +40,7 @@ AWS SMS automatically replicates live server volumes to AWS and creates an Amazo
 
 1. Select a server to replicate and choose **Create replication job**\.
 
-1. On the **Configure server\-specific settings** page, in the **License type** column, select the license type for AMIs to be created from the replication job\. Linux servers can only use Bring Your Own License \(BYOL\)\. Windows servers can use either an AWS\-provided license or BYOL\. You can also choose **Auto** to allow AWS SMS to select the appropriate license\. Choose **Next**\.
+1. On the **Configure server\-specific settings** page, in the **License type** column, select the license type for AMIs to be created from the replication job\. Linux servers can only use Bring Your Own License \(BYOL\)\. Windows servers can use either a license provided by AWS or BYOL\. You can also choose **Auto** to allow AWS SMS to select the appropriate license\. Choose **Next**\.
 
 1. On the **Configure replication job settings** page, provide the following information and then choose **Next**:
    + **Replication job type** — Specify the replication interval \(every 1\-24 hours\) or choose **One\-time migration**\.

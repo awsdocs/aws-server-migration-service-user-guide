@@ -1,3 +1,13 @@
+--------
+
+**Product update**
+
+As of March 31, 2022, AWS will discontinue AWS Server Migration Service \(AWS SMS\)\. Going forward, we recommend [AWS Application Migration Service](http://aws.amazon.com/application-migration-service) \(AWS MGN\) as the primary migration service for lift\-and\-shift migrations\.
+
+You can initiate new migration jobs in AWS SMS until January 1, 2022\. Complete these active migration projects by March 31, 2022\. For more information, see [When to Choose AWS Application Migration Service](http://aws.amazon.com/application-migration-service/when-to-choose-aws-mgn/)\.
+
+--------
+
 # Requirements for AWS Server Migration Service<a name="prereqs"></a>
 
 Your VMware vSphere, Microsoft Hyper\-V/SCVMM, or Microsoft Azure environment must meet the following requirements for you to use the Server Migration Service to migrate your on\-premises virtualized servers to Amazon EC2\.
@@ -33,7 +43,8 @@ Before setting up AWS SMS, take action as needed to meet all of the following re
 
 **Linux VMs**
 + Enable Secure Shell \(SSH\) for remote access\.
-+ Make sure that your host firewall \(such as iptables\) allows access to SSH\. Otherwise, you will not be able to access your instance after the migration is complete\.
++ Make sure that your host firewall \(such as iptables\) allows access to SSH\. Otherwise, you won't be able to access your instance after the migration is complete\.
++ Make sure that you have configured a non\-root user to use public key\-based SSH to access your instance after it is imported\. The use of password\-based SSH and root login over SSH are both possible, but we do not recommend it\. We recommend the use of public keys and a non\-root user because it is more secure\. Your Linux VM won't have an `ec2-user` account created as part of the migration process\.
 + Make sure that your Linux VM uses GRUB \(GRUB legacy\) or GRUB 2 as its bootloader\.
 + Make sure that the root volume of your Linux VM uses one of the following file systems:
   + EXT2
@@ -181,7 +192,7 @@ The same licensing options are available through AWS SMS API and CLI\. For examp
 aws sms create-replication-job --license-type value
 ```
 
-The value of the `--license-type` parameter can be AWS or BYOL\. Leaving it unset is the same as choosing **Auto** in the console\.
+The value of the `--license-type` parameter can be `AWS` or `BYOL`\. Leaving it unset is the same as choosing **Auto** in the console\.
 
 ### Licensing for Linux<a name="linux"></a>
 
@@ -215,7 +226,7 @@ The following rules apply when you use your BYOL Microsoft license, either throu
 AWS Server Migration Service partially supports vMotion, Storage vMotion, and other features based on virtual machine migration \(such as DRS and Storage DRS\) subject to the following limitations:
 + Migrating a virtual machine to a new ESXi host or datastore after one replication run ends, and before the next replication run begins, is supported as long as the Server Migration Connector's vCenter service account has sufficient permissions on the destination ESXi host, datastores, and datacenter, and on the virtual machine itself at the new location\.
 + Migrating a virtual machine to a new ESXi host, datastore, and/or datacenter while a replication run is active—that is, while a virtual machine upload is in progress—is not supported\. 
-+ Cross vCenter vMotion is not supported for use with the AWS Server Migration Service\.
++ Cross vCenter vMotion is not supported for use with AWS SMS\.
 
 **Support for VMware vSAN**  
 VMs on vSAN datastores are only supported when **Replication job type** on the **Configure replication jobs settings** page is set to **One\-time migration**\.

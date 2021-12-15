@@ -1,3 +1,13 @@
+--------
+
+**Product update**
+
+As of March 31, 2022, AWS will discontinue AWS Server Migration Service \(AWS SMS\)\. Going forward, we recommend [AWS Application Migration Service](http://aws.amazon.com/application-migration-service) \(AWS MGN\) as the primary migration service for lift\-and\-shift migrations\.
+
+You can initiate new migration jobs in AWS SMS until January 1, 2022\. Complete these active migration projects by March 31, 2022\. For more information, see [When to Choose AWS Application Migration Service](http://aws.amazon.com/application-migration-service/when-to-choose-aws-mgn/)\.
+
+--------
+
 # Migrate applications using AWS SMS<a name="application-migration"></a>
 
 AWS Server Migration Service supports the automated migration of multi\-server application stacks from your on\-premises data center to Amazon EC2\. Where server migration is accomplished by replicating a single server as an Amazon Machine Image \(AMI\), application migration replicates all of the servers in an application as AMIs and generates an AWS CloudFormation template to launch them in a coordinated fashion\.
@@ -135,10 +145,12 @@ Before you can configure network settings, you must set up a virtual private clo
    + **Execution command** — The command to run the script \(for example, \./script\.sh\)\.
    + **Timeout in minutes** — The maximum time needed to run the script \(from 1\-480\)\. The default is 15\.
 
-1. \(Optional\) You can run a script when your EC2 instance first boots using Amazon EC2 user data\. On the **Instance validation** page, provide the following information, and then choose **Next**:
+1. \(Optional\) You can run a script when your EC2 instance first boots using Amazon EC2 user data\. On the **Instance validation and application monitoring** page, provide the following information, and then choose **Next**:
    + **Permissions** — To allow AWS SMS to get the validation script from Amazon S3 and run it on the instance using EC2 user data, you must create a role that grants AWS SMS the permissions from the **ServerMigrationServiceRoleForInstanceValidation** policy\. Choose **Create a new role with default role policy** to have AWS SMS create the role on your behalf \(IAM users must have administrator permissions\) or **Use an existing role** \(IAM users must have permission to pass a role to the `ec2.amazonaws.com` service\)\.
+   + **CloudWatch application monitoring** — Choose **Set up monitors and automated insights for this deployment** to continuously analyze data for signs of problems with your applications\. For more information, see [Amazon CloudWatch Application Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-application-insights.html) in the *Amazon CloudWatch User Guide*\.
    + **Validation name** — A name for the validation\.
    + **Validation scripts** — The location, in Amazon S3, of the validation script\. The bucket must have the following prefix: `sms-app-`\.
+   + **Script type** — Choose **Shell script** or **PowerShell script**\.
 
 1. On the **Review** page, verify the launch configuration settings and choose **Save**\.
 
@@ -192,7 +204,7 @@ Application Migration supports the import and migration of applications discover
 
 **To import applications from Migration Hub**
 
-1. To enable application catalog import, complete the [AWS Server Migration Service \(SMS\)](https://docs.aws.amazon.com/migrationhub/latest/ug/new-customer-setup.html#sms-managed) instructions in the Migration Hub user guide\.
+1. To enable application catalog import, complete the [AWS Server Migration Service](https://docs.aws.amazon.com/migrationhub/latest/ug/new-customer-setup.html#sms-managed) instructions in the Migration Hub user guide\.
 **Note**  
 Taking this action exports the SMS server catalog and makes it visible on Migration Hub\.
 

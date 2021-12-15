@@ -1,3 +1,13 @@
+--------
+
+**Product update**
+
+As of March 31, 2022, AWS will discontinue AWS Server Migration Service \(AWS SMS\)\. Going forward, we recommend [AWS Application Migration Service](http://aws.amazon.com/application-migration-service) \(AWS MGN\) as the primary migration service for lift\-and\-shift migrations\.
+
+You can initiate new migration jobs in AWS SMS until January 1, 2022\. Complete these active migration projects by March 31, 2022\. For more information, see [When to Choose AWS Application Migration Service](http://aws.amazon.com/application-migration-service/when-to-choose-aws-mgn/)\.
+
+--------
+
 # Install the Server Migration Connector on VMware<a name="VMware"></a>
 
 Use the following information to install the Server Migration Connector, so that you can use AWS SMS to migrate VMs from a VMware environment to Amazon EC2\.
@@ -14,7 +24,7 @@ This information applies only to VMs in an on\-premises VMware environment\. For
   + HTTPS on vCenter—Allow the connector to initiate secure web connections to port 443 of vCenter\. You can also configure a non\-default port at your discretion\. If your vCenter Server is configured to use a non\-default port, specify both the vCenter's hostname and port, separated by a colon \(for example, `HOSTNAME:PORT` or `IP:PORT`\) in the vCenter Service Account page in **Connector setup**\.
   + HTTPS on ESXi—Allow the connector to initiate secure web connections to port 443 of the ESXi hosts containing the VMs you intend to migrate\.
   + NTP—Optionally allow the connector outbound access to port 123 for time synchronization\. If the connector synchronizes its clock with the ESXi host, this is unnecessary\.
-+ Allow outbound connections from the connector to the following URL ranges: 
++ Allow outbound connections from the connector to the following URL ranges:
   + \*\.amazonaws\.com
   + \*\.aws\.amazon\.com
 

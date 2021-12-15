@@ -1,3 +1,13 @@
+--------
+
+**Product update**
+
+As of March 31, 2022, AWS will discontinue AWS Server Migration Service \(AWS SMS\)\. Going forward, we recommend [AWS Application Migration Service](http://aws.amazon.com/application-migration-service) \(AWS MGN\) as the primary migration service for lift\-and\-shift migrations\.
+
+You can initiate new migration jobs in AWS SMS until January 1, 2022\. Complete these active migration projects by March 31, 2022\. For more information, see [When to Choose AWS Application Migration Service](http://aws.amazon.com/application-migration-service/when-to-choose-aws-mgn/)\.
+
+--------
+
 # Using Amazon CloudWatch Events and AWS Lambda with AWS SMS<a name="cwe-sms"></a>
 
 You can use Amazon CloudWatch Events with AWS Server Migration Service to automate actions based on your migration workflow\. This requires you to create an IAM policy for Lambda to assume, a Lambda function to handle the event, and a CloudWatch Events rule that matches incoming events and routes them to the Lambda function\.
@@ -39,6 +49,8 @@ The following procedure uses an AWS Lambda function to monitor AWS SMS job state
 1. Open the AWS Lambda console at [https://console\.aws\.amazon\.com/lambda/](https://console.aws.amazon.com/lambda/)\.
 
 1. Choose **Create function**\.
+
+   
 
 1. To ensure that your Lambda function is available from the CloudWatch console, create it in the region where the CloudWatch event will occur\. For more information, see the [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/)\. Name the function `LaunchInstanceFromAMI` and select **Python 2\.7** as the runtime\.
 

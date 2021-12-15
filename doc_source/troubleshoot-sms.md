@@ -1,3 +1,13 @@
+--------
+
+**Product update**
+
+As of March 31, 2022, AWS will discontinue AWS Server Migration Service \(AWS SMS\)\. Going forward, we recommend [AWS Application Migration Service](http://aws.amazon.com/application-migration-service) \(AWS MGN\) as the primary migration service for lift\-and\-shift migrations\.
+
+You can initiate new migration jobs in AWS SMS until January 1, 2022\. Complete these active migration projects by March 31, 2022\. For more information, see [When to Choose AWS Application Migration Service](http://aws.amazon.com/application-migration-service/when-to-choose-aws-mgn/)\.
+
+--------
+
 # Troubleshooting AWS SMS<a name="troubleshoot-sms"></a>
 
 The following information can help you troubleshoot issues with errors that you might encounter when using AWS SMS\. Before using these procedures, confirm that your SMS setup and the server you are trying to migrate meet the requirements in [Requirements for AWS Server Migration Service](prereqs.md)\.
